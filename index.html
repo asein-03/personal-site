@@ -3,384 +3,323 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Albert Sein &#8212; Materials &amp; Systems Engineer</title>
-<meta name="description" content="Albert Sein &#8212; materials &amp; systems engineer at the University of Virginia and founder of Ordo. Currently interning at Celestica; open to Summer 2027 internships and new-grad roles.">
+<title>Albert Sein</title>
+<meta name="description" content="Albert Sein, materials and systems engineering at UVA. Just finished a project management and thermal engineering internship on next generation data center infrastructure for AI, and built Ordo. Looking for a Summer 2027 internship and new-grad roles.">
 <meta name="author" content="Albert Sein">
-<meta name="theme-color" content="#16120b">
+<meta name="theme-color" content="#faf8f5">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Albert Sein &#8212; Materials &amp; Systems Engineer">
-<meta property="og:description" content="Materials &amp; systems engineer at UVA, founder of Ordo. Open to Summer 2027 internships and new-grad roles.">
-<meta property="og:url" content="https://albertsein.com">
+<meta property="og:title" content="Albert Sein">
+<meta property="og:description" content="Materials and systems engineering at UVA. Just finished an internship on next generation data center infrastructure for AI, and built Ordo.">
+<meta property="og:url" content="https://albertsein.vercel.app">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2316120b'/><path d='M12 9L19 16L12 23' fill='none' stroke='%23e7ab5a' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23faf8f5'/><text x='16' y='24' font-family='Georgia,serif' font-size='21' fill='%23191817' text-anchor='middle'>A</text></svg>">
 <style>
   :root {
-    --ink:       #16120b;
-    --ink-2:     #1e1810;
-    --bone:      #ece3d2;
-    --bone-dim:  #9b9184;
-    --bone-faint:rgba(236,227,210,.42);
-    --amber:     #e7ab5a;
-    --amber-2:   #f4c684;
-    --sage:      #8ea86f;
-    --line:      rgba(236,227,210,.10);
+    --paper:  #faf8f5;
+    --ink:    #191817;
+    --quiet:  #6b6862;
+    --faint:  #9b968e;
+    --accent: #8a5a2b;
+    --sage:   #5e7a45;
+    --line:   rgba(25,24,23,.10);
 
-    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, "Cascadia Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     --serif: ui-serif, "New York", Georgia, "Iowan Old Style", "Times New Roman", serif;
 
-    --fs-mono:  .8125rem;
-    --fs-label: .6875rem;
-    --fs-body:  1.0625rem;
-    --fs-lede:  clamp(1.15rem, 2.4vw, 1.45rem);
-    --fs-hero:  clamp(2.6rem, 7.5vw, 4.25rem);
+    --fs-label: .70rem;
+    --fs-small: .875rem;
+    --fs-body:  1.125rem;
+    --fs-lede:  clamp(1.2rem, 2.5vw, 1.5rem);
+    --fs-hero:  clamp(2.7rem, 8vw, 4.5rem);
 
-    --col: 42rem;
+    --col: 40rem;
   }
 
   * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    background: var(--ink);
-    color: var(--bone);
-    font-family: var(--mono);
-    font-size: var(--fs-mono);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--fs-small);
     line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
   }
 
-  body::before {
-    content: "";
-    position: fixed; inset: 0;
-    background: radial-gradient(1100px 620px at 12% -8%, rgba(231,171,90,.11), transparent 58%);
-    pointer-events: none; z-index: 0;
-  }
-  body::after {
-    content: "";
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    opacity: .035; pointer-events: none; z-index: 0; mix-blend-mode: screen;
-  }
-
   .wrap {
-    position: relative; z-index: 1;
     max-width: var(--col);
     margin: 0 auto;
-    padding: 2rem clamp(1.25rem, 5vw, 2rem) 3rem;
+    padding: 2.25rem clamp(1.35rem, 5vw, 2rem) 3rem;
   }
 
-  /* ---- top status bar ---- */
-  .bar {
-    display: flex; justify-content: space-between; align-items: center;
-    gap: .5rem 1rem; flex-wrap: wrap;
-    padding-bottom: 1.75rem;
-    border-bottom: 1px solid var(--line);
-    color: var(--bone-dim);
-    font-size: var(--fs-mono);
+  /* ---- availability ping ---- */
+  .ping {
+    display: inline-flex; align-items: flex-start; gap: .6rem;
+    color: var(--quiet);
+    font-size: var(--fs-small);
+    margin: 0;
   }
-  .bar .path .at { color: var(--amber); }
-  .bar .path .pct { color: var(--amber); }
-  .status { display: inline-flex; align-items: center; gap: .55ch; white-space: nowrap; }
   .dot {
-    width: .5rem; height: .5rem; border-radius: 50%;
-    background: var(--sage);
-    box-shadow: 0 0 0 0 rgba(142,168,111,.55);
-    animation: pulse 2.8s ease-out infinite;
+    width: .45rem; height: .45rem; border-radius: 50%;
+    background: var(--sage); flex: none;
+    margin-top: .55em;
   }
-  @keyframes pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(142,168,111,.5); }
-    70%  { box-shadow: 0 0 0 6px rgba(142,168,111,0); }
-    100% { box-shadow: 0 0 0 0 rgba(142,168,111,0); }
-  }
-
-  /* ---- command block ---- */
-  main { display: flex; flex-direction: column; gap: clamp(2.75rem, 7vh, 4.5rem); padding-top: clamp(2.5rem, 7vh, 4rem); }
-  .cmd .line {
-    display: flex; align-items: baseline; gap: .6ch;
-    color: var(--bone-dim);
-    font-size: var(--fs-mono);
-    margin-bottom: 1.1rem;
-  }
-  .sigil { color: var(--amber); }
-  .cmd-name { color: var(--bone); }
-  .cur {
-    display: inline-block; width: .58ch; height: 1.05em;
-    background: var(--amber); translate: 0 .12em;
-    animation: blink 1.1s steps(1) infinite;
-  }
-  @keyframes blink { 0%,50% { opacity: 1; } 50.01%,100% { opacity: 0; } }
-
-  .out { padding-left: clamp(0px, 2.5vw, 1.4rem); }
 
   /* ---- hero ---- */
+  header.hero { padding-top: clamp(3rem, 11vh, 5.5rem); }
   .name {
     font-family: var(--serif);
     font-size: var(--fs-hero);
-    line-height: 1.0;
-    letter-spacing: -.015em;
+    line-height: 1.02;
+    letter-spacing: -.018em;
     font-weight: 500;
     margin: 0;
-    text-wrap: balance;
+  }
+  .role {
+    margin: .85rem 0 0;
+    color: var(--accent);
+    font-size: var(--fs-small);
+    letter-spacing: .01em;
   }
   .lede {
     font-family: var(--serif);
     font-size: var(--fs-lede);
-    line-height: 1.42;
-    color: var(--bone-dim);
-    margin: 1.1rem 0 0;
-    max-width: 48ch;
+    line-height: 1.45;
+    color: var(--quiet);
+    margin: 1.6rem 0 0;
+    max-width: 40ch;
     text-wrap: pretty;
   }
-  .meta {
-    margin-top: 1.5rem;
-    color: var(--bone-faint);
-    font-size: var(--fs-mono);
-    display: flex; flex-wrap: wrap; gap: .5ch 1ch;
-  }
-  .meta .sep { color: var(--amber); opacity: .7; }
 
-  /* ---- prose output (now) ---- */
+  /* ---- sections ---- */
+  main { display: flex; flex-direction: column; gap: clamp(3rem, 8vh, 4.5rem); padding-top: clamp(3.5rem, 10vh, 5.5rem); }
+  .label {
+    display: block;
+    font-size: var(--fs-label);
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--faint);
+    padding-bottom: .8rem;
+    margin-bottom: 1.6rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* ---- prose ---- */
   .prose {
     font-family: var(--serif);
     font-size: var(--fs-body);
-    line-height: 1.65;
-    color: var(--bone);
-    max-width: 60ch;
+    line-height: 1.62;
+    color: var(--ink);
+    max-width: 56ch;
     margin: 0;
   }
-  .prose em { color: var(--amber-2); font-style: italic; }
-  .prose .q { color: var(--bone-dim); }
+  .prose + .prose { margin-top: 1.2rem; }
+  .prose.quiet { color: var(--quiet); font-size: 1.0625rem; }
 
-  /* ---- work listing ---- */
+  /* ---- work ---- */
   .rows { display: flex; flex-direction: column; }
   .row {
-    display: grid;
-    grid-template-columns: minmax(6rem, 8.5rem) 1fr auto;
-    align-items: baseline;
-    gap: .35rem 1.4rem;
-    padding: .95rem 1rem;
+    display: block;
+    padding: 1.15rem 1rem;
     margin: 0 -1rem;
-    border-radius: 5px;
+    border-radius: 6px;
+    border-bottom: 1px solid var(--line);
     color: inherit; text-decoration: none;
     transition: background .18s ease;
-    border-bottom: 1px solid var(--line);
   }
   .row:last-child { border-bottom: 0; }
-  .row .rname { font-family: var(--mono); color: var(--bone); transition: color .18s ease; }
-  .row .rmeta { display: block; color: var(--bone-faint); margin-top: .2rem; font-size: .75rem; }
-  .row .rdesc { font-family: var(--serif); font-size: 1rem; line-height: 1.45; color: var(--bone-dim); transition: color .18s ease; }
-  .row .rarrow { font-family: var(--mono); color: var(--bone-faint); transition: transform .18s ease, color .18s ease; justify-self: end; }
-  .row:hover, .row:focus-visible { background: var(--ink-2); outline: none; }
-  .row:hover .rname, .row:focus-visible .rname { color: var(--amber); }
-  .row:hover .rdesc, .row:focus-visible .rdesc { color: var(--bone); }
-  .row:hover .rarrow, .row:focus-visible .rarrow { color: var(--amber); transform: translate(2px,-2px); }
-  .row:focus-visible { box-shadow: inset 0 0 0 1px var(--amber); }
+  .rhead { display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap; }
+  .rname { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); transition: color .18s ease; }
+  .rwhen { font-size: var(--fs-label); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+  .rdesc {
+    font-family: var(--serif); font-size: 1.0625rem; line-height: 1.5;
+    color: var(--quiet); margin: .4rem 0 0; max-width: 54ch;
+  }
+  a.row:hover, a.row:focus-visible { background: rgba(25,24,23,.045); outline: none; }
+  a.row:hover .rname, a.row:focus-visible .rname { color: var(--accent); }
+  a.row:focus-visible { box-shadow: inset 0 0 0 1px var(--accent); }
+  .out { font-size: .8rem; color: var(--faint); margin-left: .1rem; }
+  a.row:hover .out { color: var(--accent); }
 
-  /* ---- stack ---- */
-  .stack { display: flex; flex-direction: column; gap: 1rem; }
-  .srow { display: grid; grid-template-columns: 9.5rem 1fr; gap: 1.4rem; align-items: baseline; }
-  .srow .slabel { color: var(--amber); font-size: var(--fs-mono); }
-  .srow .sval { color: var(--bone-dim); font-size: var(--fs-mono); line-height: 1.75; }
-  .srow .sval .shi { color: var(--bone); }
+  /* ---- skills ---- */
+  .skills { display: flex; flex-direction: column; gap: 1.15rem; }
+  .srow { display: grid; grid-template-columns: 11rem 1fr; gap: 1.4rem; align-items: baseline; }
+  .srow .slabel { color: var(--accent); font-size: var(--fs-small); }
+  .srow .sval { color: var(--quiet); font-size: var(--fs-small); line-height: 1.7; }
 
   /* ---- contact ---- */
-  .links { display: flex; flex-direction: column; gap: .1rem; }
+  .links { display: flex; flex-direction: column; }
   .link {
-    display: grid; grid-template-columns: 5.5rem 1fr auto; align-items: baseline;
-    gap: 1.4rem; padding: .5rem 1rem; margin: 0 -1rem; border-radius: 5px;
-    text-decoration: none; color: var(--bone);
+    display: grid; grid-template-columns: 6.5rem 1fr auto; align-items: baseline;
+    gap: 1.2rem; padding: .7rem 1rem; margin: 0 -1rem; border-radius: 6px;
+    text-decoration: none; color: var(--ink);
     transition: background .16s ease;
   }
-  .link .k { color: var(--bone-faint); }
-  .link .v { color: var(--bone); transition: color .16s ease; word-break: break-word; }
-  .link .a { color: var(--bone-faint); justify-self: end; transition: transform .16s ease, color .16s ease; }
-  .link:hover, .link:focus-visible { background: var(--ink-2); outline: none; }
-  .link:hover .v, .link:focus-visible .v { color: var(--amber); }
-  .link:hover .a, .link:focus-visible .a { color: var(--amber); transform: translate(2px,-2px); }
-  .link:focus-visible { box-shadow: inset 0 0 0 1px var(--amber); }
+  .link .k { color: var(--faint); font-size: var(--fs-label); letter-spacing: .12em; text-transform: uppercase; }
+  .link .v { color: var(--ink); transition: color .16s ease; word-break: break-word; }
+  .link .a { color: var(--faint); justify-self: end; font-size: .8rem; transition: transform .16s ease, color .16s ease; }
+  .link:hover, .link:focus-visible { background: rgba(25,24,23,.045); outline: none; }
+  .link:hover .v, .link:focus-visible .v { color: var(--accent); }
+  .link:hover .a, .link:focus-visible .a { color: var(--accent); transform: translate(2px,-2px); }
+  .link:focus-visible { box-shadow: inset 0 0 0 1px var(--accent); }
 
   /* ---- footer ---- */
   footer {
-    position: relative; z-index: 1;
     max-width: var(--col); margin: 0 auto;
-    padding: 2rem clamp(1.25rem, 5vw, 2rem) 3rem;
+    padding: 1.75rem clamp(1.35rem, 5vw, 2rem) 3.5rem;
     border-top: 1px solid var(--line);
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: .75rem;
-    color: var(--bone-faint); font-size: var(--fs-mono);
-  }
-  footer .eof { color: var(--bone-dim); }
-
-  @media (max-width: 540px) {
-    .row { grid-template-columns: 1fr auto; }
-    .row .rname { grid-column: 1 / -1; }
-    .srow { grid-template-columns: 1fr; gap: .25rem; }
-    .link { grid-template-columns: 4.5rem 1fr auto; gap: 1rem; }
+    color: var(--faint); font-size: var(--fs-label); letter-spacing: .06em;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .cur { animation: none; }
-    .dot { animation: none; }
+  @media (max-width: 560px) {
+    .srow { grid-template-columns: 1fr; gap: .2rem; }
+    .link { grid-template-columns: 5rem 1fr auto; gap: .9rem; }
+    .lede { max-width: none; }
   }
+
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="bar">
-    <span class="path"><span class="at">sein</span>@uva <span class="pct">~ %</span></span><!--ascii-safe-->
-    <span class="status"><span class="dot" aria-hidden="true"></span> open to internships &amp; new-grad roles</span>
+
+  <p class="ping"><span class="dot" aria-hidden="true"></span> Open to Summer 2027 internships and new-grad roles</p>
+
+  <header class="hero">
+    <h1 class="name">Albert Sein</h1>
+    <p class="role">Materials &amp; Systems Engineering, University of Virginia</p>
+    <p class="lede">I just finished an internship working on next generation data center infrastructure for AI, I built and shipped Ordo, and I'm starting an AI consumer electronics company with my brother.</p>
   </header>
 
   <main>
-    <!-- whoami -->
-    <section class="cmd" id="hero">
-      <p class="line"><span class="sigil">&#10095;</span> <span class="cmd-name" id="typed">whoami</span><span class="cur" aria-hidden="true"></span></p>
-      <div class="out">
-        <h1 class="name">Albert Sein</h1>
-        <p class="lede">Materials &amp; systems engineer at UVA, working from the materials lab to the App Store. By day, thermal materials and additive manufacturing; on my own time, Ordo &#8212; an iOS app I designed and built solo.</p>
-        <p class="meta">
-          <span>materials science</span><span class="sep">/</span>
-          <span>systems engineering</span><span class="sep">/</span>
-          <span>founder, Ordo</span>
-        </p>
+
+    <section>
+      <span class="label">Now</span>
+      <p class="prose">
+        I just finished my internship at Celestica as a project management and thermal engineering
+        intern, working on next generation data center infrastructure for AI applications.
+      </p>
+      <p class="prose">
+        Most of it was on the TIMA5, running conductivity tests on liquid metal thermal interface
+        materials and then sitting with the data. Thermal impedance, warpage, heat maps of where a
+        package actually stays hot. It's slow work and I like it.
+      </p>
+      <p class="prose">
+        Ordo went live on the App Store this August. I designed it and used AI tools to build it,
+        and I got it through review myself. I still ship updates to it most weeks.
+      </p>
+      <p class="prose">
+        The new thing is an AI consumer electronics company I'm starting with my brother. Getting an
+        object built is a different problem than shipping an app, and that's about all I can say
+        about it right now.
+      </p>
+      <p class="prose quiet">
+        Under all of it is school: an accelerated BS in Materials Science and MEng in Systems
+        Engineering at UVA, 2027 and 2028.
+      </p>
+    </section>
+
+    <section>
+      <span class="label">Work</span>
+      <div class="rows">
+
+        <a class="row" href="https://useordoapp.com" target="_blank" rel="noopener">
+          <span class="rhead">
+            <span class="rname">Ordo</span>
+            <span class="rwhen">2026 to now</span>
+            <span class="out" aria-hidden="true">&#8599;</span>
+          </span>
+          <p class="rdesc">An iOS and web app built for people who hate how inconvenient calendars are. 1.0 shipped to the App Store in August 2026.</p>
+        </a>
+
+        <div class="row">
+          <span class="rhead">
+            <span class="rname">Stealth startup</span>
+            <span class="rwhen">2026 to now</span>
+          </span>
+          <p class="rdesc">An AI consumer electronics company I'm starting with my brother.</p>
+        </div>
+
+        <div class="row">
+          <span class="rhead">
+            <span class="rname">Celestica</span>
+            <span class="rwhen">Summer 2026</span>
+          </span>
+          <p class="rdesc">Project management and thermal engineering intern in San Jose, working on next generation data center infrastructure for AI. I tested thermal interface materials for cooling, and I led four interns building LLM agents for market research and ops.</p>
+        </div>
+
+        <div class="row">
+          <span class="rhead">
+            <span class="rname">Ji Ma Lab, UVA</span>
+            <span class="rwhen">2025 to 26</span>
+          </span>
+          <p class="rdesc">Additive manufacturing research. I laser melted simulated lunar regolith and worked out which machine settings produced which phases, then modeled the cooling rates behind them.</p>
+        </div>
+
+        <div class="row">
+          <span class="rhead">
+            <span class="rname">Setty &amp; Associates</span>
+            <span class="rwhen">2024</span>
+          </span>
+          <p class="rdesc">Mechanical engineering intern. CFD and Revit models for the HVAC systems in a dozen or so office and school buildings.</p>
+        </div>
+
       </div>
     </section>
 
-    <!-- status -->
-    <section class="cmd">
-      <p class="line"><span class="sigil">&#10095;</span> <span class="cmd-name">status</span></p>
-      <div class="out">
-        <div class="stack">
-          <div class="srow">
-            <span class="slabel">current</span>
-            <span class="sval">Technical PM &amp; Engineering Intern @ <span class="shi">Celestica</span> &#183; San Jose</span>
-          </div>
-          <div class="srow">
-            <span class="slabel">seeking</span>
-            <span class="sval">Summer 2027 internships &#183; new-grad full-time roles</span>
-          </div>
-          <div class="srow">
-            <span class="slabel">based</span>
-            <span class="sval">Charlottesville &#183; San Jose &#183; <span class="shi">&#8594; New York</span></span>
-          </div>
+    <section>
+      <span class="label">Skills</span>
+      <div class="skills">
+        <div class="srow">
+          <span class="slabel">Characterization</span>
+          <span class="sval">SEM &#183; EDS &#183; XRD &#183; light microscopy &#183; hardness and tensile testing &#183; selective laser melting &#183; composite layup</span>
+        </div>
+        <div class="srow">
+          <span class="slabel">Design and simulation</span>
+          <span class="sval">Fusion 360 &#183; SolidWorks &#183; CFD &#183; Revit &#183; AutoCAD &#183; 3D printing</span>
+        </div>
+        <div class="srow">
+          <span class="slabel">Data</span>
+          <span class="sval">DoE &#183; ANOVA &#183; Minitab &#183; process modeling &#183; Arduino and sensor integration</span>
+        </div>
+        <div class="srow">
+          <span class="slabel">Software</span>
+          <span class="sval">I use AI tools to write code, and to bring design ideas or app ideas I have to life. Have worked with TypeScript, React Native, and Swift.</span>
         </div>
       </div>
     </section>
 
-    <!-- now -->
-    <section class="cmd">
-      <p class="line"><span class="sigil">&#10095;</span> <span class="cmd-name">cat now.md</span></p>
-      <div class="out">
-        <p class="prose">
-          Day to day I'm analyzing experimental data for liquid-metal thermal interface materials (LM TIMs) &#8212; heat maps, warpage, thermal impedance &#8212; and running conductivity tests on the TIMA5,
-          on top of an accelerated <em>BS in Materials Science</em> and
-          <em>MEng in Systems Engineering</em> at UVA.
-          <span class="q">Ordo runs alongside all of it.</span>
-        </p>
+    <section>
+      <span class="label">Contact</span>
+      <div class="links">
+        <a class="link" href="mailto:kks7ys@virginia.edu">
+          <span class="k">Email</span><span class="v">kks7ys@virginia.edu</span><span class="a" aria-hidden="true">&#8599;</span>
+        </a>
+        <a class="link" href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener">
+          <span class="k">LinkedIn</span><span class="v">in/albert-sein03</span><span class="a" aria-hidden="true">&#8599;</span>
+        </a>
+        <a class="link" href="https://instagram.com/itsalbertsein" target="_blank" rel="noopener">
+          <span class="k">Instagram</span><span class="v">@itsalbertsein</span><span class="a" aria-hidden="true">&#8599;</span>
+        </a>
+        <a class="link" href="https://github.com/asein-03" target="_blank" rel="noopener">
+          <span class="k">GitHub</span><span class="v">github.com/asein-03</span><span class="a" aria-hidden="true">&#8599;</span>
+        </a>
+        <a class="link" href="https://useordoapp.com" target="_blank" rel="noopener">
+          <span class="k">Ordo</span><span class="v">useordoapp.com</span><span class="a" aria-hidden="true">&#8599;</span>
+        </a>
+        <a class="link" href="albert-sein-resume.pdf" target="_blank" rel="noopener">
+          <span class="k">R&#233;sum&#233;</span><span class="v">Albert_Sein_Resume_Fall2026.pdf</span><span class="a" aria-hidden="true">&#8599;</span>
+        </a>
       </div>
     </section>
 
-    <!-- work -->
-    <section class="cmd">
-      <p class="line"><span class="sigil">&#10095;</span> <span class="cmd-name">ls ~/work</span></p>
-      <div class="out">
-        <div class="rows">
-          <a class="row" href="https://useordoapp.com" target="_blank" rel="noopener">
-            <span class="rname">ordo/<span class="rmeta">2026 &#8212; now</span></span>
-            <span class="rdesc">Solo founder. A quiet, non-gamified iOS app for scheduling, reflection, and daily workflows &#8212; built end-to-end: product, UX, hardware prototyping, web, and marketing.</span>
-            <span class="rarrow" aria-hidden="true">&#8599;</span>
-          </a>
-          <a class="row" href="#" rel="noopener">
-            <span class="rname">celestica/<span class="rmeta">2026 &#8212; now</span></span>
-            <span class="rdesc">Technical PM &amp; engineering intern, San Jose. Thermal-interface-material testing for data-center cooling; led 4 interns building LLM agents for market intelligence and ops.</span>
-            <span class="rarrow" aria-hidden="true">&#8599;</span>
-          </a>
-          <a class="row" href="#" rel="noopener">
-            <span class="rname">ji-ma-lab/<span class="rmeta">2025 &#8212; 26</span></span>
-            <span class="rdesc">Additive-manufacturing research, UVA. Laser-melted lunar-regolith simulant &#8212; multi-factor DoE, SEM/EDS characterization, parameter-to-phase maps, cooling-rate modeling.</span>
-            <span class="rarrow" aria-hidden="true">&#8599;</span>
-          </a>
-          <a class="row" href="#" rel="noopener">
-            <span class="rname">setty/<span class="rmeta">2024</span></span>
-            <span class="rdesc">Mechanical engineering intern. CFD modeling and BIM (Revit / AutoCAD) for commercial and educational HVAC systems across 12+ projects.</span>
-            <span class="rarrow" aria-hidden="true">&#8599;</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- stack -->
-    <section class="cmd">
-      <p class="line"><span class="sigil">&#10095;</span> <span class="cmd-name">cat stack</span></p>
-      <div class="out">
-        <div class="stack">
-          <div class="srow">
-            <span class="slabel">characterization</span>
-            <span class="sval">SEM &#183; EDS &#183; XRD &#183; light microscopy &#183; hardness &amp; tensile testing &#183; selective laser melting &#183; composite layup</span>
-          </div>
-          <div class="srow">
-            <span class="slabel">design &amp; sim</span>
-            <span class="sval">Fusion 360 &#183; SolidWorks &#183; CFD &#183; Revit &#183; AutoCAD &#183; 3D printing</span>
-          </div>
-          <div class="srow">
-            <span class="slabel">data &amp; software</span>
-            <span class="sval">DoE &#183; ANOVA &#183; Minitab &#183; predictive process modeling &#183; Arduino &amp; sensor integration &#183; LLM agents (Claude / GPT / Gemini)</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- contact -->
-    <section class="cmd">
-      <p class="line"><span class="sigil">&#10095;</span> <span class="cmd-name">cat contact</span></p>
-      <div class="out">
-        <div class="links">
-          <a class="link" href="mailto:kks7ys@virginia.edu">
-            <span class="k">email</span><span class="v">kks7ys@virginia.edu</span><span class="a" aria-hidden="true">&#8599;</span>
-          </a>
-          <a class="link" href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener">
-            <span class="k">linkedin</span><span class="v">in/albert-sein03</span><span class="a" aria-hidden="true">&#8599;</span>
-          </a>
-          <a class="link" href="https://github.com/asein-03" target="_blank" rel="noopener">
-            <span class="k">github</span><span class="v">github.com/asein-03</span><span class="a" aria-hidden="true">&#8599;</span>
-          </a>
-          <a class="link" href="https://useordoapp.com" target="_blank" rel="noopener">
-            <span class="k">ordo</span><span class="v">useordoapp.com</span><span class="a" aria-hidden="true">&#8599;</span>
-          </a>
-          <a class="link" href="albert-sein-resume.pdf" target="_blank" rel="noopener">
-            <span class="k">r&eacute;sum&eacute;</span><span class="v">Albert_Sein_Resume_Fall2026.pdf</span><span class="a" aria-hidden="true">&#8599;</span>
-          </a>
-        </div>
-      </div>
-    </section>
   </main>
 </div>
 
 <footer>
-  <span class="eof">&#8212; end of session &#8212;</span>
-  <span>&copy; 2026 Albert Sein &#183; no cookies, no tracking, no template</span>
+  &copy; 2026 Albert Sein &#183; no cookies, no analytics
 </footer>
-
-<script>
-  (function () {
-    var el = document.getElementById("typed");
-    if (!el) return;
-    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-    var word = "whoami";
-    el.textContent = "";
-    var i = 0;
-    function tick() {
-      if (i <= word.length) {
-        el.textContent = word.slice(0, i);
-        i++;
-        setTimeout(tick, 85);
-      }
-    }
-    setTimeout(tick, 350);
-  })();
-</script>
 
 </body>
 </html>
