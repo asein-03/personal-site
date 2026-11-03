@@ -207,6 +207,9 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .photo { margin: 0; padding-left: clamp(18px, 2.5vw, 36px); }
 .plate { position: relative; aspect-ratio: 4 / 5; border: 1px solid var(--fg); overflow: hidden; cursor: crosshair; }
 .plate canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.plate-status { position: absolute; left: 10px; bottom: 10px; padding: 5px 7px 4px; background: var(--signal); color: var(--signal-ink); transition: opacity .4s; }
+.plate-status::after { content: "\2026"; animation: blink 1s steps(2) infinite; }
+.plate-status.done { opacity: 0; }
 .photo figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 10px; font: italic 400 .95rem/1.35 var(--font-body); color: var(--dim); }
 .photo figcaption .mono { font-style: normal; }
 @media (max-width: 900px) {
@@ -340,7 +343,7 @@ a.ad:hover .ad-when { color: inherit; }
 footer { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 14px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 36px); border-top: 3px solid var(--fg); color: var(--dim); }
 
 @media (prefers-reduced-motion: reduce) {
-  .grain, .ticker-track, .ticker .live::before { animation: none; }
+  .grain, .ticker-track, .ticker .live::before, .plate-status::after { animation: none; }
 }
 </style>
 </head>
@@ -409,15 +412,14 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <p class="deck">I study materials and systems engineering at UVA. So far I've shipped an app, designed a wearable and its charging case, packaged a phone-mounted timekeeper for a manufacturer's review, and printed a desk display.</p>
         <p class="byline mono">By Albert Sein &nbsp; | &nbsp; Charlottesville, Va.</p>
         <div class="cols prose">
-          <p class="dropcap">I'm doing an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
+          <p class="dropcap">I am doing an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
           <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Most of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. It's slow work and I like it.</p>
           <p>Ordo went live on the App Store this August. I designed it and used AI tools to build it, got it through review myself, and still ship updates most weeks.</p>
-          <p>The new thing is an AI consumer electronics company I'm starting with my brother. Getting an object built is a different problem than shipping an app.</p>
           <p class="jump mono"><a href="#aperture">Continued on A2: Aperture</a></p>
         </div>
       </article>
       <figure class="photo">
-        <div class="plate" id="plate" title="Click to jam the press"><canvas id="field" aria-hidden="true"></canvas></div>
+        <div class="plate" id="plate" title="Click to jam the press"><canvas id="field" aria-hidden="true"></canvas><span class="plate-status mono" id="plateStatus" aria-hidden="true">Printing</span></div>
         <figcaption><span id="plateCaption">Aperture, printed live from its CAD.</span><span class="mono">Click to jam the press</span></figcaption>
       </figure>
     </div>
@@ -700,7 +702,9 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
      pixel under it, like a halftone screen. Until a model is ready, the plate prints slow noise instead. */
   const cv = document.getElementById('field');
   const ctx = cv.getContext('2d');
-  const caption = document.getElementById('plateCaption');
+  const caption = document.getElementById('plateCaption'), status = document.getElementById('plateStatus');
+  // without WebGL the plate keeps printing noise, so the label goes after a few seconds either way
+  setTimeout(() => { if (!root.classList.contains('has-3d')) status.classList.add('done'); }, 4000);
   const seed = 7349;
   const hash = (x, y) => {
     let h = (Math.imul(x, 374761393) + Math.imul(y, 668265263) + seed) | 0;
@@ -802,6 +806,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     }
     ctx.globalAlpha = 1;
     F.drawn = P.version;
+    if (img) status.classList.add('done');
     if (caption && P.caption && caption.textContent !== P.caption) caption.textContent = P.caption;
   }
   sizeField(); drawField(0);
@@ -818,13 +823,14 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   document.getElementById('plate').addEventListener('pointerdown', () => { AS.glitch(); AS.tear(); AS.nextPlate?.(); });
   new IntersectionObserver(([e]) => { AS.plate.visible = e.isIntersecting; }, { rootMargin: '100px' }).observe(cv);
 
-  // About 30 frames a second while the plate is on screen; with reduced motion it reprints only when the model changes.
+  // About 30 frames a second while the plate is on screen (15 on phones); with reduced motion it reprints only when the model changes.
   let lastFrame = 0;
+  const coarse = matchMedia('(pointer: coarse)');
   const tick = (now) => {
     requestAnimationFrame(tick);
     const t = now / 1000;
     if (!reduce.matches) tearTick(t);
-    if (!AS.plate.visible || now - lastFrame < 33) return;
+    if (!AS.plate.visible || now - lastFrame < (coarse.matches ? 66 : 33)) return;
     if (reduce.matches && F.drawn === AS.plate.version) return;
     lastFrame = now;
     ptr.k += ((ptr.on ? 1 : 0) - ptr.k) * 0.12;
@@ -1254,7 +1260,8 @@ let plateIdx = 0, plateSince = 0, plateBuf = null, plateTick = 0;
 AS.nextPlate = () => { plateIdx = (plateIdx + 1) % PLATE.length; plateSince = clock.elapsedTime; };
 function renderPlate(time) {
   const P = AS.plate;
-  if (!P || !P.visible || !P.rw || (plateTick++ & 1)) return;
+  // every other frame on a laptop, every fourth on a phone
+  if (!P || !P.visible || !P.rw || plateTick++ % (fine.matches ? 2 : 4)) return;
   if (!reduce.matches && time - plateSince > 8) { AS.nextPlate(); AS.glitch?.(); AS.tear?.(); }
   const spec = PLATE[plateIdx], m = MODELS[spec.id];
   if (!m) return;
