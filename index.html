@@ -21,7 +21,7 @@
 <link rel="preload" href="models/aperture.bin" as="fetch" crossorigin>
 <script>document.documentElement.classList.add('js');</script>
 <style>
-/* Layout: a type-led opener over contour lines, then one chapter per project. Each chapter pins
+/* Layout: a type-led opener over a dot-matrix field, then one chapter per project. Each chapter pins
    a frame while you scroll; the CAD model behind it turns over, comes apart and gets measured.
    Black, grey and white only. The theme follows the system setting. */
 :root {
@@ -85,9 +85,9 @@ h3 { font-size: clamp(1.7rem, 2.6vw, 2.5rem); line-height: 1.04; letter-spacing:
 .mono { font: 400 .62rem/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
 
 /* ---------- ambient layers ---------- */
-.contours {
+.field {
   position: fixed; left: 0; top: 0; width: 100%; height: 130vh; z-index: 0; pointer-events: none;
-  opacity: var(--contours, 1); will-change: transform, opacity;
+  opacity: var(--field, 1); will-change: transform, opacity;
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 46%, transparent 18%, #000 78%);
   mask-image: radial-gradient(ellipse 70% 60% at 50% 46%, transparent 18%, #000 78%);
 }
@@ -308,7 +308,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 </head>
 <body>
 
-<canvas class="contours" id="contours" aria-hidden="true"></canvas>
+<canvas class="field" id="field" aria-hidden="true"></canvas>
 <canvas class="stage" id="stage" aria-hidden="true"></canvas>
 <svg class="dims" id="dims" aria-hidden="true">
   <line class="ext" id="dxa"/><line class="ext" id="dxb"/><line id="dx"/><line id="dx1"/><line id="dx2"/><text id="dxt" text-anchor="middle"/>
@@ -572,7 +572,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 </footer>
 
 <script>
-/* Shared state and the parts that don't need WebGL: smooth scroll, the contour field, the hero sequence,
+/* Shared state and the parts that don't need WebGL: smooth scroll, the dot field, the hero sequence,
    the chapter steps and rails. The 3D module below reads window.AS each frame. */
 (() => {
   const AS = window.AS = {};
@@ -602,8 +602,8 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     AS.scrollTo(id === 'top' ? 0 : y);
   });
 
-  /* ---------- contour field: iso-lines of smooth noise, drawn once per size ---------- */
-  const cv = document.getElementById('contours');
+  /* ---------- dot field: a halftone of slow noise, like a dot-matrix screen; dots swell near the pointer ---------- */
+  const cv = document.getElementById('field');
   const ctx = cv.getContext('2d');
   const seed = 7349;
   const hash = (x, y) => {
@@ -617,55 +617,60 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
     return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
   };
-  const fbm = (x, y) => { let s = 0, a = 0.5, f = 1; for (let o = 0; o < 4; o++) { s += a * vnoise(x * f, y * f); f *= 2.03; a *= 0.5; } return s; };
-  function drawContours() {
-    const dpr = Math.min(devicePixelRatio || 1, 2), w = innerWidth, h = Math.round(innerHeight * 1.3);
-    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+  const fbm = (x, y) => { let s = 0, a = 0.5, f = 1; for (let o = 0; o < 3; o++) { s += a * vnoise(x * f, y * f); f *= 2.03; a *= 0.5; } return s; };
+  const F = { w: 0, h: 0, step: 15, cols: 0, rows: 0, fg: '#ededed', shift: 0, last: -1 };
+  const ptr = { x: -1e4, y: -1e4, k: 0, on: false };
+  function sizeField() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    F.w = innerWidth; F.h = Math.round(innerHeight * 1.3);
+    cv.width = Math.round(F.w * dpr); cv.height = Math.round(F.h * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    F.step = F.w < 700 ? 12 : 15;
+    F.cols = Math.ceil(F.w / F.step) + 2; F.rows = Math.ceil(F.h / F.step) + 1;
+    F.fg = getComputedStyle(root).getPropertyValue('--fg').trim() || '#ededed';
+  }
+  // Dots sit on a staggered grid, as in a printed halftone. Their size follows slow, drifting noise,
+  // and the pointer pushes a soft swell through them.
+  function drawField(t) {
+    const { w, h, step, cols, rows } = F, sc = 1 / 330, tx = t * 0.016, ty = t * 0.01;
     ctx.clearRect(0, 0, w, h);
-    const fg = getComputedStyle(root).getPropertyValue('--fg').trim() || '#ededed';
-    const step = w < 700 ? 7 : 9, cols = Math.ceil(w / step) + 1, rows = Math.ceil(h / step) + 1;
-    const sc = 1 / 260, F = new Float32Array(cols * rows);
-    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
-      const x = i * step * sc, y = j * step * sc;
-      F[j * cols + i] = fbm(x + 0.35 * fbm(y + 3.1, x), y + 0.35 * fbm(x - 1.7, y));
-    }
-    ctx.strokeStyle = fg; ctx.lineJoin = 'round';
-    const L = 22;
-    for (let k = 0; k < L; k++) {
-      const iso = 0.18 + (k / (L - 1)) * 0.64, major = k % 5 === 0;
-      ctx.globalAlpha = major ? 0.26 : 0.12; ctx.lineWidth = major ? 1 : 0.7;
-      ctx.beginPath();
-      for (let j = 0; j < rows - 1; j++) for (let i = 0; i < cols - 1; i++) {
-        const a = F[j * cols + i], b = F[j * cols + i + 1], c = F[(j + 1) * cols + i + 1], d = F[(j + 1) * cols + i];
-        const idx = (a > iso) | ((b > iso) << 1) | ((c > iso) << 2) | ((d > iso) << 3);
-        if (idx === 0 || idx === 15) continue;
-        const x0 = i * step, y0 = j * step;
-        const top = () => [x0 + step * (iso - a) / (b - a), y0];
-        const right = () => [x0 + step, y0 + step * (iso - b) / (c - b)];
-        const bottom = () => [x0 + step * (iso - d) / (c - d), y0 + step];
-        const left = () => [x0, y0 + step * (iso - a) / (d - a)];
-        const seg = (p, q) => { ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); };
-        switch (idx) {
-          case 1: case 14: seg(left(), top()); break;
-          case 2: case 13: seg(top(), right()); break;
-          case 3: case 12: seg(left(), right()); break;
-          case 4: case 11: seg(right(), bottom()); break;
-          case 5: seg(left(), top()); seg(right(), bottom()); break;
-          case 6: case 9: seg(top(), bottom()); break;
-          case 7: case 8: seg(left(), bottom()); break;
-          case 10: seg(top(), right()); seg(left(), bottom()); break;
+    ctx.fillStyle = F.fg;
+    const small = new Path2D(), large = new Path2D(), reach = 150;
+    for (let j = 0; j < rows; j++) {
+      const y = j * step, off = j & 1 ? step / 2 : 0;
+      for (let i = 0; i < cols; i++) {
+        const x = i * step - off;
+        const n = fbm(x * sc + tx + 0.4 * vnoise(y * sc * 1.7, tx), y * sc - ty);
+        let r = 0.55 + 2.5 * smooth(0.42, 0.72, n);
+        if (ptr.k > 0.01) {
+          const d = Math.hypot(ptr.x - x, ptr.y - y);
+          if (d < reach) { const f = 1 - d / reach; r += 2.2 * ptr.k * f * f; }
         }
+        const path = r < 1.1 ? small : large;
+        path.moveTo(x + r, y); path.arc(x, y, r, 0, 6.2832);
       }
-      ctx.stroke();
     }
+    ctx.globalAlpha = 0.22; ctx.fill(small);
+    ctx.globalAlpha = 0.46; ctx.fill(large);
     ctx.globalAlpha = 1;
   }
-  let lastW = 0;
-  const redraw = () => { if (innerWidth !== lastW || !cv.width) { lastW = innerWidth; drawContours(); } };
-  redraw();
-  addEventListener('resize', redraw);
-  matchMedia('(prefers-color-scheme: light)').addEventListener('change', drawContours);
+  sizeField(); drawField(0);
+  let fieldW = innerWidth;
+  addEventListener('resize', () => { if (innerWidth !== fieldW) { fieldW = innerWidth; sizeField(); drawField(F.last < 0 ? 0 : F.last); } });
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => { sizeField(); drawField(Math.max(0, F.last)); });
+  addEventListener('pointermove', (e) => { ptr.x = e.clientX; ptr.y = e.clientY - F.shift; ptr.on = e.pointerType === 'mouse'; }, { passive: true });
+  document.addEventListener('pointerleave', () => { ptr.on = false; });
+  // About 30 frames a second while the opener is on screen; after that the field holds still.
+  let lastFrame = 0;
+  const tick = (now) => {
+    requestAnimationFrame(tick);
+    if (reduce.matches || now - lastFrame < 33 || scrollY > innerHeight * 3.2) return;
+    lastFrame = now;
+    ptr.k += ((ptr.on ? 1 : 0) - ptr.k) * 0.12;
+    F.last = now / 1000;
+    drawField(F.last);
+  };
+  requestAnimationFrame(tick);
 
   /* ---------- chapters: rails and step state ---------- */
   const ease = (t) => t * t * (3 - 2 * t);
@@ -708,8 +713,9 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     show(intro, 1 - smooth(0.08, 0.26, hp), -24);
     show(l1, smooth(0.28, 0.42, hp) * (1 - smooth(0.56, 0.66, hp)));
     show(l2, smooth(0.68, 0.8, hp) * (1 - smooth(0.94, 1, hp)));
-    root.style.setProperty('--contours', (1 - 0.72 * smooth(0.6, 1, hp)).toFixed(3));
-    cv.style.transform = `translate3d(0, ${(-Math.min(scrollY, vh * 3) * 0.06).toFixed(1)}px, 0)`;
+    root.style.setProperty('--field', (1 - 0.72 * smooth(0.6, 1, hp)).toFixed(3));
+    F.shift = -Math.min(scrollY, vh * 3) * 0.06;
+    cv.style.transform = `translate3d(0, ${F.shift.toFixed(1)}px, 0)`;
     root.style.setProperty('--nav-shade', smooth(vh * 1.6, vh * 2.2, scrollY).toFixed(3));
 
     /* chapters: which step, how far into the next one, and how present the chapter is */
