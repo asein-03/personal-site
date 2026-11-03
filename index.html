@@ -473,6 +473,10 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <div class="step" data-label="Inside" data-model="aperture-case" data-yaw="-118" data-pitch="22" data-explode="1" data-zoom=".86">
           <h3>Its own board and battery.</h3>
           <p>Under the pocket sit the case's own board, cell and USB-C port. A Hall sensor watches the lid, and the contacts only switch on with the lid shut and a shell drawing current.</p>
+        </div>
+        <div class="step" data-label="Closed" data-model="aperture-case" data-yaw="-132" data-pitch="26" data-close="1" data-zoom="1.08">
+          <h3>Drop it in, close the lid.</h3>
+          <p>The shell settles into its cups, the lid swings shut on its pin hinge, and a magnet in the lid's front edge holds it closed while it charges.</p>
           <a class="go" href="https://aperture-kappa-three.vercel.app" target="_blank" rel="noopener">Visit Aperture <span aria-hidden="true">&#8599;</span></a>
         </div>
       </div>
@@ -858,7 +862,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     });
     const pose = steps.map((s) => ({
       model: s.dataset.model, yaw: +(s.dataset.yaw || 0), pitch: +(s.dataset.pitch || 0),
-      explode: +(s.dataset.explode || 0), zoom: +(s.dataset.zoom || 1),
+      explode: +(s.dataset.explode || 0), zoom: +(s.dataset.zoom || 1), close: +(s.dataset.close || 0),
       measure: s.dataset.measure ? s.dataset.measure.split(',') : null,
     }));
     return { el, steps, buttons, pose, i: 0, t: 0, presence: 0 };
@@ -1016,7 +1020,8 @@ function loadModel(id) {
       mat.transparent = true;
       const mesh = new THREE.Mesh(g, mat);
       spin.add(mesh);
-      return { mesh, explode: new THREE.Vector3(...p.explode) };
+      const hinge = p.hinge && { p: new THREE.Vector3(...p.hinge.p), a: new THREE.Vector3(...p.hinge.a).normalize(), deg: p.hinge.deg };
+      return { mesh, explode: new THREE.Vector3(...p.explode), hinge };
     });
     const box = new THREE.Box3();
     for (const { mesh } of parts) { mesh.geometry.computeBoundingBox(); box.union(mesh.geometry.boundingBox); }
@@ -1125,11 +1130,27 @@ function applyPose(m, pose, o, time, lift) {
   m.pivot.rotation.set((pose.pitch + user.pitch) * D2R + idle * Math.sin(time * 0.31) * 0.025, 0, 0);
   m.spin.rotation.set(0, (pose.yaw + user.yaw) * D2R + idle * Math.sin(time * 0.22) * 0.09, 0);
   m.pivot.position.set(0, (1 - o) * lift + idle * Math.sin(time * 0.6) * 0.012, 0);
-  for (const p of m.parts) p.mesh.position.copy(p.explode).multiplyScalar(pose.explode);
+  for (const p of m.parts) {
+    p.mesh.position.copy(p.explode).multiplyScalar(pose.explode);
+    if (!p.hinge) continue;
+    // turn about the hinge line: v' = R(v - pivot) + pivot
+    p.mesh.quaternion.setFromAxisAngle(p.hinge.a, p.hinge.deg * D2R * (pose.close || 0));
+    p.mesh.position.add(p.hinge.p).sub(hingeTmp.copy(p.hinge.p).applyQuaternion(p.mesh.quaternion));
+  }
 }
-const mixPose = (a, b, t) => ({
-  yaw: lerp(a.yaw, b.yaw, t), pitch: lerp(a.pitch, b.pitch, t), explode: lerp(a.explode, b.explode, t), zoom: lerp(a.zoom, b.zoom, t),
-});
+const hingeTmp = new THREE.Vector3();
+// When a step both reassembles and closes, the parts settle first and the lid closes after, so nothing passes
+// through the lid on the way in (and the reverse when scrolling back up).
+const mixPose = (a, b, t) => {
+  const staged = (a.close || 0) !== (b.close || 0) && a.explode !== b.explode;
+  const settle = staged ? smooth(0, 0.55, t) : t, shut = staged ? smooth(0.45, 1, t) : t;
+  const closing = (b.close || 0) > (a.close || 0);
+  return {
+    yaw: lerp(a.yaw, b.yaw, t), pitch: lerp(a.pitch, b.pitch, t), zoom: lerp(a.zoom, b.zoom, t),
+    explode: lerp(a.explode, b.explode, staged ? (closing ? settle : shut) : t),
+    close: lerp(a.close || 0, b.close || 0, staged ? (closing ? shut : settle) : t),
+  };
+};
 
 let W = 0, H = 0;
 function resize() {

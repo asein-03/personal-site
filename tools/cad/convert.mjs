@@ -58,7 +58,10 @@ const PROJECTS = [
   // the charging case lying flat with its lid open, as built in Fusion; the shell seats in its cups
   { id: 'aperture-case', up: 'z', parts: [
     { name: 'case', step: `${AP}/BrainWave v4 - Case.step`, bodies: [0, 62, 65], mat: 'metal', explode: [0, 0, 0] },
-    { name: 'lid', step: `${AP}/BrainWave v4 - Case.step`, bodies: [63, 64], mat: 'metal', explode: [0, 0.12, 0] },
+    // The lid is modelled open, 105 degrees back on its pin hinge (the pin sits at x -22.3, on the seam at z 1.38, along y).
+    // The page closes it by turning it the same 105 degrees forward about that line.
+    { name: 'lid', step: `${AP}/BrainWave v4 - Case.step`, bodies: [63, 64], mat: 'metal', explode: [0, 0.12, 0],
+      hinge: { pivot: [-22.3, 0, 1.3804647], axis: [0, 1, 0], deg: 105 } },
     { name: 'cups', step: `${AP}/BrainWave v4 - Case.step`, bodies: range(1, 7), mat: 'bright', explode: [0, 0, 0] },
     { name: 'board', step: `${AP}/BrainWave v4 - Case.step`, bodies: [9], mat: 'pcb', explode: [0, -0.42, 0] },
     { name: 'cell', step: `${AP}/BrainWave v4 - Case.step`, bodies: [8], mat: 'cell', explode: [0, -0.62, 0] },
@@ -202,6 +205,9 @@ for (const proj of PROJECTS) {
   for (const { g } of parts) { g.computeBoundingBox(); box.union(g.boundingBox); }
   const center = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
   const half = Math.max(size.x, size.y, size.z) / 2;
+  // points and directions given in CAD coordinates, turned and scaled the same way as the geometry
+  const turn = (v) => { if (proj.up === 'z') v.applyAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2); if (proj.rotZ) v.applyAxisAngle(new THREE.Vector3(0, 0, 1), THREE.MathUtils.degToRad(proj.rotZ)); return v; };
+  const toDisplay = (pt) => turn(new THREE.Vector3(...pt)).sub(center).divideScalar(half).toArray().map((v) => +v.toFixed(5));
 
   const chunks = [], header = { id: proj.id, sizeMM: size.toArray().map((v) => +(v * (proj.unit || 1)).toFixed(1)), parts: [] };
   let offset = 0;
@@ -219,6 +225,7 @@ for (const proj of PROJECTS) {
     header.parts.push({
       name: p.name, mat: p.mat, explode: p.explode || [0, 0, 0], vertices: n, indices: I.length, idx32,
       pos: push(q), nrm: push(qn), idx: push(I),
+      ...(p.hinge && { hinge: { p: toDisplay(p.hinge.pivot), a: turn(new THREE.Vector3(...p.hinge.axis)).normalize().toArray().map((v) => +v.toFixed(5)), deg: p.hinge.deg } }),
     });
   }
   const json = Buffer.from(JSON.stringify(header));
