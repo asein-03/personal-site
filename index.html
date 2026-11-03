@@ -7,37 +7,44 @@
 <meta name="description" content="Albert Sein, a product person who loves building things and loves working with people even more. Materials and systems engineering at UVA; Aperture, Snack, Ordo and Ordo Desktop. Open to Summer 2027 internships and new-grad roles.">
 <meta name="author" content="Albert Sein">
 <meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#efefef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e0d0b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ebe5d6" media="(prefers-color-scheme: light)">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Albert Sein">
 <meta property="og:description" content="A product person who loves building things, and loves working with people even more.">
-<meta property="og:url" content="https://albertsein.vercel.app">
+<meta property="og:url" content="https://albertsein.com/">
+<link rel="canonical" href="https://albertsein.com/">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cstyle%3Erect%7Bfill:%230a0a0a%7Dtext%7Bfill:%23ededed%7D%40media (prefers-color-scheme:light)%7Brect%7Bfill:%23efefef%7Dtext%7Bfill:%230a0a0a%7D%7D%3C/style%3E%3Crect width='32' height='32' rx='7'/%3E%3Ctext x='16' y='23.5' font-family='Georgia,serif' font-size='21' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cstyle%3Erect%7Bfill:%230e0d0b%7Dtext%7Bfill:%23ebe4d2%7D%40media (prefers-color-scheme:light)%7Brect%7Bfill:%23ebe5d6%7Dtext%7Bfill:%2317140f%7D%7D%3C/style%3E%3Crect width='32' height='32' rx='7'/%3E%3Ctext x='16' y='23.5' font-family='Georgia,serif' font-size='21' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=Martian+Mono:wdth,wght@75..112.5,300..500&family=Newsreader:opsz,wght@6..72,300..500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,300..500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=UnifrakturMaguntia&display=swap">
 <link rel="preload" href="models/aperture.bin" as="fetch" crossorigin>
 <script>document.documentElement.classList.add('js');</script>
 <style>
-/* Layout: a type-led opener over a dot-matrix field, then one chapter per project. Each chapter pins
-   a frame while you scroll; the CAD model behind it turns over, comes apart and gets measured.
-   Black, grey and white only. The theme follows the system setting. */
+/* Layout: a newspaper. The front page has a masthead, a ticker, the lead story and a halftone plate printed
+   live from the CAD. Then one pinned chapter per project, where the model turns over, comes apart and gets
+   measured, then briefs, an op-ed, classifieds and letters. Newsprint by day, a night edition in dark mode
+   (it follows the system setting), and every so often the press glitches. */
 :root {
-  --bg: #0a0a0a;
-  --bg-2: #141414;
-  --fg: #ededed;
-  --dim: #8c8c8c;
-  --faint: #5a5a5a;
-  --line: rgba(237, 237, 237, .11);
-  --line-2: rgba(237, 237, 237, .26);
-  --accent: #ffffff;
-  --accent-ink: #000000;
-  --shade: rgba(10, 10, 10, .92);
+  --bg: #0e0d0b;
+  --bg-2: #171512;
+  --fg: #ebe4d2;
+  --dim: #9d9584;
+  --faint: #5f594f;
+  --line: rgba(235, 228, 210, .16);
+  --line-2: rgba(235, 228, 210, .36);
+  --accent: #ebe4d2;
+  --accent-ink: #0e0d0b;
+  --shade: rgba(14, 13, 11, .93);
+  --signal: #fcee0a;        /* the one loud colour: highlighter yellow */
+  --signal-ink: #0e0d0b;
+  --red: #ff2a4d;           /* glitch fringes only */
+  --cyan: #21e6ff;
 
-  --font-display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --font-body: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mast: "UnifrakturMaguntia", "Old English Text MT", "Times New Roman", serif;
+  --font-head: "Playfair Display", "Times New Roman", Georgia, serif;
+  --font-body: "Newsreader", "Iowan Old Style", Georgia, serif;
   --font-mono: "Martian Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --ease: cubic-bezier(.16, 1, .3, 1);
   --gutter: clamp(16px, 4vw, 56px);
@@ -45,16 +52,18 @@
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
-    --bg: #efefef; --bg-2: #e4e4e4; --fg: #0b0b0b; --dim: #5e5e5e; --faint: #9a9a9a;
-    --line: rgba(11, 11, 11, .11); --line-2: rgba(11, 11, 11, .26);
-    --accent: #000000; --accent-ink: #ffffff; --shade: rgba(239, 239, 239, .94);
+    --bg: #ebe5d6; --bg-2: #e1dac8; --fg: #17140f; --dim: #4f493f; --faint: #8b8476;
+    --line: rgba(23, 20, 15, .2); --line-2: rgba(23, 20, 15, .45);
+    --accent: #17140f; --accent-ink: #ebe5d6; --shade: rgba(235, 229, 214, .94);
+    --signal: #f5e400; --signal-ink: #17140f; --red: #d1004f; --cyan: #0092b8;
     color-scheme: light;
   }
 }
 :root[data-theme="light"] {
-  --bg: #efefef; --bg-2: #e4e4e4; --fg: #0b0b0b; --dim: #5e5e5e; --faint: #9a9a9a;
-  --line: rgba(11, 11, 11, .11); --line-2: rgba(11, 11, 11, .26);
-  --accent: #000000; --accent-ink: #ffffff; --shade: rgba(239, 239, 239, .94);
+  --bg: #ebe5d6; --bg-2: #e1dac8; --fg: #17140f; --dim: #4f493f; --faint: #8b8476;
+  --line: rgba(23, 20, 15, .2); --line-2: rgba(23, 20, 15, .45);
+  --accent: #17140f; --accent-ink: #ebe5d6; --shade: rgba(235, 229, 214, .94);
+  --signal: #f5e400; --signal-ink: #17140f; --red: #d1004f; --cyan: #0092b8;
   color-scheme: light;
 }
 
@@ -64,283 +73,362 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 body {
   margin: 0; background: var(--bg); color: var(--fg);
-  font: 400 1.0625rem/1.6 var(--font-body);
+  font: 400 1.0625rem/1.55 var(--font-body);
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: clip;
 }
 body.dragging { user-select: none; -webkit-user-select: none; cursor: grabbing; }
 a { color: inherit; }
-::selection { background: var(--accent); color: var(--accent-ink); }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--signal); color: var(--signal-ink); }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
 p { margin: 0; }
-em, i { font-style: normal; }
-h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 300; letter-spacing: -.025em; line-height: .98; text-wrap: balance; }
-h2 { font-size: clamp(2.6rem, 6.4vw, 6rem); }
-h3 { font-size: clamp(1.7rem, 2.6vw, 2.5rem); line-height: 1.04; letter-spacing: -.02em; }
+h1, h2, h3, h4 { margin: 0; font-family: var(--font-head); font-weight: 900; letter-spacing: -.01em; line-height: .98; text-wrap: balance; }
+h2 { font-size: clamp(2.4rem, 5.4vw, 4.8rem); }
+h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.05; }
 .wrap {
-  width: 100%; max-width: 1480px; margin-inline: auto;
+  width: 100%; max-width: 1400px; margin-inline: auto;
   padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
   padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
 }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .mono { font: 400 .62rem/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
+.kicker { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font: 500 .6rem/1 var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+.kicker span { background: var(--signal); color: var(--signal-ink); padding: 5px 7px 4px; }
+.double { height: 6px; border-top: 3px solid var(--fg); border-bottom: 1px solid var(--fg); }
+.flag { display: flex; justify-content: space-between; align-items: end; gap: 16px; padding-top: 12px; border-top: 3px solid var(--fg); margin-bottom: clamp(22px, 4vh, 40px); }
+.flag .mono { color: var(--dim); text-align: right; }
+.prose { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
 
-/* ---------- ambient layers ---------- */
-.field {
-  position: fixed; left: 0; top: 0; width: 100%; height: 130vh; z-index: 0; pointer-events: none;
-  opacity: var(--field, 1); will-change: transform, opacity;
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 46%, transparent 18%, #000 78%);
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 46%, transparent 18%, #000 78%);
-}
+/* ---------- press and paper: grain, scanlines, aged edges, and the tears a glitch rips across the page ---------- */
 .stage { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 .dims { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; overflow: visible; opacity: 0; }
 .dims line { stroke: var(--fg); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .dims .ext { stroke: var(--line-2); }
 .dims text { fill: var(--fg); font: 400 10px/1 var(--font-mono); letter-spacing: .12em; }
 .grain {
-  position: fixed; inset: -60px; z-index: 60; pointer-events: none; opacity: .045;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  position: fixed; inset: -60px; z-index: 60; pointer-events: none; opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .38 0 0 0 1.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain 1.2s steps(6) infinite;
 }
 @keyframes grain {
   0% { transform: translate(0, 0); } 20% { transform: translate(-18px, 12px); } 40% { transform: translate(14px, -20px); }
   60% { transform: translate(-10px, -8px); } 80% { transform: translate(20px, 16px); } 100% { transform: translate(0, 0); }
 }
+.scan {
+  position: fixed; inset: 0; z-index: 59; pointer-events: none; opacity: .5;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, .22) 0 1px, transparent 1px 3px);
+}
+.age { position: fixed; inset: 0; z-index: 58; pointer-events: none; background: radial-gradient(ellipse 80% 75% at 50% 45%, transparent 55%, rgba(0, 0, 0, .42) 100%); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .grain { opacity: .11; mix-blend-mode: multiply; }
+  :root:not([data-theme="dark"]) .scan { opacity: .22; }
+  :root:not([data-theme="dark"]) .age { background: radial-gradient(ellipse 80% 75% at 50% 45%, transparent 50%, rgba(110, 80, 30, .22) 100%); }
+}
+.tear { position: fixed; left: 0; right: 0; top: 0; height: 0; z-index: 61; pointer-events: none; display: none; -webkit-backdrop-filter: invert(1); backdrop-filter: invert(1); }
+.tear.b { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--signal); mix-blend-mode: difference; }
+.tearing .tear.on { display: block; }
+/* headlines split red and cyan while the page tears */
+.tearing .headline, .tearing .step.live h2, .tearing .step.live h3, .tearing .flag h2 {
+  text-shadow: -3px 0 var(--red), 3px 0 var(--cyan); translate: var(--gx, 0) 0;
+}
 .cursor-chip {
   position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none;
-  padding: 7px 10px; border-radius: 2px; background: var(--fg); color: var(--bg);
+  padding: 7px 10px; background: var(--signal); color: var(--signal-ink);
   font: 500 .56rem/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase;
   opacity: 0; scale: .7; transition: opacity .25s, scale .35s var(--ease);
 }
 .cursor-chip.on { opacity: 1; scale: 1; }
 
-/* ---------- nav ---------- */
+/* ---------- nav: a running head that fills in once the masthead scrolls away ---------- */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 16px); padding-bottom: 16px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 10px); padding-bottom: 10px;
   padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
   padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
 }
 .nav::before {
-  content: ""; position: absolute; inset: 0 0 -40px; z-index: -1; pointer-events: none;
-  background: linear-gradient(to bottom, var(--bg) 20%, transparent);
-  opacity: var(--nav-shade, 0); transition: opacity .3s;
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: var(--bg); border-bottom: 3px double var(--fg);
+  opacity: var(--nav-shade, 0); transition: opacity .2s;
 }
-.brand { font: 300 1.45rem/1 var(--font-display); letter-spacing: -.015em; text-decoration: none; }
-.nav-links { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 34px); }
+.brand { font: 400 1.7rem/1 var(--font-mast); text-decoration: none; opacity: var(--nav-shade, 0); transition: opacity .2s; }
+.nav-links { display: flex; align-items: center; gap: clamp(12px, 2.2vw, 30px); }
 .nav-links a:not(.pill) { color: var(--dim); text-decoration: none; transition: color .2s; }
 .nav-links a:not(.pill):hover { color: var(--fg); }
 .pill {
-  display: inline-flex; align-items: center; gap: .5em; padding: 10px 14px; border-radius: 2px;
-  background: var(--accent); color: var(--accent-ink); text-decoration: none;
-  font: 500 .6rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase;
-  transition: opacity .2s;
+  display: inline-flex; align-items: center; padding: 8px 12px; border: 1.5px solid var(--fg); color: var(--fg); text-decoration: none;
+  font: 500 .6rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; background: var(--bg);
+  transition: background .15s, color .15s, border-color .15s;
 }
-.pill:hover { opacity: .86; }
-@media (max-width: 820px) { .nav-links a:not(.pill) { display: none; } }
+.pill:hover { background: var(--signal); color: var(--signal-ink); border-color: var(--signal); }
+@media (max-width: 860px) { .nav-links a:not(.pill) { display: none; } }
 
-/* ---------- hero ---------- */
-.hero { position: relative; z-index: 2; }
-.js .hero { height: 280vh; height: 280svh; }
-.hero-pin {
-  position: relative; min-height: 100vh; min-height: 100svh;
-  display: grid; place-items: center; text-align: center; padding: 120px var(--gutter) 80px;
-}
-.js .hero-pin { position: sticky; top: 0; height: 100vh; height: 100svh; padding-block: 0; overflow: hidden; }
-.hero-stack { display: grid; place-items: center; }
-.hero-stack > * { grid-area: 1 / 1; }
-.hero-intro { display: grid; justify-items: center; gap: clamp(18px, 3vh, 30px); }
-.hero-name { font-size: clamp(4.2rem, 15vw, 13.5rem); line-height: .86; letter-spacing: -.04em; }
-.hero-sub { max-width: 34ch; color: var(--dim); font: 300 clamp(1.15rem, 1.9vw, 1.55rem)/1.35 var(--font-display); letter-spacing: -.005em; text-wrap: balance; }
-.avail { display: inline-flex; align-items: center; gap: 10px; color: var(--dim); }
-.avail::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--fg); box-shadow: 0 0 0 0 var(--fg); animation: ping 2.6s ease-out infinite; }
-@keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(237,237,237,.5); } 70%, 100% { box-shadow: 0 0 0 9px rgba(237,237,237,0); } }
-.hero-line { font: 300 clamp(2.3rem, 5.6vw, 5.2rem)/1.02 var(--font-display); letter-spacing: -.025em; max-width: 16ch; text-wrap: balance; }
-.js .hero-line { opacity: 0; }
-.js .hero-line, .js .hero-intro { will-change: opacity, filter, transform; }
-.cue {
-  position: absolute; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 26px); translate: -50% 0;
-  width: 22px; height: 22px; color: var(--dim); animation: cue 2.4s var(--ease) infinite;
-}
-@keyframes cue { 0%, 100% { transform: translateY(0); opacity: .5; } 50% { transform: translateY(6px); opacity: 1; } }
-html:not(.js) .cue { display: none; }
-
-/* ---------- work index ---------- */
-.index { position: relative; z-index: 2; padding: 18vh 0 22vh; }
-.index-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: clamp(28px, 5vh, 56px); }
-.index-head p { color: var(--dim); max-width: 34ch; }
-.index-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-.index-list a {
-  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto; align-items: baseline; gap: 24px;
-  padding: clamp(18px, 3vh, 28px) 0; border-bottom: 1px solid var(--line); text-decoration: none;
-  transition: padding .5s var(--ease), color .3s;
-}
-.index-list .t { font: 300 clamp(1.8rem, 3.6vw, 3.3rem)/1 var(--font-display); letter-spacing: -.025em; }
-.index-list .d { color: var(--dim); }
-.index-list .y { color: var(--dim); }
-.index-list a:hover { padding-left: 14px; }
-.index-list:hover a:not(:hover) { color: var(--faint); }
-.index-list:hover a:not(:hover) .d, .index-list:hover a:not(:hover) .y { color: var(--faint); }
-@media (max-width: 720px) {
-  .index-head { flex-direction: column; }
-  .index-list a { grid-template-columns: 1fr auto; row-gap: 6px; }
-  .index-list .d { grid-column: 1 / -1; grid-row: 2; }
+/* ---------- front page ---------- */
+.front { position: relative; z-index: 2; padding-top: calc(env(safe-area-inset-top, 0px) + 58px); }
+.topline { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; padding: 9px 0; border-top: 1px solid var(--fg); border-bottom: 1px solid var(--fg); color: var(--dim); }
+.topline > :nth-child(2) { text-align: center; color: var(--fg); }
+.topline > :last-child { text-align: right; }
+.mast { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: clamp(12px, 3vw, 40px); padding: clamp(12px, 2.4vh, 26px) 0 clamp(4px, 1vh, 10px); }
+.nameplate { position: relative; font: 400 clamp(3.4rem, 11.5vw, 10.5rem)/.95 var(--font-mast); letter-spacing: 0; text-align: center; white-space: nowrap; cursor: pointer; }
+/* two offset copies of the nameplate, cut into strips, that show only while the page tears */
+.nameplate::before, .nameplate::after { content: attr(data-text); position: absolute; inset: 0; pointer-events: none; opacity: 0; }
+.tearing .nameplate::before { opacity: .95; color: var(--red); clip-path: inset(var(--c1, 18%) 0 var(--c2, 52%) 0); transform: translateX(var(--gx1, -8px)); }
+.tearing .nameplate::after { opacity: .95; color: var(--cyan); clip-path: inset(var(--c3, 58%) 0 var(--c4, 12%) 0); transform: translateX(var(--gx2, 8px)); }
+.tearing .nameplate { translate: var(--gx, 0) 0; }
+.ear { border: 1px solid var(--fg); padding: 10px 12px; max-width: 15rem; font: italic 400 .95rem/1.3 var(--font-body); }
+.ear .mono { display: block; margin-bottom: 6px; font-style: normal; color: var(--dim); }
+.ear.right { justify-self: end; }
+.motto { text-align: center; padding-bottom: 10px; font: italic 400 1.02rem/1.3 var(--font-body); color: var(--dim); }
+@media (max-width: 900px) {
+  .mast { grid-template-columns: 1fr; }
+  .ear { display: none; }
+  .topline { grid-template-columns: 1fr 1fr; }
+  .topline > :nth-child(2) { display: none; }
 }
 
-/* ---------- chapters ---------- */
+.ticker { display: flex; align-items: stretch; border-bottom: 1px solid var(--fg); font: 500 .64rem/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+.ticker .live { flex: none; display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--signal); color: var(--signal-ink); }
+.ticker .live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.ticker-view { flex: 1; overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent, #000 3%, #000 97%, transparent); mask-image: linear-gradient(to right, transparent, #000 3%, #000 97%, transparent); }
+.ticker-track { display: inline-flex; white-space: nowrap; padding: 10px 0; animation: ticker 70s linear infinite; }
+.ticker-track span { padding: 0 20px; }
+.ticker-track span::before { content: "\25A0"; margin-right: 20px; color: var(--red); }
+@keyframes ticker { to { transform: translateX(-50%); } }
+
+.front-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); padding: clamp(20px, 3.5vh, 36px) 0 clamp(40px, 8vh, 80px); }
+.lead { padding-right: clamp(18px, 2.5vw, 36px); border-right: 1px solid var(--line-2); }
+.headline { font-size: clamp(2.3rem, 4.6vw, 4.3rem); line-height: .98; margin-bottom: 18px; }
+.deck { max-width: 48ch; margin-bottom: 16px; font: italic 400 clamp(1.1rem, 1.6vw, 1.35rem)/1.35 var(--font-body); color: var(--dim); }
+.byline { padding: 9px 0; margin-bottom: 18px; border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); color: var(--dim); }
+.cols { columns: 3 14rem; column-gap: 26px; column-rule: 1px solid var(--line); font-size: 1.02rem; line-height: 1.5; }
+.cols p + p { margin-top: .6em; text-indent: 1.2em; }
+.dropcap::first-letter { float: left; margin: .05em .09em 0 0; font: 900 4.2em/.8 var(--font-head); }
+.cols .jump { text-indent: 0; margin-top: 1em; }
+.jump a { text-decoration: none; border-bottom: 1px solid var(--line-2); }
+.jump a:hover { background: var(--signal); color: var(--signal-ink); }
+.photo { margin: 0; padding-left: clamp(18px, 2.5vw, 36px); }
+.plate { position: relative; aspect-ratio: 4 / 5; border: 1px solid var(--fg); overflow: hidden; cursor: crosshair; }
+.plate canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.photo figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 10px; font: italic 400 .95rem/1.35 var(--font-body); color: var(--dim); }
+.photo figcaption .mono { font-style: normal; }
+@media (max-width: 900px) {
+  .cols { text-align: left; }
+  .front-grid { grid-template-columns: 1fr; }
+  .lead { padding-right: 0; border-right: 0; }
+  .photo { padding-left: 0; margin-top: 28px; }
+  .plate { aspect-ratio: 1 / 1; }
+}
+
+/* ---------- table of contents ---------- */
+.index { position: relative; z-index: 2; padding: 6vh 0 12vh; }
+.toc { list-style: none; margin: 0; padding: 0; columns: 2 22rem; column-gap: 48px; column-rule: 1px solid var(--line); }
+.toc li { break-inside: avoid; }
+.toc a { display: grid; grid-template-columns: auto minmax(24px, 1fr) auto; align-items: baseline; column-gap: 10px; padding: 14px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.toc .t { font: 700 clamp(1.3rem, 2vw, 1.7rem)/1.1 var(--font-head); }
+.toc .leader { border-bottom: 2px dotted var(--line-2); transform: translateY(-5px); }
+.toc .pg { font: 500 .7rem/1 var(--font-mono); letter-spacing: .1em; }
+.toc .d { grid-column: 1 / -1; margin-top: 4px; font: italic 400 .98rem/1.3 var(--font-body); color: var(--dim); }
+.toc a:hover .t { background: var(--signal); color: var(--signal-ink); }
+
+/* ---------- chapters: a pinned page per project ---------- */
 .chapter { position: relative; z-index: 2; }
-.frame { position: relative; padding-top: 120px; padding-bottom: 60px; }
-.steps { display: grid; gap: 64px; }
-.step { max-width: 30rem; }
-.step h2 { margin-bottom: 22px; }
-.step h3 { margin-bottom: 18px; }
-.step p { color: var(--dim); max-width: 30rem; }
+.frame { position: relative; padding-top: 80px; padding-bottom: 60px; }
+.folio { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0 8px; border-bottom: 1px solid var(--fg); color: var(--dim); }
+.folio span:first-child { color: var(--fg); }
+.steps { display: grid; gap: 64px; padding-top: 32px; }
+.step { max-width: 31rem; }
+.step h2 { margin-bottom: 18px; font-size: clamp(2.6rem, 5.2vw, 4.8rem); }
+.step h3 { margin-bottom: 14px; }
+.step p:not(.mono):not(.kicker) { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
 .step p + p { margin-top: 12px; }
-.step .meta { margin-top: 22px; color: var(--dim); }
-.step .go { display: inline-flex; gap: .5em; margin-top: 22px; color: var(--fg); text-decoration: none; padding-bottom: 4px; border-bottom: 1px solid var(--line-2); transition: border-color .2s; }
-.step .go:hover { border-color: var(--fg); }
+.step .meta { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--line-2); color: var(--dim); }
+.step .go { display: inline-flex; gap: .5em; margin-top: 20px; padding: 7px 10px; border: 1.5px solid var(--fg); text-decoration: none; font: 500 .62rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
+.step .go:hover { background: var(--signal); color: var(--signal-ink); border-color: var(--signal); }
 .rail { display: none; }
 
 .js .chapter { height: calc(var(--n, 4) * 100vh + 100vh); height: calc(var(--n, 4) * 100svh + 100svh); }
 .js .frame {
-  position: sticky; top: 0; height: 100vh; height: 100svh; padding-top: 0; padding-bottom: 0;
-  display: grid; grid-template-rows: 1fr auto;
+  position: sticky; top: 0; height: 100vh; height: 100svh; padding-top: calc(env(safe-area-inset-top, 0px) + 54px); padding-bottom: 0;
+  display: grid; grid-template-rows: auto 1fr auto;
 }
-.js .steps { display: grid; align-items: center; gap: 0; padding-top: 80px; }
+.js .steps { display: grid; align-items: center; gap: 0; padding-top: 0; }
 .js .step { grid-area: 1 / 1; opacity: 0; visibility: hidden; will-change: opacity, filter, transform; }
 .js .step.live { visibility: visible; }
 .js .rail {
   display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); gap: 10px;
-  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 26px);
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 22px);
 }
 .rail button {
-  appearance: none; background: none; border: 0; padding: 12px 0 0; margin: 0; cursor: pointer; text-align: left;
+  appearance: none; background: none; border: 0; padding: 10px 0 0; margin: 0; cursor: pointer; text-align: left;
   color: var(--faint); position: relative; transition: color .3s;
 }
-.rail button::before, .rail button::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--line-2); }
+.rail button::before, .rail button::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--line); }
 .rail button::after { background: var(--fg); transform-origin: left; transform: scaleX(var(--fill, 0)); }
 .rail button.on { color: var(--fg); }
 .rail button:hover { color: var(--fg); }
 
 @media (max-width: 820px) {
-  /* the model takes the top of the screen; the words sit at the bottom on a soft shade */
-  .js .steps { align-items: end; padding-top: 0; padding-bottom: 18px; position: relative; }
+  /* the model takes the top of the screen; the story sits at the bottom on a soft shade */
+  .js .steps { align-items: end; padding-bottom: 18px; position: relative; }
   .js .steps::before {
     content: ""; position: absolute; left: calc(-1 * var(--gutter)); right: calc(-1 * var(--gutter)); bottom: -90px; height: 72%;
     background: linear-gradient(to top, var(--shade) 55%, transparent); z-index: -1; pointer-events: none;
   }
-  .step h2 { font-size: clamp(2.6rem, 12vw, 3.6rem); margin-bottom: 14px; }
-  .step h3 { font-size: 1.75rem; margin-bottom: 12px; }
-  .step p:not(.mono) { font-size: 1rem; }
-  .step .meta { margin-top: 14px; }
+  .step h2 { font-size: clamp(2.4rem, 11vw, 3.4rem); margin-bottom: 12px; }
+  .step h3 { font-size: 1.65rem; margin-bottom: 10px; }
+  .step p:not(.mono):not(.kicker) { font-size: 1rem; text-align: left; }
+  .step .meta { margin-top: 12px; }
   .js .rail { gap: 6px; }
   .rail button { font-size: .5rem; letter-spacing: .08em; }
+  .folio span:last-child { display: none; }
 }
 
-/* ---------- smaller builds ---------- */
-.builds { position: relative; z-index: 2; padding: 22vh 0 10vh; }
-.builds-head { display: grid; gap: 18px; margin-bottom: clamp(28px, 6vh, 64px); }
-.builds-head p { color: var(--dim); max-width: 40ch; }
-.build {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(24px, 5vw, 80px); align-items: center;
-  padding: clamp(24px, 4vh, 40px) 0; border-top: 1px solid var(--line);
-}
-.build:last-child { border-bottom: 1px solid var(--line); }
-.thumb { aspect-ratio: 4 / 3; position: relative; }
+/* ---------- briefs: the smaller builds ---------- */
+.builds { position: relative; z-index: 2; padding: 14vh 0 6vh; }
+.briefs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.build { padding: 0 clamp(16px, 2.2vw, 30px); border-left: 1px solid var(--line); }
+.build:first-child { padding-left: 0; border-left: 0; }
+.build:last-child { padding-right: 0; }
+/* the lead brief runs the full width, its picture beside the story */
+.build.wide { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: center; gap: clamp(16px, 2.5vw, 36px); padding: 0 0 clamp(24px, 4vh, 40px); margin-bottom: clamp(24px, 4vh, 40px); border-bottom: 1px solid var(--line); }
+.build.wide .thumb { aspect-ratio: 21 / 9; }
+.build.wide h3 { margin-top: 0; }
+.build.wide + .build { padding-left: 0; border-left: 0; }
+.thumb { aspect-ratio: 4 / 3; position: relative; border: 1px solid var(--fg); }
 .thumb::after {
-  content: attr(data-hint); position: absolute; left: 0; bottom: 0; color: var(--faint);
-  font: 400 .56rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; opacity: 0; transition: opacity .3s;
+  content: attr(data-hint); position: absolute; left: 8px; bottom: 8px; padding: 4px 6px; background: var(--signal); color: var(--signal-ink);
+  font: 500 .54rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; opacity: 0; transition: opacity .3s;
 }
 .thumb:hover::after { opacity: 1; }
 html:not(.has-3d) .thumb { display: none; }
-html:not(.has-3d) .build { grid-template-columns: 1fr; }
-.build h3 { margin-bottom: 14px; }
-.build p { color: var(--dim); max-width: 34rem; }
-.build .meta { margin-top: 16px; color: var(--dim); }
-@media (max-width: 720px) { .build { grid-template-columns: 1fr; gap: 8px; } }
-
-/* ---------- about, experience, tools ---------- */
-.about { position: relative; z-index: 2; padding: 22vh 0 14vh; }
-.about-lede { font: 300 clamp(1.9rem, 3.9vw, 3.6rem)/1.12 var(--font-display); letter-spacing: -.022em; max-width: 24ch; text-wrap: balance; }
-.about-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 5vw, 80px); margin-top: clamp(40px, 8vh, 80px); max-width: 1100px; }
-.about-body p { color: var(--dim); }
-.about-body p + p { margin-top: 14px; }
-@media (max-width: 720px) { .about-body { grid-template-columns: 1fr; gap: 14px; } }
-
-.section { position: relative; z-index: 2; padding: 12vh 0; }
-.section-head { margin-bottom: clamp(24px, 5vh, 48px); }
-.rows { border-top: 1px solid var(--line); }
-.row {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: clamp(16px, 4vw, 64px);
-  padding: clamp(20px, 3.5vh, 32px) 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit;
+.build h3 { margin: 16px 0 10px; }
+.build .meta { margin-top: 12px; color: var(--dim); }
+@media (max-width: 720px) {
+  .briefs { grid-template-columns: 1fr; }
+  .build, .build:first-child, .build:last-child { padding: 0 0 28px; border-left: 0; }
+  .build.wide { grid-template-columns: 1fr; }
+  .build.wide .thumb { aspect-ratio: 16 / 9; }
 }
-.row .rn { font: 300 clamp(1.5rem, 2.4vw, 2.1rem)/1.05 var(--font-display); letter-spacing: -.02em; }
-.row .rw { display: block; margin-top: 10px; color: var(--dim); }
-.row .rd { color: var(--dim); max-width: 38rem; }
-a.row .rn { transition: opacity .2s; }
-a.row:hover .rn { opacity: .7; }
-.tools { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(16px, 4vw, 64px); border-top: 1px solid var(--line); }
-.tool { padding: 20px 0; border-bottom: 1px solid var(--line); }
-.tool .mono { color: var(--fg); display: block; margin-bottom: 8px; }
-.tool p { color: var(--dim); }
-@media (max-width: 720px) { .row, .tools { grid-template-columns: 1fr; } .row { gap: 10px; } }
 
-/* ---------- contact ---------- */
-.contact { position: relative; z-index: 2; padding: 22vh 0 8vh; }
-.contact h2 { margin-bottom: clamp(28px, 6vh, 56px); }
-.links { border-top: 1px solid var(--line); }
-.link {
-  display: grid; grid-template-columns: 9rem minmax(0, 1fr) auto; align-items: baseline; gap: 20px;
-  padding: 18px 0; border-bottom: 1px solid var(--line); text-decoration: none;
-}
-.link .k { color: var(--dim); }
-.link .v { font: 300 clamp(1.25rem, 2vw, 1.7rem)/1.1 var(--font-display); letter-spacing: -.015em; word-break: break-word; transition: opacity .2s; }
-.link .a { color: var(--dim); transition: transform .3s var(--ease), color .2s; }
-.link:hover .a { color: var(--fg); transform: translate(3px, -3px); }
-.link:hover .v { opacity: .75; }
-@media (max-width: 560px) { .link { grid-template-columns: 5.5rem minmax(0, 1fr) auto; gap: 12px; } }
-footer { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 28px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 36px); color: var(--dim); }
+/* ---------- op-ed, classifieds, agate, letters ---------- */
+.section { position: relative; z-index: 2; padding: 10vh 0; }
+.oped { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 48px); }
+.oped .byline { margin-bottom: 18px; }
+.oped-body { columns: 2 16rem; column-gap: 28px; column-rule: 1px solid var(--line); }
+.oped-body h4 { margin: 0 0 4px; font: 700 1.15rem/1.15 var(--font-head); break-after: avoid; }
+.oped-body p { margin-bottom: 1.1em; }
+.pullquote { align-self: start; margin: 0; padding: 18px 0; border-top: 3px solid var(--fg); border-bottom: 1px solid var(--fg); font: italic 700 clamp(1.6rem, 2.5vw, 2.2rem)/1.15 var(--font-head); }
+.pullquote cite { display: block; margin-top: 14px; font: 400 .6rem/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; font-style: normal; color: var(--dim); }
+@media (max-width: 820px) { .oped { grid-template-columns: 1fr; } }
+
+.classifieds { columns: 3 17rem; column-gap: 18px; }
+.ad { display: block; break-inside: avoid; margin-bottom: 18px; padding: 14px 14px 16px; border: 1px solid var(--fg); text-decoration: none; color: inherit; transition: background .15s, color .15s; }
+.ad-head { margin-bottom: 4px; font: 900 1.3rem/1.02 var(--font-head); text-transform: uppercase; }
+.ad-when { display: block; margin-bottom: 10px; color: var(--dim); }
+.ad p { font-size: .98rem; line-height: 1.45; }
+a.ad:hover { background: var(--signal); color: var(--signal-ink); }
+a.ad:hover .ad-when { color: inherit; }
+
+.agate { columns: 2 20rem; column-gap: 40px; column-rule: 1px solid var(--line); }
+.agate p { break-inside: avoid; margin-bottom: 14px; font-size: 1rem; line-height: 1.45; }
+.agate b { margin-right: 8px; font: 500 .64rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
+
+.contact { position: relative; z-index: 2; padding: 10vh 0 8vh; }
+.letters-intro { max-width: 46ch; margin-bottom: 22px; font: italic 400 1.15rem/1.4 var(--font-body); color: var(--dim); }
+.links { border-top: 1px solid var(--fg); }
+.link { display: grid; grid-template-columns: auto minmax(24px, 1fr) auto; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.link .leader { border-bottom: 2px dotted var(--line-2); transform: translateY(-5px); }
+.link .v { font: 700 clamp(1.05rem, 1.8vw, 1.45rem)/1.15 var(--font-head); word-break: break-word; text-align: right; }
+.link:hover .v { background: var(--signal); color: var(--signal-ink); }
+footer { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 14px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 36px); border-top: 3px solid var(--fg); color: var(--dim); }
 
 @media (prefers-reduced-motion: reduce) {
-  .grain, .cue, .avail::before { animation: none; }
+  .grain, .ticker-track, .ticker .live::before { animation: none; }
+  .tear { display: none !important; }
 }
 </style>
 </head>
 <body>
 
-<canvas class="field" id="field" aria-hidden="true"></canvas>
 <canvas class="stage" id="stage" aria-hidden="true"></canvas>
 <svg class="dims" id="dims" aria-hidden="true">
   <line class="ext" id="dxa"/><line class="ext" id="dxb"/><line id="dx"/><line id="dx1"/><line id="dx2"/><text id="dxt" text-anchor="middle"/>
   <line class="ext" id="dya"/><line class="ext" id="dyb"/><line id="dy"/><line id="dy1"/><line id="dy2"/><text id="dyt"/>
 </svg>
+<div class="age" aria-hidden="true"></div>
+<div class="scan" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
+<div class="tear" aria-hidden="true"></div>
+<div class="tear b" aria-hidden="true"></div>
+<div class="tear" aria-hidden="true"></div>
 <div class="cursor-chip" id="chip" aria-hidden="true">Drag to turn</div>
 
 <nav class="nav" aria-label="Main">
   <a class="brand" href="#top">Albert Sein</a>
   <div class="nav-links mono">
-    <a href="#work">Work</a>
-    <a href="#how">Process</a>
-    <a href="#about">About</a>
-    <a href="#experience">Experience</a>
-    <a href="#contact">Contact</a>
+    <a href="#work">Contents</a>
+    <a href="#about">Front page</a>
+    <a href="#how">Op-ed</a>
+    <a href="#experience">Classifieds</a>
+    <a href="#contact">Letters</a>
     <a class="pill" href="albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé</a>
   </div>
 </nav>
 
-<header class="hero" id="top">
-  <div class="hero-pin">
-    <div class="hero-stack">
-      <div class="hero-intro" id="heroIntro">
-        <h1 class="hero-name">Albert Sein</h1>
-        <p class="hero-sub">A product person who loves building things, and loves working with people even more. I study materials and systems engineering at UVA.</p>
-        <p class="avail mono">Open to Summer 2027 internships and new-grad roles</p>
-      </div>
-      <p class="hero-line" id="heroLine1">Who it's for, who I build it with, then how it's built.</p>
-      <p class="hero-line" id="heroLine2">Here's what I've made so far.</p>
+<header class="front" id="top">
+  <div class="wrap">
+    <div class="topline mono">
+      <span>Vol. I, No. 3</span>
+      <span id="today">Charlottesville, Va.</span>
+      <span>Late edition &nbsp; Free</span>
     </div>
-    <svg class="cue" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M5 8l6 6 6-6"/></svg>
+    <div class="mast">
+      <aside class="ear left"><span class="mono">Now available</span>Open to Summer 2027 internships and new-grad roles.</aside>
+      <h1 class="nameplate" data-text="Albert Sein">Albert Sein</h1>
+      <aside class="ear right"><span class="mono">Inside</span>A wearable, a timekeeper and a desk display, printed from the CAD.</aside>
+    </div>
+    <p class="motto">All the things I've built, and the people I built them with.</p>
+    <div class="double" aria-hidden="true"></div>
+    <div class="ticker" aria-label="Latest">
+      <span class="live">Live</span>
+      <div class="ticker-view">
+        <div class="ticker-track">
+          <span>Aperture charging case designed around the shell</span>
+          <span>Snack R07 packaged for a manufacturer's design review</span>
+          <span>Ordo 1.0 on the App Store since August</span>
+          <span>Celestica internship wraps: liquid metal TIMs tested on the TIMA5</span>
+          <span>Ordo Desktop printed in two parts on a Prusa MK4S</span>
+          <span>Open to Summer 2027 internships and new-grad roles</span>
+          <span aria-hidden="true">Aperture charging case designed around the shell</span>
+          <span aria-hidden="true">Snack R07 packaged for a manufacturer's design review</span>
+          <span aria-hidden="true">Ordo 1.0 on the App Store since August</span>
+          <span aria-hidden="true">Celestica internship wraps: liquid metal TIMs tested on the TIMA5</span>
+          <span aria-hidden="true">Ordo Desktop printed in two parts on a Prusa MK4S</span>
+          <span aria-hidden="true">Open to Summer 2027 internships and new-grad roles</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="front-grid">
+      <article class="lead" id="about">
+        <p class="kicker"><span>Front page</span> Profile</p>
+        <h2 class="headline">A product person who loves building things, and loves working with people even more</h2>
+        <p class="deck">I study materials and systems engineering at UVA. So far I've shipped an app, designed a wearable and its charging case, packaged a phone-mounted timekeeper for a manufacturer's review, and printed a desk display.</p>
+        <p class="byline mono">By Albert Sein &nbsp; | &nbsp; Charlottesville, Va.</p>
+        <div class="cols prose">
+          <p class="dropcap">I'm doing an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
+          <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Most of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. It's slow work and I like it.</p>
+          <p>Ordo went live on the App Store this August. I designed it and used AI tools to build it, got it through review myself, and still ship updates most weeks.</p>
+          <p>The new thing is an AI consumer electronics company I'm starting with my brother. Getting an object built is a different problem than shipping an app.</p>
+          <p class="jump mono"><a href="#aperture">Continued on A2: Aperture</a></p>
+        </div>
+      </article>
+      <figure class="photo">
+        <div class="plate" id="plate" title="Click to jam the press"><canvas id="field" aria-hidden="true"></canvas></div>
+        <figcaption><span id="plateCaption">Aperture, printed live from its CAD.</span><span class="mono">Click to jam the press</span></figcaption>
+      </figure>
+    </div>
   </div>
 </header>
 
@@ -348,24 +436,26 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="index" id="work" aria-labelledby="work-title">
     <div class="wrap">
-      <div class="index-head">
-        <h2 id="work-title">Work</h2>
-        <p>Three hardware projects and a couple of smaller builds. The models are the real CAD; the notes cover the electronics, the plans and the reviews behind them.</p>
-      </div>
-      <ul class="index-list">
-        <li><a href="#aperture"><span class="t">Aperture</span><span class="d">A wearable for your mind, and its charging case</span><span class="y mono">2026</span></a></li>
-        <li><a href="#snack"><span class="t">Snack</span><span class="d">A physical timekeeper for your phone</span><span class="y mono">2026</span></a></li>
-        <li><a href="#ordo-desktop"><span class="t">Ordo Desktop</span><span class="d">A desk display for Ordo</span><span class="y mono">2026</span></a></li>
-        <li><a href="#builds"><span class="t">Smaller builds</span><span class="d">Coursework in Fusion 360</span><span class="y mono">2026</span></a></li>
-      </ul>
+      <div class="flag"><h2 id="work-title">In this edition</h2><span class="mono">The models are the real CAD</span></div>
+      <ol class="toc">
+        <li><a href="#aperture"><span class="t">Aperture</span><span class="leader"></span><span class="pg">A2</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
+        <li><a href="#snack"><span class="t">Snack</span><span class="leader"></span><span class="pg">A3</span><span class="d">A physical timekeeper for your phone</span></a></li>
+        <li><a href="#ordo-desktop"><span class="t">Ordo Desktop</span><span class="leader"></span><span class="pg">A4</span><span class="d">A desk display for Ordo</span></a></li>
+        <li><a href="#builds"><span class="t">Briefs</span><span class="leader"></span><span class="pg">B1</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
+        <li><a href="#how"><span class="t">Op-ed</span><span class="leader"></span><span class="pg">B2</span><span class="d">How I run projects</span></a></li>
+        <li><a href="#experience"><span class="t">Classifieds</span><span class="leader"></span><span class="pg">C1</span><span class="d">Positions held, and tools of the trade</span></a></li>
+        <li><a href="#contact"><span class="t">Letters</span><span class="leader"></span><span class="pg">C2</span><span class="d">Write to me</span></a></li>
+      </ol>
     </div>
   </section>
 
   <!-- Each step's data-* sets the model's pose: yaw and pitch in degrees, explode 0 to 1, zoom, and which axes to measure. -->
   <section class="chapter" id="aperture" data-chapter aria-label="Aperture">
     <div class="frame wrap">
+      <div class="folio mono"><span>A2</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
         <div class="step" data-label="Shape" data-model="aperture" data-yaw="-28" data-pitch="10" data-zoom="1">
+          <p class="kicker"><span>Hardware</span> Wearable</p>
           <h2>Aperture</h2>
           <p>A wearable for your mind. It rests in the groove behind your ear: a crescent of dark brushed aluminium on a soft silicone base. I worked on the mechanical design, the electronics integration and the charging case.</p>
           <p class="meta mono">2026 &nbsp; Wearable &nbsp; Fusion 360 &nbsp; KiCad</p>
@@ -398,8 +488,10 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="chapter" id="snack" data-chapter aria-label="Snack">
     <div class="frame wrap">
+      <div class="folio mono"><span>A3</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
         <div class="step" data-label="Snack" data-model="snack" data-yaw="-30" data-pitch="12" data-zoom="1">
+          <p class="kicker"><span>Hardware</span> Consumer device</p>
           <h2>Snack</h2>
           <p>A physical timekeeper that sits on the back of your phone. One click starts a Snack Break and blocks the apps you chose; a second click ends it, and the app keeps an honest record of where your time went.</p>
           <p class="meta mono">2026 &nbsp; Consumer hardware &nbsp; Fusion 360</p>
@@ -423,8 +515,10 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="chapter" id="ordo-desktop" data-chapter aria-label="Ordo Desktop">
     <div class="frame wrap">
+      <div class="folio mono"><span>A4</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
         <div class="step" data-label="Desk" data-model="ordo" data-yaw="-30" data-pitch="16" data-zoom="1.05">
+          <p class="kicker"><span>Hardware</span> Desk display</p>
           <h2>Ordo Desktop</h2>
           <p>A desk display for Ordo, my calendar app. A hull, a base plate, and a screen set into the face.</p>
           <p class="meta mono">Spring 2026 &nbsp; Fusion 360 &nbsp; PLA</p>
@@ -445,93 +539,74 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="builds" id="builds" aria-labelledby="builds-title">
     <div class="wrap">
-      <div class="builds-head">
-        <h2 id="builds-title">Smaller builds</h2>
-        <p>Coursework from MSE 2200 in spring 2026, all in Fusion 360.</p>
-      </div>
-      <article class="build">
-        <div class="thumb" data-model="portafilter" data-yaw="-68" data-pitch="26" data-hint="Hover to turn"></div>
-        <div>
+      <div class="flag"><h2 id="builds-title">Briefs</h2><span class="mono">Smaller builds</span></div>
+      <div class="briefs">
+        <article class="build wide">
+          <div class="thumb" data-model="skyfall" data-yaw="-14" data-pitch="14" data-axis="x" data-fit="box" data-explode data-hint="Hover to take it apart"></div>
+          <div>
+            <p class="kicker"><span>From the archive</span> High school</p>
+            <h3>Project Skyfall</h3>
+            <p class="prose">A model rocket I designed in high school that steers with its motor. Two SG90 servos tilt a gimbal to point the thrust, at the tail of a 75 mm PE pipe airframe under a nose cone. This is the second prototype, about 54 cm long.</p>
+            <p class="meta mono">High school &nbsp; Fusion 360 &nbsp; Prototype 2</p>
+          </div>
+        </article>
+        <article class="build">
+          <div class="thumb" data-model="portafilter" data-yaw="-68" data-pitch="26" data-hint="Hover to turn"></div>
           <h3>Bottomless portafilter</h3>
-          <p>The one I pull espresso with every morning, modeled to its exact dimensions around a 58 mm basket, with two locking lugs instead of three. I scaled it down to fit a two-inch cube for the print.</p>
-          <p class="meta mono">February 2026</p>
-        </div>
-      </article>
-      <article class="build">
-        <div class="thumb" data-model="topology" data-yaw="-30" data-pitch="22" data-hint="Hover to turn"></div>
-        <div>
+          <p class="prose">The one I pull espresso with every morning, modeled to its exact dimensions around a 58 mm basket, with two locking lugs instead of three. I scaled it down to fit a two-inch cube for the print.</p>
+          <p class="meta mono">February 2026 &nbsp; MSE 2200</p>
+        </article>
+        <article class="build">
+          <div class="thumb" data-model="topology" data-yaw="-30" data-pitch="22" data-hint="Hover to turn"></div>
           <h3>Topology optimization</h3>
-          <p>A Ti-6Al-4V strut between two fixed platforms, optimized in Fusion 360 for stiffness to weight under a 5,000 N load, with a safety factor of about 3.45.</p>
-          <p class="meta mono">April 2026</p>
-        </div>
-      </article>
+          <p class="prose">A Ti-6Al-4V strut between two fixed platforms, optimized in Fusion 360 for stiffness to weight under a 5,000 N load, with a safety factor of about 3.45.</p>
+          <p class="meta mono">April 2026 &nbsp; MSE 2200</p>
+        </article>
+      </div>
     </div>
   </section>
 
   <section class="section" id="how" aria-labelledby="how-title">
     <div class="wrap">
-      <h2 class="section-head" id="how-title">How I run projects</h2>
-      <div class="rows">
-        <div class="row">
-          <div><span class="rn">Gates, not opinions</span><span class="rw mono">Snack</span></div>
-          <p class="rd">Every unproven item is a release gate. A line on the checklist closes only with an owner, an artifact, a date and an approver; a render, a quote or a verbal yes doesn't count.</p>
-        </div>
-        <div class="row">
-          <div><span class="rn">One source of truth</span><span class="rw mono">Aperture</span></div>
-          <p class="rd">The drawings, the fit checks, the Fusion 360 model and the board outlines all rebuild from one parameters file, so a change can't drift between documents.</p>
-        </div>
-        <div class="row">
-          <div><span class="rn">Parallel tracks</span><span class="rw mono">Aperture</span></div>
-          <p class="rd">Prototype builds, head scans, and bench and wear tests run side by side, and their results feed back into the design before anything is tooled.</p>
-        </div>
-        <div class="row">
-          <div><span class="rn">People and schedules</span><span class="rw mono">Celestica</span></div>
-          <p class="rd">Project management on thermal interface material testing for AI data center hardware, and leading four interns building LLM agents for market research and operations.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="about" id="about" aria-labelledby="about-title">
-    <div class="wrap">
-      <h2 class="sr" id="about-title">About</h2>
-      <p class="about-lede">I like both halves of engineering: designing the part, and running the project that gets it built.</p>
-      <div class="about-body">
+      <div class="flag"><h2 id="how-title">How I run projects</h2><span class="mono">Op-ed</span></div>
+      <div class="oped">
         <div>
-          <p>I'm doing an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
-          <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Most of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. It's slow work and I like it.</p>
+          <p class="byline mono">By Albert Sein</p>
+          <div class="oped-body prose">
+            <h4>Gates, not opinions</h4>
+            <p>On Snack, every unproven item is a release gate. A line on the checklist closes only with an owner, an artifact, a date and an approver; a render, a quote or a verbal yes doesn't count.</p>
+            <h4>One source of truth</h4>
+            <p>On Aperture, the drawings, the fit checks, the Fusion 360 model and the board outlines all rebuild from one parameters file, so a change can't drift between documents.</p>
+            <h4>Parallel tracks</h4>
+            <p>Prototype builds, head scans, and bench and wear tests run side by side, and their results feed back into the design before anything is tooled.</p>
+            <h4>People and schedules</h4>
+            <p>At Celestica I did project management on thermal interface material testing for AI data center hardware, and led four interns building LLM agents for market research and operations.</p>
+          </div>
         </div>
-        <div>
-          <p>Ordo went live on the App Store this August. I designed it and used AI tools to build it, got it through review myself, and still ship updates most weeks.</p>
-          <p>The new thing is an AI consumer electronics company I'm starting with my brother. Getting an object built is a different problem than shipping an app.</p>
-        </div>
+        <blockquote class="pullquote">"A render, a quote or a verbal yes doesn't count."<cite>On closing a release gate</cite></blockquote>
       </div>
     </div>
   </section>
 
   <section class="section" id="experience" aria-labelledby="exp-title">
     <div class="wrap">
-      <h2 class="section-head" id="exp-title">Experience</h2>
-      <div class="rows">
-        <div class="row">
-          <div><span class="rn">Celestica</span><span class="rw mono">Summer 2026</span></div>
-          <p class="rd">Project management and thermal engineering intern in San Jose, working on next generation data center infrastructure for AI. I tested thermal interface materials for cooling, and I led four interns building LLM agents for market research and ops.</p>
+      <div class="flag"><h2 id="exp-title">Classifieds</h2><span class="mono">Positions held</span></div>
+      <div class="classifieds">
+        <div class="ad">
+          <p class="ad-head">Celestica</p><span class="ad-when mono">Summer 2026 &nbsp; San Jose</span>
+          <p class="prose">Project management and thermal engineering intern, working on next generation data center infrastructure for AI. I tested thermal interface materials for cooling, and I led four interns building LLM agents for market research and ops.</p>
         </div>
-        <a class="row" href="https://useordoapp.com" target="_blank" rel="noopener">
-          <div><span class="rn">Ordo <span aria-hidden="true">&#8599;</span></span><span class="rw mono">2026 to now</span></div>
-          <p class="rd">An iOS and web app built for people who hate how inconvenient calendars are. 1.0 shipped to the App Store in August 2026.</p>
+        <a class="ad" href="https://useordoapp.com" target="_blank" rel="noopener">
+          <p class="ad-head">Ordo &#8599;</p><span class="ad-when mono">2026 to now</span>
+          <p class="prose">An iOS and web app built for people who hate how inconvenient calendars are. 1.0 shipped to the App Store in August 2026.</p>
         </a>
-        <div class="row">
-          <div><span class="rn">Stealth startup</span><span class="rw mono">2026 to now</span></div>
-          <p class="rd">An AI consumer electronics company I'm starting with my brother.</p>
+        <div class="ad">
+          <p class="ad-head">Ji Ma Lab, UVA</p><span class="ad-when mono">2025 to 26</span>
+          <p class="prose">Additive manufacturing research. I laser melted simulated lunar regolith and worked out which machine settings produced which phases, then modeled the cooling rates behind them.</p>
         </div>
-        <div class="row">
-          <div><span class="rn">Ji Ma Lab, UVA</span><span class="rw mono">2025 to 26</span></div>
-          <p class="rd">Additive manufacturing research. I laser melted simulated lunar regolith and worked out which machine settings produced which phases, then modeled the cooling rates behind them.</p>
-        </div>
-        <div class="row">
-          <div><span class="rn">Setty &amp; Associates</span><span class="rw mono">2024</span></div>
-          <p class="rd">Mechanical engineering intern. CFD and Revit models for the HVAC systems in a dozen or so office and school buildings.</p>
+        <div class="ad">
+          <p class="ad-head">Setty &amp; Associates</p><span class="ad-when mono">2024</span>
+          <p class="prose">Mechanical engineering intern. CFD and Revit models for the HVAC systems in a dozen or so office and school buildings.</p>
         </div>
       </div>
     </div>
@@ -539,27 +614,28 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="section" aria-labelledby="tools-title">
     <div class="wrap">
-      <h2 class="section-head" id="tools-title">Tools</h2>
-      <div class="tools">
-        <div class="tool"><span class="mono">Design and simulation</span><p>Fusion 360, SolidWorks, CFD, Revit, AutoCAD, and 3D printing on a Prusa MK4S.</p></div>
-        <div class="tool"><span class="mono">Characterization</span><p>SEM, EDS, XRD, light microscopy, hardness and tensile testing, selective laser melting, composite layup.</p></div>
-        <div class="tool"><span class="mono">Electronics</span><p>Electronics integration and packaging, KiCad, rigid-flex boards, Arduino and sensor integration.</p></div>
-        <div class="tool"><span class="mono">Project management</span><p>Release checklists and gates, BOMs and source ledgers, build and test plans, DFM reviews, leading small teams.</p></div>
-        <div class="tool"><span class="mono">Data</span><p>DoE, ANOVA, Minitab, process modeling.</p></div>
-        <div class="tool"><span class="mono">Software</span><p>I use AI tools to write code, and to bring design ideas or app ideas I have to life. Have worked with TypeScript, React Native, and Swift.</p></div>
+      <div class="flag"><h2 id="tools-title">Tools of the trade</h2><span class="mono">Listings</span></div>
+      <div class="agate prose">
+        <p><b>Design and simulation</b>Fusion 360, SolidWorks, CFD, Revit, AutoCAD, and 3D printing on a Prusa MK4S.</p>
+        <p><b>Electronics</b>Electronics integration and packaging, KiCad, rigid-flex boards, Arduino and sensor integration.</p>
+        <p><b>Project management</b>Release checklists and gates, BOMs and source ledgers, build and test plans, DFM reviews, leading small teams.</p>
+        <p><b>Characterization</b>SEM, EDS, XRD, light microscopy, hardness and tensile testing, selective laser melting, composite layup.</p>
+        <p><b>Data</b>DoE, ANOVA, Minitab, process modeling.</p>
+        <p><b>Software</b>I use AI tools to write code, and to bring design ideas or app ideas I have to life. Have worked with TypeScript, React Native, and Swift.</p>
       </div>
     </div>
   </section>
 
   <section class="contact" id="contact" aria-labelledby="contact-title">
     <div class="wrap">
-      <h2 id="contact-title">Say hello.</h2>
+      <div class="flag"><h2 id="contact-title">Letters</h2><span class="mono">Write to me</span></div>
+      <p class="letters-intro">Hiring for a team that builds things? I'd like to hear about it.</p>
       <div class="links">
-        <a class="link" href="mailto:kks7ys@virginia.edu"><span class="k mono">Email</span><span class="v">kks7ys@virginia.edu</span><span class="a" aria-hidden="true">&#8599;</span></a>
-        <a class="link" href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener"><span class="k mono">LinkedIn</span><span class="v">in/albert-sein03</span><span class="a" aria-hidden="true">&#8599;</span></a>
-        <a class="link" href="https://github.com/asein-03" target="_blank" rel="noopener"><span class="k mono">GitHub</span><span class="v">asein-03</span><span class="a" aria-hidden="true">&#8599;</span></a>
-        <a class="link" href="https://instagram.com/itsalbertsein" target="_blank" rel="noopener"><span class="k mono">Instagram</span><span class="v">@itsalbertsein</span><span class="a" aria-hidden="true">&#8599;</span></a>
-        <a class="link" href="albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="k mono">Résumé</span><span class="v">Albert_Sein_Resume_Fall2026.pdf</span><span class="a" aria-hidden="true">&#8599;</span></a>
+        <a class="link" href="mailto:kks7ys@virginia.edu"><span class="k mono">Email</span><span class="leader"></span><span class="v">kks7ys@virginia.edu</span></a>
+        <a class="link" href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener"><span class="k mono">LinkedIn</span><span class="leader"></span><span class="v">in/albert-sein03</span></a>
+        <a class="link" href="https://github.com/asein-03" target="_blank" rel="noopener"><span class="k mono">GitHub</span><span class="leader"></span><span class="v">asein-03</span></a>
+        <a class="link" href="https://instagram.com/itsalbertsein" target="_blank" rel="noopener"><span class="k mono">Instagram</span><span class="leader"></span><span class="v">@itsalbertsein</span></a>
+        <a class="link" href="albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="k mono">Résumé</span><span class="leader"></span><span class="v">Albert_Sein_Resume_Fall2026.pdf</span></a>
       </div>
     </div>
   </section>
@@ -567,12 +643,12 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 </main>
 
 <footer class="wrap mono">
-  <span>&copy; 2026 Albert Sein</span>
-  <span>No cookies, no analytics</span>
+  <span>&copy; 2026 Albert Sein &nbsp; Printed on the web</span>
+  <span>No cookies, no analytics &nbsp; Page C2</span>
 </footer>
 
 <script>
-/* Shared state and the parts that don't need WebGL: smooth scroll, the dot field, the hero sequence,
+/* Shared state and the parts that don't need WebGL: smooth scroll, the page tears, the halftone plate,
    the chapter steps and rails. The 3D module below reads window.AS each frame. */
 (() => {
   const AS = window.AS = {};
@@ -602,9 +678,41 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     AS.scrollTo(id === 'top' ? 0 : y);
   });
 
-  /* ---------- dot field: a halftone of slow noise, like a dot-matrix screen; dots swell near the pointer ---------- */
+  /* ---------- today's date on the masthead ---------- */
+  const today = document.getElementById('today');
+  if (today) today.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+  /* ---------- page tears: strips of the screen invert, the nameplate and headlines split red and cyan ---------- */
+  const tears = [...document.querySelectorAll('.tear')];
+  const T = { next: 4, until: 0 };
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  AS.tear = () => { T.next = 0; };
+  function tearTick(t) {
+    if (t >= T.next) {
+      tears.forEach((el) => {
+        const h = rnd(3, 34);
+        el.style.top = `${rnd(0, innerHeight - h).toFixed(0)}px`; el.style.height = `${h.toFixed(0)}px`;
+        el.classList.toggle('on', Math.random() < 0.6);
+      });
+      const a = rnd(5, 45), b = rnd(50, 90);
+      root.style.setProperty('--c1', `${a.toFixed(0)}%`); root.style.setProperty('--c2', `${(100 - a - rnd(8, 30)).toFixed(0)}%`);
+      root.style.setProperty('--c3', `${b.toFixed(0)}%`); root.style.setProperty('--c4', `${Math.max(0, 100 - b - rnd(6, 20)).toFixed(0)}%`);
+      document.body.classList.add('tearing');
+      T.until = t + rnd(0.06, 0.18); T.next = T.until + rnd(3.5, 8);
+    }
+    if (t <= T.until) {
+      root.style.setProperty('--gx', `${rnd(-5, 5).toFixed(1)}px`);
+      root.style.setProperty('--gx1', `${rnd(-10, -3).toFixed(1)}px`); root.style.setProperty('--gx2', `${rnd(3, 10).toFixed(1)}px`);
+    } else if (document.body.classList.contains('tearing')) document.body.classList.remove('tearing');
+  }
+  document.querySelector('.nameplate').addEventListener('pointerdown', () => AS.tear());
+
+  /* ---------- the front-page plate: a newsprint halftone of the CAD, printed live ----------
+     The 3D module renders a model small into AS.plate (RGBA pixels); every dot here takes its size from the
+     pixel under it, like a halftone screen. Until a model is ready, the plate prints slow noise instead. */
   const cv = document.getElementById('field');
   const ctx = cv.getContext('2d');
+  const caption = document.getElementById('plateCaption');
   const seed = 7349;
   const hash = (x, y) => {
     let h = (Math.imul(x, 374761393) + Math.imul(y, 668265263) + seed) | 0;
@@ -618,57 +726,122 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
   };
   const fbm = (x, y) => { let s = 0, a = 0.5, f = 1; for (let o = 0; o < 3; o++) { s += a * vnoise(x * f, y * f); f *= 2.03; a *= 0.5; } return s; };
-  const F = { w: 0, h: 0, step: 15, cols: 0, rows: 0, fg: '#ededed', shift: 0, last: -1 };
+  const F = { w: 0, h: 0, s: 8, X: null, Y: null, fg: '#ebe4d2', light: false, last: -1, drawn: -1 };
+  AS.plate = { visible: false, rw: 0, rh: 0, w: 0, h: 0, data: null, version: 0, caption: '' };
   const ptr = { x: -1e4, y: -1e4, k: 0, on: false };
+  const GLYPHS = '01+x/<>#=*:';
   function sizeField() {
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    F.w = innerWidth; F.h = Math.round(innerHeight * 1.3);
+    const dpr = Math.min(devicePixelRatio || 1, 2), r = cv.getBoundingClientRect();
+    F.w = Math.max(1, Math.round(r.width)); F.h = Math.max(1, Math.round(r.height));
     cv.width = Math.round(F.w * dpr); cv.height = Math.round(F.h * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    F.step = F.w < 700 ? 12 : 15;
-    F.cols = Math.ceil(F.w / F.step) + 2; F.rows = Math.ceil(F.h / F.step) + 1;
-    F.fg = getComputedStyle(root).getPropertyValue('--fg').trim() || '#ededed';
+    // a screen turned 45 degrees, the angle newspapers print black at
+    const s = F.s = F.w < 420 ? 6.5 : 8, dy = s * Math.SQRT1_2, dx = s * Math.SQRT2;
+    const xs = [], ys = [];
+    for (let j = 0, y = 0; y < F.h + dy; j++, y = j * dy) for (let x = j & 1 ? dx / 2 : 0; x < F.w + dx; x += dx) { xs.push(x); ys.push(y); }
+    F.X = Float32Array.from(xs); F.Y = Float32Array.from(ys);
+    F.fg = getComputedStyle(root).getPropertyValue('--fg').trim() || '#ebe4d2';
+    F.light = getComputedStyle(root).colorScheme === 'light';
+    // about one rendered pixel per dot and a half
+    AS.plate.rw = Math.max(32, Math.round((F.w / s) * 1.5)); AS.plate.rh = Math.max(32, Math.round((F.h / s) * 1.5));
   }
-  // Dots sit on a staggered grid, as in a printed halftone. Their size follows slow, drifting noise,
-  // and the pointer pushes a soft swell through them.
+
+  // Press glitches inside the plate: strips tear sideways, split into red and cyan, and big dots become glyphs.
+  const G = { next: 1.5, until: 0, bands: [], split: false };
+  function glitch(t) {
+    if (t < G.next) return;
+    G.bands = Array.from({ length: 1 + Math.floor(Math.random() * 4) }, () => {
+      const y0 = Math.random() * F.h;
+      return { y0, y1: y0 + rnd(4, 46), dx: rnd(-65, 65) };
+    });
+    G.split = Math.random() < 0.8;
+    G.until = t + rnd(0.07, 0.24);
+    G.next = G.until + rnd(1.4, 4);
+    if (G.split && Math.random() < 0.3) AS.tear();
+  }
+  AS.glitch = () => { G.next = 0; };
+  const bandAt = (y, t) => { if (t > G.until) return null; for (const b of G.bands) if (y >= b.y0 && y < b.y1) return b; return null; };
+
   function drawField(t) {
-    const { w, h, step, cols, rows } = F, sc = 1 / 330, tx = t * 0.016, ty = t * 0.01;
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = F.fg;
-    const small = new Path2D(), large = new Path2D(), reach = 150;
-    for (let j = 0; j < rows; j++) {
-      const y = j * step, off = j & 1 ? step / 2 : 0;
-      for (let i = 0; i < cols; i++) {
-        const x = i * step - off;
-        const n = fbm(x * sc + tx + 0.4 * vnoise(y * sc * 1.7, tx), y * sc - ty);
-        let r = 0.55 + 2.5 * smooth(0.42, 0.72, n);
-        if (ptr.k > 0.01) {
-          const d = Math.hypot(ptr.x - x, ptr.y - y);
-          if (d < reach) { const f = 1 - d / reach; r += 2.2 * ptr.k * f * f; }
-        }
-        const path = r < 1.1 ? small : large;
-        path.moveTo(x + r, y); path.arc(x, y, r, 0, 6.2832);
+    const { w, h, s, X, Y } = F, sc = 1 / 140, tx = t * 0.05, ty = t * 0.03, reach = 90, rMax = s * 0.56;
+    const live = !reduce.matches;
+    if (live) glitch(t);
+    const tearing = live && t <= G.until;
+    const scanY = live ? ((t * 70) % (h + 200)) - 100 : -1e4;
+    const P = AS.plate, img = P.data && P.w ? P : null;
+    const dots = new Path2D(), hot = new Path2D(), red = new Path2D(), cyan = new Path2D(), glyphs = [];
+    for (let k = 0; k < X.length; k++) {
+      let x = X[k]; const y = Y[k];
+      const n = fbm(x * sc + tx, y * sc - ty);
+      let ink;
+      if (img) {
+        const u = Math.min(img.w - 1, Math.max(0, (x / w * img.w) | 0)), v = Math.min(img.h - 1, Math.max(0, ((1 - y / h) * img.h) | 0));
+        const o = (v * img.w + u) * 4, a = img.data[o + 3] / 255;
+        const l = Math.pow((0.2126 * img.data[o] + 0.7152 * img.data[o + 1] + 0.0722 * img.data[o + 2]) / 255, 0.4545);
+        // ink where the model is dark on paper; light where it's bright in the night edition
+        const tone = F.light ? 1 - l : Math.min(1, l * 1.35);
+        ink = a * (0.16 + 0.84 * tone) + (1 - a) * (0.02 + 0.1 * smooth(0.45, 0.78, n));
+      } else ink = 0.03 + 0.5 * smooth(0.4, 0.75, n);
+      let r = rMax * Math.sqrt(Math.min(1, ink));
+      if (ptr.k > 0.01) {
+        const d = Math.hypot(ptr.x - x, ptr.y - y);
+        if (d < reach) { const f = 1 - d / reach; r += 1.6 * ptr.k * f * f; x += Math.sin(y * 0.9 + t * 28) * 4 * ptr.k * f; }
       }
+      if (r < 0.35) continue;
+      const band = tearing ? bandAt(y, t) : null;
+      if (band) {
+        x += band.dx * (0.7 + 0.3 * Math.random());
+        if (G.split) { red.moveTo(x + 3 + r, y); red.arc(x + 3, y, r, 0, 6.2832); cyan.moveTo(x - 3 + r, y); cyan.arc(x - 3, y, r, 0, 6.2832); }
+        if (r > rMax * 0.55 && Math.random() < 0.5) { glyphs.push(x, y, GLYPHS[(Math.random() * GLYPHS.length) | 0]); continue; }
+      }
+      const path = Math.abs(y - scanY) < 18 ? (r *= 1.15, hot) : dots;
+      path.moveTo(x + r, y); path.arc(x, y, r, 0, 6.2832);
     }
-    ctx.globalAlpha = 0.22; ctx.fill(small);
-    ctx.globalAlpha = 0.46; ctx.fill(large);
+    ctx.clearRect(0, 0, w, h);
+    if (tearing && G.split) {
+      ctx.globalCompositeOperation = F.light ? 'multiply' : 'lighter';
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = F.light ? '#e0006e' : '#ff2a4d'; ctx.fill(red);
+      ctx.fillStyle = F.light ? '#00a3c4' : '#21e6ff'; ctx.fill(cyan);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+    ctx.fillStyle = F.fg;
+    ctx.globalAlpha = 0.88; ctx.fill(dots);
+    ctx.globalAlpha = 1; ctx.fill(hot);
+    if (glyphs.length) {
+      ctx.font = '500 9px "Martian Mono", ui-monospace, monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      for (let i = 0; i < glyphs.length; i += 3) ctx.fillText(glyphs[i + 2], glyphs[i], glyphs[i + 1]);
+    }
     ctx.globalAlpha = 1;
+    F.drawn = P.version;
+    if (caption && P.caption && caption.textContent !== P.caption) caption.textContent = P.caption;
   }
   sizeField(); drawField(0);
   let fieldW = innerWidth;
-  addEventListener('resize', () => { if (innerWidth !== fieldW) { fieldW = innerWidth; sizeField(); drawField(F.last < 0 ? 0 : F.last); } });
+  addEventListener('resize', () => { if (innerWidth !== fieldW) { fieldW = innerWidth; sizeField(); drawField(Math.max(0, F.last)); } });
   matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => { sizeField(); drawField(Math.max(0, F.last)); });
-  addEventListener('pointermove', (e) => { ptr.x = e.clientX; ptr.y = e.clientY - F.shift; ptr.on = e.pointerType === 'mouse'; }, { passive: true });
+  addEventListener('pointermove', (e) => {
+    const r = cv.getBoundingClientRect();
+    ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top;
+    ptr.on = e.pointerType === 'mouse' && ptr.x > -60 && ptr.y > -60 && ptr.x < r.width + 60 && ptr.y < r.height + 60;
+  }, { passive: true });
   document.addEventListener('pointerleave', () => { ptr.on = false; });
-  // About 30 frames a second while the opener is on screen; after that the field holds still.
+  // a click on the plate jams the press: a glitch, and the next model goes on
+  document.getElementById('plate').addEventListener('pointerdown', () => { AS.glitch(); AS.tear(); AS.nextPlate?.(); });
+  new IntersectionObserver(([e]) => { AS.plate.visible = e.isIntersecting; }, { rootMargin: '100px' }).observe(cv);
+
+  // About 30 frames a second while the plate is on screen; with reduced motion it reprints only when the model changes.
   let lastFrame = 0;
   const tick = (now) => {
     requestAnimationFrame(tick);
-    if (reduce.matches || now - lastFrame < 33 || scrollY > innerHeight * 3.2) return;
+    const t = now / 1000;
+    if (!reduce.matches) tearTick(t);
+    if (!AS.plate.visible || now - lastFrame < 33) return;
+    if (reduce.matches && F.drawn === AS.plate.version) return;
     lastFrame = now;
     ptr.k += ((ptr.on ? 1 : 0) - ptr.k) * 0.12;
-    F.last = now / 1000;
-    drawField(F.last);
+    F.last = t;
+    drawField(t);
   };
   requestAnimationFrame(tick);
 
@@ -697,8 +870,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     return { el, steps, buttons, pose, i: 0, t: 0, presence: 0 };
   });
 
-  const intro = document.getElementById('heroIntro'), l1 = document.getElementById('heroLine1'), l2 = document.getElementById('heroLine2');
-  const hero = document.querySelector('.hero');
+  const nameplate = document.querySelector('.nameplate');
   const show = (el, v, lift = 18) => {
     el.style.opacity = v.toFixed(3);
     el.style.filter = v > 0.995 ? 'none' : `blur(${((1 - v) * 10).toFixed(1)}px)`;
@@ -707,16 +879,8 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   AS.update = () => {
     const vh = innerHeight;
-    /* hero: the name, then two lines, each blurred in and out */
-    const hr = hero.getBoundingClientRect();
-    const hp = clamp(-hr.top / Math.max(1, hr.height - vh));
-    show(intro, 1 - smooth(0.08, 0.26, hp), -24);
-    show(l1, smooth(0.28, 0.42, hp) * (1 - smooth(0.56, 0.66, hp)));
-    show(l2, smooth(0.68, 0.8, hp) * (1 - smooth(0.94, 1, hp)));
-    root.style.setProperty('--field', (1 - 0.72 * smooth(0.6, 1, hp)).toFixed(3));
-    F.shift = -Math.min(scrollY, vh * 3) * 0.06;
-    cv.style.transform = `translate3d(0, ${F.shift.toFixed(1)}px, 0)`;
-    root.style.setProperty('--nav-shade', smooth(vh * 1.6, vh * 2.2, scrollY).toFixed(3));
+    /* the running head fills in once the nameplate has scrolled under it */
+    root.style.setProperty('--nav-shade', smooth(60, -10, nameplate.getBoundingClientRect().bottom).toFixed(3));
 
     /* chapters: which step, how far into the next one, and how present the chapter is */
     for (const ch of AS.chapters) {
@@ -824,6 +988,7 @@ const MATERIALS = {
   cell: () => new THREE.MeshPhysicalMaterial({ color: 0x8f8f8f, metalness: 0.7, roughness: 0.42, envMapIntensity: 1.2 }),
   bright: () => new THREE.MeshPhysicalMaterial({ color: 0xcfcfcf, metalness: 1, roughness: 0.22, envMapIntensity: 1.4 }),
   diffuser: () => new THREE.MeshPhysicalMaterial({ color: 0xd6d6d6, metalness: 0, roughness: 0.55, envMapIntensity: 0.8 }),
+  print: () => new THREE.MeshPhysicalMaterial({ color: 0x8a8a8a, metalness: 0, roughness: 0.72, envMapIntensity: 0.95 }),
 };
 
 /* ---------- model files: a JSON header, then int16 positions, int8 normals and indices per part ---------- */
@@ -880,6 +1045,7 @@ const mainIds = [...new Set(AS.chapters.flatMap((c) => c.pose.map((p) => p.model
 mainIds.reduce((chain, id) => chain.then(() => loadModel(id)).catch(() => {}), Promise.resolve());
 const thumbs = [...document.querySelectorAll('.thumb[data-model]')].map((el) => ({
   el, id: el.dataset.model, yaw: +(el.dataset.yaw || 0), pitch: +(el.dataset.pitch || 0), spin: 0, speed: 0, hover: false,
+  axis: el.dataset.axis || 'y', fit: el.dataset.fit || 'sphere', explodes: 'explode' in el.dataset, ex: 0,
 }));
 thumbs.forEach((t) => {
   t.el.addEventListener('pointerenter', () => { t.hover = true; });
@@ -1054,12 +1220,23 @@ function frame() {
       const m = MODELS[t.id];
       t.speed = lerp(t.speed, t.hover ? 1.4 : reduce.matches ? 0 : 0.18, 0.06);
       t.spin += t.speed * dt;
+      // explodable thumbs come apart on hover; on touch screens they breathe apart on their own
+      const exTarget = !t.explodes ? 0 : fine.matches ? (t.hover ? 1 : 0) : reduce.matches ? 0.6 : 0.5 - 0.5 * Math.cos(time * 0.7);
+      t.ex = lerp(t.ex, exTarget, 0.08);
       const appear = smooth(H, H * 0.75, r.top);
-      applyPose(m, { yaw: t.yaw + t.spin / D2R, pitch: t.pitch, explode: 0, zoom: 1 }, appear, time, -0.2);
-      m.pivot.rotation.x = t.pitch * D2R; m.spin.rotation.y = t.yaw * D2R + t.spin; // no drag offset here
+      applyPose(m, { yaw: t.yaw, pitch: t.pitch, explode: t.ex, zoom: 1 }, appear, time, -0.2);
+      m.pivot.rotation.x = t.pitch * D2R; // no drag offset here
+      if (t.axis === 'x') m.spin.rotation.set(t.spin, t.yaw * D2R, 0, 'YXZ'); // roll about the long axis
+      else m.spin.rotation.set(0, t.yaw * D2R + t.spin, 0);
       thumbCam.aspect = r.width / r.height; thumbCam.clearViewOffset();
       const vt = Math.tan((FOV / 2) * D2R);
-      thumbCam.position.set(0, 0, Math.max(m.radius / (vt * 0.78), m.radius / (vt * thumbCam.aspect * 0.78)));
+      let dist;
+      if (t.fit === 'box') {
+        // long, thin models: fit the length across the frame and leave room for parts that fly out
+        const hx = Math.max(-m.box.min.x, m.box.max.x) * (1 + 0.3 * t.ex), hyz = Math.max(-m.box.min.y, m.box.max.y, -m.box.min.z, m.box.max.z) + 0.22 * t.ex;
+        dist = Math.max(hx / (vt * thumbCam.aspect * 0.84), hyz / (vt * 0.62)) + hyz;
+      } else dist = Math.max(m.radius / (vt * 0.78), m.radius / (vt * thumbCam.aspect * 0.78));
+      thumbCam.position.set(0, 0, dist);
       thumbCam.lookAt(0, 0, 0); thumbCam.updateProjectionMatrix();
       const bottom = H - r.bottom;
       renderer.setViewport(r.left, bottom, r.width, r.height);
@@ -1069,6 +1246,52 @@ function frame() {
     }
     renderer.setScissorTest(false);
   }
+
+  renderPlate(time);
+}
+
+/* ---------- the front-page plate ----------
+   A model rendered small into its own target and read back as pixels, every other frame while the plate is on
+   screen. The page script prints those pixels as a halftone. The plate turns, breathes apart, and moves on to the
+   next model every few seconds (or on a click), with a glitch at each change. */
+const plateRT = new THREE.WebGLRenderTarget(32, 32);
+const plateCam = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
+const PLATE = [
+  { id: 'aperture', caption: 'Aperture, printed live from its CAD.', pitch: 14 },
+  { id: 'aperture-case', caption: "Aperture's charging case, printed live from its CAD.", pitch: 30 },
+  { id: 'snack', caption: 'Snack, printed live from its CAD.', pitch: 14 },
+  { id: 'ordo', caption: 'Ordo Desktop, printed live from its CAD.', pitch: 18 },
+];
+let plateIdx = 0, plateSince = 0, plateBuf = null, plateTick = 0;
+AS.nextPlate = () => { plateIdx = (plateIdx + 1) % PLATE.length; plateSince = clock.elapsedTime; };
+function renderPlate(time) {
+  const P = AS.plate;
+  if (!P || !P.visible || !P.rw || (plateTick++ & 1)) return;
+  if (!reduce.matches && time - plateSince > 8) { AS.nextPlate(); AS.glitch?.(); AS.tear?.(); }
+  const spec = PLATE[plateIdx], m = MODELS[spec.id];
+  if (!m) return;
+  const w = P.rw, h = P.rh;
+  if (plateRT.width !== w || plateRT.height !== h) { plateRT.setSize(w, h); plateBuf = new Uint8Array(w * h * 4); }
+  for (const mm of Object.values(MODELS)) mm.pivot.visible = false;
+  const still = reduce.matches;
+  const explode = still ? 0.4 : 0.42 - 0.42 * Math.cos((time - plateSince) * 0.9);
+  applyPose(m, { yaw: 0, pitch: spec.pitch, explode, zoom: 1 }, 1, time, 0);
+  m.pivot.rotation.x = spec.pitch * D2R;
+  m.spin.rotation.y = (still ? -35 : -35 + (time - plateSince) * 28) * D2R;
+  m.pivot.position.set(0, 0, 0);
+  plateCam.aspect = w / h;
+  const vt = Math.tan((FOV / 2) * D2R);
+  plateCam.position.set(0, 0, Math.max(m.radius / (vt * 0.74), m.radius / (vt * plateCam.aspect * 0.74)) * (1 + explode * 0.35));
+  plateCam.lookAt(0, 0, 0); plateCam.updateProjectionMatrix();
+  renderer.setScissorTest(false);
+  renderer.setRenderTarget(plateRT);
+  renderer.setClearColor(0x000000, 0);
+  renderer.clear();
+  renderer.render(scene, plateCam);
+  renderer.setRenderTarget(null);
+  renderer.readRenderTargetPixels(plateRT, 0, 0, w, h, plateBuf);
+  m.pivot.visible = false;
+  P.w = w; P.h = h; P.data = plateBuf; P.caption = spec.caption; P.version++;
 }
 frame();
 </script>

@@ -24,6 +24,24 @@ const AP = `${HOME}/Documents/ChatGPT/BrainWave Technology/prototype/cad-v4/expo
 const R07 = `${HOME}/Documents/Stealth/hardware/supplier-cad/exports/r07/OTTO_R07_THIN_PHYSICAL_DFM_RIGHTS_CLEAN_R00.step`;
 const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
 
+// Project Skyfall, a TVC model rocket from high school. These STLs were exported from the Fusion document
+// "Project Skyfall Prototype 2 Assembly" into sources/skyfall (kept out of git). Each top-level part comes out in its
+// own coordinates, so it carries its placement in the assembly: Fusion's transform2, row-major, translation in mm.
+const SKY = new URL('./sources/skyfall/', import.meta.url).pathname;
+const SKY_AT = {
+  occ00: [0, 1, 0, 12.35, 0, 0, 1, 31.1, 1, 0, 0, 29.2, 0, 0, 0, 1],
+  occ01: [1, 0, 0, 34.375, 0, 0, 1, 10.17493, 0, -1, 0, -19.59841, 0, 0, 0, 1],
+  occ02: [0, 0, 1, -1.7441, 0, 1, 0, 365.5, -1, 0, 0, -0.25551, 0, 0, 0, 1],
+  occ03: [0, 0, 1, -1.7441, 0, 1, 0, 65.5, -1, 0, 0, -0.20551, 0, 0, 0, 1],
+  occ04: [1, 0, 0, -1.3, 0, -1, 0, 60.73041, 0, 0, -1, -1.20002, 0, 0, 0, 1],
+  occ05: [1, 0, 0, -1.225, 0, 1, 0, 5.23041, 0, 0, 1, -1.32502, 0, 0, 0, 1],
+  occ06: [0, 1, 0, -19.48581, 0, 0, -1, -1.32474, -1, 0, 0, -1.29769, 0, 0, 0, 1],
+  occ07: [0, 0, -1, 1.275, 0, 1, 0, 3.6835, 1, 0, 0, -1.15002, 0, 0, 0, 1],
+  occ08: [1, 0, 0, -1.95797, 0, 1, 0, -2.18771, 0, 0, 1, -0.15146, 0, 0, 0, 1],
+  occ09: [1, 0, 0, -1.39562, 0, 1, 0, -1.16959, 0, 0, 1, 40.07888, 0, 0, 0, 1],
+};
+const sky = (file) => ({ file: `${SKY}${file}.stl`, m: SKY_AT[file.slice(0, 5)] });
+
 // up: which CAD axis points up. explode: offset per part, in display units (the model spans about 2).
 // Electronics are plain blocks at their KiCad positions, as in Fusion; no copper or part markings.
 const PROJECTS = [
@@ -71,6 +89,19 @@ const PROJECTS = [
     { name: 'hull', obj: `${DL}/Ordo Desktop FULL.obj`, group: 'Body Hull', mat: 'metal', explode: [0, 0.08, 0] },
     { name: 'display', obj: `${DL}/Ordo Desktop FULL.obj`, group: 'Display', mat: 'glass', explode: [0, 0.08, 0.4] },
   ] },
+  // laid on its side (rotZ) so it fits a wide brief; the nose points right
+  { id: 'skyfall', up: 'y', rotZ: -90, parts: [
+    { name: 'nose', stls: [sky('occ02_Project_Skyfall_Nose_Cone_Part_1_Proto_2_1')], mat: 'print', explode: [0.3, 0, 0], simplify: 4000 },
+    { name: 'airframe', stls: [sky('occ03_Project_Skyfall_2_PE_Pipe_Body_1')], mat: 'diffuser', explode: [0.12, 0, 0], simplify: 2500 },
+    { name: 'thruster', stls: [sky('occ08_Project_Skyfall_Rocket_Thruster_Body_Part_1_PROTOTYPE_2_1')], mat: 'print', explode: [0, 0, 0], simplify: 5000 },
+    { name: 'gimbal', stls: [
+      sky('occ04_Project_Skyfall_TVC_Piece_1_1'), sky('occ05_Project_Skyfall_Piece_4_1'), sky('occ06_Project_Skyfall_TVC_Piece_2_1'),
+      sky('occ07_Project_Skyfall_TVC_Inner_Mount_Prototype_2_1'), sky('occ09_Project_Skyfall_Outer_Gimbal_ATTACHMENT_ONLY_1'),
+      ...['root_Body1', 'root_Body4', 'root_Body13', 'root_Body14', 'root_Body15', 'root_Body16'].map((f) => ({ file: `${SKY}${f}.stl` })),
+    ], mat: 'metal', explode: [-0.14, 0, 0], simplify: 14000 },
+    { name: 'servo-a', stls: [sky('occ00_SG90_Tower_Pro_Servo_Motor_1')], mat: 'plastic', explode: [-0.1, 0, 0.2], simplify: 2500 },
+    { name: 'servo-b', stls: [sky('occ01_SG90_Tower_Pro_Servo_Motor_2')], mat: 'plastic', explode: [-0.1, -0.2, -0.04], simplify: 2500 },
+  ] },
   { id: 'portafilter', up: 'y', parts: [{ name: 'body', stl: `${DL}/Bottomless_Portafilterv2.stl`, mat: 'metal', simplify: 12000 }] },
   { id: 'topology', up: 'y', parts: [{ name: 'body', stl: `${DL}/Assignment 3.stl`, mat: 'metal' }] },
 ];
@@ -105,7 +136,11 @@ function loadPart(p) {
     return merge(geos);
   }
   let g;
-  if (p.stl) {
+  const readSTL = (file) => { const buf = fs.readFileSync(file); return new STLLoader().parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)); };
+  if (p.stls) {
+    // several STLs as one part, each moved to its place in the assembly first
+    g = merge(p.stls.map(({ file, m }) => { const s = readSTL(file); if (m) s.applyMatrix4(new THREE.Matrix4().set(...m)); return s; }));
+  } else if (p.stl) {
     const buf = fs.readFileSync(p.stl);
     g = new STLLoader().parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength));
   } else if (p.obj) {
@@ -122,19 +157,23 @@ function loadPart(p) {
 }
 
 function merge(geos) {
-  const pos = [], nrm = [], idx = [];
-  let base = 0;
+  const nv = geos.reduce((n, g) => n + g.attributes.position.count, 0);
+  const ni = geos.reduce((n, g) => n + (g.index ? g.index.count : g.attributes.position.count), 0);
+  const withNormals = geos.every((g) => g.attributes.normal);
+  const pos = new Float32Array(nv * 3), nrm = withNormals ? new Float32Array(nv * 3) : null, idx = new Uint32Array(ni);
+  let v = 0, k = 0;
   for (const g of geos) {
-    const P = g.attributes.position.array, N = g.attributes.normal?.array;
-    pos.push(...P); if (N) nrm.push(...N);
-    const I = g.index ? g.index.array : [...Array(P.length / 3).keys()];
-    for (const i of I) idx.push(i + base);
-    base += P.length / 3;
+    const n = g.attributes.position.count;
+    pos.set(g.attributes.position.array, v * 3);
+    if (nrm) nrm.set(g.attributes.normal.array, v * 3);
+    if (g.index) for (const i of g.index.array) idx[k++] = i + v;
+    else for (let i = 0; i < n; i++) idx[k++] = i + v;
+    v += n;
   }
   const out = new THREE.BufferGeometry();
-  out.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-  if (nrm.length === pos.length) out.setAttribute('normal', new THREE.Float32BufferAttribute(nrm, 3));
-  out.setIndex(idx);
+  out.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  if (nrm) out.setAttribute('normal', new THREE.BufferAttribute(nrm, 3));
+  out.setIndex(new THREE.BufferAttribute(idx, 1));
   return out;
 }
 
@@ -156,6 +195,7 @@ for (const proj of PROJECTS) {
   const parts = proj.parts.map((p) => {
     const g = loadPart(p);
     if (proj.up === 'z') g.rotateX(-Math.PI / 2); // CAD z-up to three's y-up
+    if (proj.rotZ) g.rotateZ(THREE.MathUtils.degToRad(proj.rotZ));
     return { p, g };
   });
   const box = new THREE.Box3();
