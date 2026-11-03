@@ -2,324 +2,1069 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Albert Sein</title>
-<meta name="description" content="Albert Sein, materials and systems engineering at UVA. Just finished a project management and thermal engineering internship on next generation data center infrastructure for AI, and built Ordo. Looking for a Summer 2027 internship and new-grad roles.">
+<meta name="description" content="Albert Sein, a product person who loves building things and loves working with people even more. Materials and systems engineering at UVA; Aperture, Snack, Ordo and Ordo Desktop. Open to Summer 2027 internships and new-grad roles.">
 <meta name="author" content="Albert Sein">
-<meta name="theme-color" content="#faf8f5">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#efefef" media="(prefers-color-scheme: light)">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Albert Sein">
-<meta property="og:description" content="Materials and systems engineering at UVA. Just finished an internship on next generation data center infrastructure for AI, and built Ordo.">
+<meta property="og:description" content="A product person who loves building things, and loves working with people even more.">
 <meta property="og:url" content="https://albertsein.vercel.app">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23faf8f5'/><text x='16' y='24' font-family='Georgia,serif' font-size='21' fill='%23191817' text-anchor='middle'>A</text></svg>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cstyle%3Erect%7Bfill:%230a0a0a%7Dtext%7Bfill:%23ededed%7D%40media (prefers-color-scheme:light)%7Brect%7Bfill:%23efefef%7Dtext%7Bfill:%230a0a0a%7D%7D%3C/style%3E%3Crect width='32' height='32' rx='7'/%3E%3Ctext x='16' y='23.5' font-family='Georgia,serif' font-size='21' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=Martian+Mono:wdth,wght@75..112.5,300..500&family=Newsreader:opsz,wght@6..72,300..500&display=swap">
+<link rel="preload" href="models/aperture.bin" as="fetch" crossorigin>
+<script>document.documentElement.classList.add('js');</script>
 <style>
-  :root {
-    --paper:  #faf8f5;
-    --ink:    #191817;
-    --quiet:  #6b6862;
-    --faint:  #9b968e;
-    --accent: #8a5a2b;
-    --sage:   #5e7a45;
-    --line:   rgba(25,24,23,.10);
+/* Layout: a type-led opener over contour lines, then one chapter per project. Each chapter pins
+   a frame while you scroll; the CAD model behind it turns over, comes apart and gets measured.
+   Black, grey and white only. The theme follows the system setting. */
+:root {
+  --bg: #0a0a0a;
+  --bg-2: #141414;
+  --fg: #ededed;
+  --dim: #8c8c8c;
+  --faint: #5a5a5a;
+  --line: rgba(237, 237, 237, .11);
+  --line-2: rgba(237, 237, 237, .26);
+  --accent: #ffffff;
+  --accent-ink: #000000;
+  --shade: rgba(10, 10, 10, .92);
 
-    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    --serif: ui-serif, "New York", Georgia, "Iowan Old Style", "Times New Roman", serif;
-
-    --fs-label: .70rem;
-    --fs-small: .875rem;
-    --fs-body:  1.125rem;
-    --fs-lede:  clamp(1.2rem, 2.5vw, 1.5rem);
-    --fs-hero:  clamp(2.7rem, 8vw, 4.5rem);
-
-    --col: 40rem;
+  --font-display: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Martian Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ease: cubic-bezier(.16, 1, .3, 1);
+  --gutter: clamp(16px, 4vw, 56px);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #efefef; --bg-2: #e4e4e4; --fg: #0b0b0b; --dim: #5e5e5e; --faint: #9a9a9a;
+    --line: rgba(11, 11, 11, .11); --line-2: rgba(11, 11, 11, .26);
+    --accent: #000000; --accent-ink: #ffffff; --shade: rgba(239, 239, 239, .94);
+    color-scheme: light;
   }
+}
+:root[data-theme="light"] {
+  --bg: #efefef; --bg-2: #e4e4e4; --fg: #0b0b0b; --dim: #5e5e5e; --faint: #9a9a9a;
+  --line: rgba(11, 11, 11, .11); --line-2: rgba(11, 11, 11, .26);
+  --accent: #000000; --accent-ink: #ffffff; --shade: rgba(239, 239, 239, .94);
+  color-scheme: light;
+}
 
-  * { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; }
+html { overflow-x: clip; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 400 1.0625rem/1.6 var(--font-body);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: clip;
+}
+body.dragging { user-select: none; -webkit-user-select: none; cursor: grabbing; }
+a { color: inherit; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+p { margin: 0; }
+em, i { font-style: normal; }
+h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 300; letter-spacing: -.025em; line-height: .98; text-wrap: balance; }
+h2 { font-size: clamp(2.6rem, 6.4vw, 6rem); }
+h3 { font-size: clamp(1.7rem, 2.6vw, 2.5rem); line-height: 1.04; letter-spacing: -.02em; }
+.wrap {
+  width: 100%; max-width: 1480px; margin-inline: auto;
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.mono { font: 400 .62rem/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
 
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: var(--fs-small);
-    line-height: 1.6;
-    text-rendering: optimizeLegibility;
-    overflow-x: hidden;
-  }
+/* ---------- ambient layers ---------- */
+.contours {
+  position: fixed; left: 0; top: 0; width: 100%; height: 130vh; z-index: 0; pointer-events: none;
+  opacity: var(--contours, 1); will-change: transform, opacity;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 46%, transparent 18%, #000 78%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 46%, transparent 18%, #000 78%);
+}
+.stage { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+.dims { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; overflow: visible; opacity: 0; }
+.dims line { stroke: var(--fg); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.dims .ext { stroke: var(--line-2); }
+.dims text { fill: var(--fg); font: 400 10px/1 var(--font-mono); letter-spacing: .12em; }
+.grain {
+  position: fixed; inset: -60px; z-index: 60; pointer-events: none; opacity: .045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); } 20% { transform: translate(-18px, 12px); } 40% { transform: translate(14px, -20px); }
+  60% { transform: translate(-10px, -8px); } 80% { transform: translate(20px, 16px); } 100% { transform: translate(0, 0); }
+}
+.cursor-chip {
+  position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none;
+  padding: 7px 10px; border-radius: 2px; background: var(--fg); color: var(--bg);
+  font: 500 .56rem/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase;
+  opacity: 0; scale: .7; transition: opacity .25s, scale .35s var(--ease);
+}
+.cursor-chip.on { opacity: 1; scale: 1; }
 
-  .wrap {
-    max-width: var(--col);
-    margin: 0 auto;
-    padding: 2.25rem clamp(1.35rem, 5vw, 2rem) 3rem;
-  }
+/* ---------- nav ---------- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 16px); padding-bottom: 16px;
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+.nav::before {
+  content: ""; position: absolute; inset: 0 0 -40px; z-index: -1; pointer-events: none;
+  background: linear-gradient(to bottom, var(--bg) 20%, transparent);
+  opacity: var(--nav-shade, 0); transition: opacity .3s;
+}
+.brand { font: 300 1.45rem/1 var(--font-display); letter-spacing: -.015em; text-decoration: none; }
+.nav-links { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 34px); }
+.nav-links a:not(.pill) { color: var(--dim); text-decoration: none; transition: color .2s; }
+.nav-links a:not(.pill):hover { color: var(--fg); }
+.pill {
+  display: inline-flex; align-items: center; gap: .5em; padding: 10px 14px; border-radius: 2px;
+  background: var(--accent); color: var(--accent-ink); text-decoration: none;
+  font: 500 .6rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase;
+  transition: opacity .2s;
+}
+.pill:hover { opacity: .86; }
+@media (max-width: 820px) { .nav-links a:not(.pill) { display: none; } }
 
-  /* ---- availability ping ---- */
-  .ping {
-    display: inline-flex; align-items: flex-start; gap: .6rem;
-    color: var(--quiet);
-    font-size: var(--fs-small);
-    margin: 0;
-  }
-  .dot {
-    width: .45rem; height: .45rem; border-radius: 50%;
-    background: var(--sage); flex: none;
-    margin-top: .55em;
-  }
+/* ---------- hero ---------- */
+.hero { position: relative; z-index: 2; }
+.js .hero { height: 280vh; height: 280svh; }
+.hero-pin {
+  position: relative; min-height: 100vh; min-height: 100svh;
+  display: grid; place-items: center; text-align: center; padding: 120px var(--gutter) 80px;
+}
+.js .hero-pin { position: sticky; top: 0; height: 100vh; height: 100svh; padding-block: 0; overflow: hidden; }
+.hero-stack { display: grid; place-items: center; }
+.hero-stack > * { grid-area: 1 / 1; }
+.hero-intro { display: grid; justify-items: center; gap: clamp(18px, 3vh, 30px); }
+.hero-name { font-size: clamp(4.2rem, 15vw, 13.5rem); line-height: .86; letter-spacing: -.04em; }
+.hero-sub { max-width: 34ch; color: var(--dim); font: 300 clamp(1.15rem, 1.9vw, 1.55rem)/1.35 var(--font-display); letter-spacing: -.005em; text-wrap: balance; }
+.avail { display: inline-flex; align-items: center; gap: 10px; color: var(--dim); }
+.avail::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--fg); box-shadow: 0 0 0 0 var(--fg); animation: ping 2.6s ease-out infinite; }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(237,237,237,.5); } 70%, 100% { box-shadow: 0 0 0 9px rgba(237,237,237,0); } }
+.hero-line { font: 300 clamp(2.3rem, 5.6vw, 5.2rem)/1.02 var(--font-display); letter-spacing: -.025em; max-width: 16ch; text-wrap: balance; }
+.js .hero-line { opacity: 0; }
+.js .hero-line, .js .hero-intro { will-change: opacity, filter, transform; }
+.cue {
+  position: absolute; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 26px); translate: -50% 0;
+  width: 22px; height: 22px; color: var(--dim); animation: cue 2.4s var(--ease) infinite;
+}
+@keyframes cue { 0%, 100% { transform: translateY(0); opacity: .5; } 50% { transform: translateY(6px); opacity: 1; } }
+html:not(.js) .cue { display: none; }
 
-  /* ---- hero ---- */
-  header.hero { padding-top: clamp(3rem, 11vh, 5.5rem); }
-  .name {
-    font-family: var(--serif);
-    font-size: var(--fs-hero);
-    line-height: 1.02;
-    letter-spacing: -.018em;
-    font-weight: 500;
-    margin: 0;
-  }
-  .role {
-    margin: .85rem 0 0;
-    color: var(--accent);
-    font-size: var(--fs-small);
-    letter-spacing: .01em;
-  }
-  .lede {
-    font-family: var(--serif);
-    font-size: var(--fs-lede);
-    line-height: 1.45;
-    color: var(--quiet);
-    margin: 1.6rem 0 0;
-    max-width: 40ch;
-    text-wrap: pretty;
-  }
+/* ---------- work index ---------- */
+.index { position: relative; z-index: 2; padding: 18vh 0 22vh; }
+.index-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: clamp(28px, 5vh, 56px); }
+.index-head p { color: var(--dim); max-width: 34ch; }
+.index-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.index-list a {
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto; align-items: baseline; gap: 24px;
+  padding: clamp(18px, 3vh, 28px) 0; border-bottom: 1px solid var(--line); text-decoration: none;
+  transition: padding .5s var(--ease), color .3s;
+}
+.index-list .t { font: 300 clamp(1.8rem, 3.6vw, 3.3rem)/1 var(--font-display); letter-spacing: -.025em; }
+.index-list .d { color: var(--dim); }
+.index-list .y { color: var(--dim); }
+.index-list a:hover { padding-left: 14px; }
+.index-list:hover a:not(:hover) { color: var(--faint); }
+.index-list:hover a:not(:hover) .d, .index-list:hover a:not(:hover) .y { color: var(--faint); }
+@media (max-width: 720px) {
+  .index-head { flex-direction: column; }
+  .index-list a { grid-template-columns: 1fr auto; row-gap: 6px; }
+  .index-list .d { grid-column: 1 / -1; grid-row: 2; }
+}
 
-  /* ---- sections ---- */
-  main { display: flex; flex-direction: column; gap: clamp(3rem, 8vh, 4.5rem); padding-top: clamp(3.5rem, 10vh, 5.5rem); }
-  .label {
-    display: block;
-    font-size: var(--fs-label);
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--faint);
-    padding-bottom: .8rem;
-    margin-bottom: 1.6rem;
-    border-bottom: 1px solid var(--line);
-  }
+/* ---------- chapters ---------- */
+.chapter { position: relative; z-index: 2; }
+.frame { position: relative; padding-top: 120px; padding-bottom: 60px; }
+.steps { display: grid; gap: 64px; }
+.step { max-width: 30rem; }
+.step h2 { margin-bottom: 22px; }
+.step h3 { margin-bottom: 18px; }
+.step p { color: var(--dim); max-width: 30rem; }
+.step p + p { margin-top: 12px; }
+.step .meta { margin-top: 22px; color: var(--dim); }
+.step .go { display: inline-flex; gap: .5em; margin-top: 22px; color: var(--fg); text-decoration: none; padding-bottom: 4px; border-bottom: 1px solid var(--line-2); transition: border-color .2s; }
+.step .go:hover { border-color: var(--fg); }
+.rail { display: none; }
 
-  /* ---- prose ---- */
-  .prose {
-    font-family: var(--serif);
-    font-size: var(--fs-body);
-    line-height: 1.62;
-    color: var(--ink);
-    max-width: 56ch;
-    margin: 0;
-  }
-  .prose + .prose { margin-top: 1.2rem; }
-  .prose.quiet { color: var(--quiet); font-size: 1.0625rem; }
+.js .chapter { height: calc(var(--n, 4) * 100vh + 100vh); height: calc(var(--n, 4) * 100svh + 100svh); }
+.js .frame {
+  position: sticky; top: 0; height: 100vh; height: 100svh; padding-top: 0; padding-bottom: 0;
+  display: grid; grid-template-rows: 1fr auto;
+}
+.js .steps { display: grid; align-items: center; gap: 0; padding-top: 80px; }
+.js .step { grid-area: 1 / 1; opacity: 0; visibility: hidden; will-change: opacity, filter, transform; }
+.js .step.live { visibility: visible; }
+.js .rail {
+  display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); gap: 10px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 26px);
+}
+.rail button {
+  appearance: none; background: none; border: 0; padding: 12px 0 0; margin: 0; cursor: pointer; text-align: left;
+  color: var(--faint); position: relative; transition: color .3s;
+}
+.rail button::before, .rail button::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--line-2); }
+.rail button::after { background: var(--fg); transform-origin: left; transform: scaleX(var(--fill, 0)); }
+.rail button.on { color: var(--fg); }
+.rail button:hover { color: var(--fg); }
 
-  /* ---- work ---- */
-  .rows { display: flex; flex-direction: column; }
-  .row {
-    display: block;
-    padding: 1.15rem 1rem;
-    margin: 0 -1rem;
-    border-radius: 6px;
-    border-bottom: 1px solid var(--line);
-    color: inherit; text-decoration: none;
-    transition: background .18s ease;
+@media (max-width: 820px) {
+  /* the model takes the top of the screen; the words sit at the bottom on a soft shade */
+  .js .steps { align-items: end; padding-top: 0; padding-bottom: 18px; position: relative; }
+  .js .steps::before {
+    content: ""; position: absolute; left: calc(-1 * var(--gutter)); right: calc(-1 * var(--gutter)); bottom: -90px; height: 72%;
+    background: linear-gradient(to top, var(--shade) 55%, transparent); z-index: -1; pointer-events: none;
   }
-  .row:last-child { border-bottom: 0; }
-  .rhead { display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap; }
-  .rname { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); transition: color .18s ease; }
-  .rwhen { font-size: var(--fs-label); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
-  .rdesc {
-    font-family: var(--serif); font-size: 1.0625rem; line-height: 1.5;
-    color: var(--quiet); margin: .4rem 0 0; max-width: 54ch;
-  }
-  a.row:hover, a.row:focus-visible { background: rgba(25,24,23,.045); outline: none; }
-  a.row:hover .rname, a.row:focus-visible .rname { color: var(--accent); }
-  a.row:focus-visible { box-shadow: inset 0 0 0 1px var(--accent); }
-  .out { font-size: .8rem; color: var(--faint); margin-left: .1rem; }
-  a.row:hover .out { color: var(--accent); }
+  .step h2 { font-size: clamp(2.6rem, 12vw, 3.6rem); margin-bottom: 14px; }
+  .step h3 { font-size: 1.75rem; margin-bottom: 12px; }
+  .step p:not(.mono) { font-size: 1rem; }
+  .step .meta { margin-top: 14px; }
+  .js .rail { gap: 6px; }
+  .rail button { font-size: .5rem; letter-spacing: .08em; }
+}
 
-  /* ---- skills ---- */
-  .skills { display: flex; flex-direction: column; gap: 1.15rem; }
-  .srow { display: grid; grid-template-columns: 11rem 1fr; gap: 1.4rem; align-items: baseline; }
-  .srow .slabel { color: var(--accent); font-size: var(--fs-small); }
-  .srow .sval { color: var(--quiet); font-size: var(--fs-small); line-height: 1.7; }
+/* ---------- smaller builds ---------- */
+.builds { position: relative; z-index: 2; padding: 22vh 0 10vh; }
+.builds-head { display: grid; gap: 18px; margin-bottom: clamp(28px, 6vh, 64px); }
+.builds-head p { color: var(--dim); max-width: 40ch; }
+.build {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(24px, 5vw, 80px); align-items: center;
+  padding: clamp(24px, 4vh, 40px) 0; border-top: 1px solid var(--line);
+}
+.build:last-child { border-bottom: 1px solid var(--line); }
+.thumb { aspect-ratio: 4 / 3; position: relative; }
+.thumb::after {
+  content: attr(data-hint); position: absolute; left: 0; bottom: 0; color: var(--faint);
+  font: 400 .56rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; opacity: 0; transition: opacity .3s;
+}
+.thumb:hover::after { opacity: 1; }
+html:not(.has-3d) .thumb { display: none; }
+html:not(.has-3d) .build { grid-template-columns: 1fr; }
+.build h3 { margin-bottom: 14px; }
+.build p { color: var(--dim); max-width: 34rem; }
+.build .meta { margin-top: 16px; color: var(--dim); }
+@media (max-width: 720px) { .build { grid-template-columns: 1fr; gap: 8px; } }
 
-  /* ---- contact ---- */
-  .links { display: flex; flex-direction: column; }
-  .link {
-    display: grid; grid-template-columns: 6.5rem 1fr auto; align-items: baseline;
-    gap: 1.2rem; padding: .7rem 1rem; margin: 0 -1rem; border-radius: 6px;
-    text-decoration: none; color: var(--ink);
-    transition: background .16s ease;
-  }
-  .link .k { color: var(--faint); font-size: var(--fs-label); letter-spacing: .12em; text-transform: uppercase; }
-  .link .v { color: var(--ink); transition: color .16s ease; word-break: break-word; }
-  .link .a { color: var(--faint); justify-self: end; font-size: .8rem; transition: transform .16s ease, color .16s ease; }
-  .link:hover, .link:focus-visible { background: rgba(25,24,23,.045); outline: none; }
-  .link:hover .v, .link:focus-visible .v { color: var(--accent); }
-  .link:hover .a, .link:focus-visible .a { color: var(--accent); transform: translate(2px,-2px); }
-  .link:focus-visible { box-shadow: inset 0 0 0 1px var(--accent); }
+/* ---------- about, experience, tools ---------- */
+.about { position: relative; z-index: 2; padding: 22vh 0 14vh; }
+.about-lede { font: 300 clamp(1.9rem, 3.9vw, 3.6rem)/1.12 var(--font-display); letter-spacing: -.022em; max-width: 24ch; text-wrap: balance; }
+.about-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 5vw, 80px); margin-top: clamp(40px, 8vh, 80px); max-width: 1100px; }
+.about-body p { color: var(--dim); }
+.about-body p + p { margin-top: 14px; }
+@media (max-width: 720px) { .about-body { grid-template-columns: 1fr; gap: 14px; } }
 
-  /* ---- footer ---- */
-  footer {
-    max-width: var(--col); margin: 0 auto;
-    padding: 1.75rem clamp(1.35rem, 5vw, 2rem) 3.5rem;
-    border-top: 1px solid var(--line);
-    color: var(--faint); font-size: var(--fs-label); letter-spacing: .06em;
-  }
+.section { position: relative; z-index: 2; padding: 12vh 0; }
+.section-head { margin-bottom: clamp(24px, 5vh, 48px); }
+.rows { border-top: 1px solid var(--line); }
+.row {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: clamp(16px, 4vw, 64px);
+  padding: clamp(20px, 3.5vh, 32px) 0; border-bottom: 1px solid var(--line); text-decoration: none; color: inherit;
+}
+.row .rn { font: 300 clamp(1.5rem, 2.4vw, 2.1rem)/1.05 var(--font-display); letter-spacing: -.02em; }
+.row .rw { display: block; margin-top: 10px; color: var(--dim); }
+.row .rd { color: var(--dim); max-width: 38rem; }
+a.row .rn { transition: opacity .2s; }
+a.row:hover .rn { opacity: .7; }
+.tools { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(16px, 4vw, 64px); border-top: 1px solid var(--line); }
+.tool { padding: 20px 0; border-bottom: 1px solid var(--line); }
+.tool .mono { color: var(--fg); display: block; margin-bottom: 8px; }
+.tool p { color: var(--dim); }
+@media (max-width: 720px) { .row, .tools { grid-template-columns: 1fr; } .row { gap: 10px; } }
 
-  @media (max-width: 560px) {
-    .srow { grid-template-columns: 1fr; gap: .2rem; }
-    .link { grid-template-columns: 5rem 1fr auto; gap: .9rem; }
-    .lede { max-width: none; }
-  }
+/* ---------- contact ---------- */
+.contact { position: relative; z-index: 2; padding: 22vh 0 8vh; }
+.contact h2 { margin-bottom: clamp(28px, 6vh, 56px); }
+.links { border-top: 1px solid var(--line); }
+.link {
+  display: grid; grid-template-columns: 9rem minmax(0, 1fr) auto; align-items: baseline; gap: 20px;
+  padding: 18px 0; border-bottom: 1px solid var(--line); text-decoration: none;
+}
+.link .k { color: var(--dim); }
+.link .v { font: 300 clamp(1.25rem, 2vw, 1.7rem)/1.1 var(--font-display); letter-spacing: -.015em; word-break: break-word; transition: opacity .2s; }
+.link .a { color: var(--dim); transition: transform .3s var(--ease), color .2s; }
+.link:hover .a { color: var(--fg); transform: translate(3px, -3px); }
+.link:hover .v { opacity: .75; }
+@media (max-width: 560px) { .link { grid-template-columns: 5.5rem minmax(0, 1fr) auto; gap: 12px; } }
+footer { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 28px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 36px); color: var(--dim); }
 
+@media (prefers-reduced-motion: reduce) {
+  .grain, .cue, .avail::before { animation: none; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <p class="ping"><span class="dot" aria-hidden="true"></span> Open to Summer 2027 internships and new-grad roles</p>
+<canvas class="contours" id="contours" aria-hidden="true"></canvas>
+<canvas class="stage" id="stage" aria-hidden="true"></canvas>
+<svg class="dims" id="dims" aria-hidden="true">
+  <line class="ext" id="dxa"/><line class="ext" id="dxb"/><line id="dx"/><line id="dx1"/><line id="dx2"/><text id="dxt" text-anchor="middle"/>
+  <line class="ext" id="dya"/><line class="ext" id="dyb"/><line id="dy"/><line id="dy1"/><line id="dy2"/><text id="dyt"/>
+</svg>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-chip" id="chip" aria-hidden="true">Drag to turn</div>
 
-  <header class="hero">
-    <h1 class="name">Albert Sein</h1>
-    <p class="role">Materials &amp; Systems Engineering, University of Virginia</p>
-    <p class="lede">I just finished an internship working on next generation data center infrastructure for AI, I built and shipped Ordo, and I'm starting an AI consumer electronics company with my brother.</p>
-  </header>
+<nav class="nav" aria-label="Main">
+  <a class="brand" href="#top">Albert Sein</a>
+  <div class="nav-links mono">
+    <a href="#work">Work</a>
+    <a href="#how">Process</a>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+    <a class="pill" href="albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé</a>
+  </div>
+</nav>
 
-  <main>
+<header class="hero" id="top">
+  <div class="hero-pin">
+    <div class="hero-stack">
+      <div class="hero-intro" id="heroIntro">
+        <h1 class="hero-name">Albert Sein</h1>
+        <p class="hero-sub">A product person who loves building things, and loves working with people even more. I study materials and systems engineering at UVA.</p>
+        <p class="avail mono">Open to Summer 2027 internships and new-grad roles</p>
+      </div>
+      <p class="hero-line" id="heroLine1">Who it's for, who I build it with, then how it's built.</p>
+      <p class="hero-line" id="heroLine2">Here's what I've made so far.</p>
+    </div>
+    <svg class="cue" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M5 8l6 6 6-6"/></svg>
+  </div>
+</header>
 
-    <section>
-      <span class="label">Now</span>
-      <p class="prose">
-        I just finished my internship at Celestica as a project management and thermal engineering
-        intern, working on next generation data center infrastructure for AI applications.
-      </p>
-      <p class="prose">
-        Most of it was on the TIMA5, running conductivity tests on liquid metal thermal interface
-        materials and then sitting with the data. Thermal impedance, warpage, heat maps of where a
-        package actually stays hot. It's slow work and I like it.
-      </p>
-      <p class="prose">
-        Ordo went live on the App Store this August. I designed it and used AI tools to build it,
-        and I got it through review myself. I still ship updates to it most weeks.
-      </p>
-      <p class="prose">
-        The new thing is an AI consumer electronics company I'm starting with my brother. Getting an
-        object built is a different problem than shipping an app, and that's about all I can say
-        about it right now.
-      </p>
-      <p class="prose quiet">
-        Under all of it is school: an accelerated BS in Materials Science and MEng in Systems
-        Engineering at UVA, 2027 and 2028.
-      </p>
-    </section>
+<main>
 
-    <section>
-      <span class="label">Work</span>
+  <section class="index" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="index-head">
+        <h2 id="work-title">Work</h2>
+        <p>Three hardware projects and a couple of smaller builds. The models are the real CAD; the notes cover the electronics, the plans and the reviews behind them.</p>
+      </div>
+      <ul class="index-list">
+        <li><a href="#aperture"><span class="t">Aperture</span><span class="d">A wearable for your mind, and its charging case</span><span class="y mono">2026</span></a></li>
+        <li><a href="#snack"><span class="t">Snack</span><span class="d">A physical timekeeper for your phone</span><span class="y mono">2026</span></a></li>
+        <li><a href="#ordo-desktop"><span class="t">Ordo Desktop</span><span class="d">A desk display for Ordo</span><span class="y mono">2026</span></a></li>
+        <li><a href="#builds"><span class="t">Smaller builds</span><span class="d">Coursework in Fusion 360</span><span class="y mono">2026</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Each step's data-* sets the model's pose: yaw and pitch in degrees, explode 0 to 1, zoom, and which axes to measure. -->
+  <section class="chapter" id="aperture" data-chapter aria-label="Aperture">
+    <div class="frame wrap">
+      <div class="steps">
+        <div class="step" data-label="Shape" data-model="aperture" data-yaw="-28" data-pitch="10" data-zoom="1">
+          <h2>Aperture</h2>
+          <p>A wearable for your mind. It rests in the groove behind your ear: a crescent of dark brushed aluminium on a soft silicone base. I worked on the mechanical design, the electronics integration and the charging case.</p>
+          <p class="meta mono">2026 &nbsp; Wearable &nbsp; Fusion 360 &nbsp; KiCad</p>
+        </div>
+        <div class="step" data-label="Profile" data-model="aperture" data-yaw="86" data-pitch="4" data-zoom="1.05">
+          <h3>Shaped to the head.</h3>
+          <p>The shell's face follows the curve of the head along its length, so it stays the same thickness from tip to tip instead of lifting off at the ends.</p>
+        </div>
+        <div class="step" data-label="Electronics" data-model="aperture" data-yaw="68" data-pitch="12" data-explode="1" data-zoom=".8">
+          <h3>Electronics, folded to the curve.</h3>
+          <p>The board is rigid-flex in three sections, each sitting tangent to the shell's curve and joined by short flex hinges. Steel rings soldered to it pass through the floor to meet the magnets in the base. Part positions come back from the KiCad layouts into the CAD, and every rebuild reruns the interference check.</p>
+        </div>
+        <div class="step" data-label="Plan" data-model="aperture" data-yaw="0" data-pitch="0" data-zoom="1" data-measure="x,y">
+          <h3>One file, three test tracks.</h3>
+          <p>Every dimension lives in one parameters file that rebuilds the drawings, the fit checks, the Fusion 360 model and both board outlines. The build and test plan runs three tracks side by side: build the first units, scan heads, and run bench and wear tests, with results feeding back into that file before anything is tooled.</p>
+        </div>
+        <div class="step" data-label="Case" data-model="aperture-case" data-yaw="-128" data-pitch="30" data-zoom="1">
+          <h3>The charging case.</h3>
+          <p>I designed the case around the shell: a crescent base and a lid on a pin hinge. Magnets pull the shell into its cups, and it charges through the same steel rings that hold it to the base.</p>
+        </div>
+        <div class="step" data-label="Inside" data-model="aperture-case" data-yaw="-118" data-pitch="22" data-explode="1" data-zoom=".86">
+          <h3>Its own board and battery.</h3>
+          <p>Under the pocket sit the case's own board, cell and USB-C port. A Hall sensor watches the lid, and the contacts only switch on with the lid shut and a shell drawing current.</p>
+          <a class="go" href="https://aperture-kappa-three.vercel.app" target="_blank" rel="noopener">Visit Aperture <span aria-hidden="true">&#8599;</span></a>
+        </div>
+      </div>
+      <div class="rail mono" aria-label="Aperture steps"></div>
+    </div>
+  </section>
+
+  <section class="chapter" id="snack" data-chapter aria-label="Snack">
+    <div class="frame wrap">
+      <div class="steps">
+        <div class="step" data-label="Snack" data-model="snack" data-yaw="-30" data-pitch="12" data-zoom="1">
+          <h2>Snack</h2>
+          <p>A physical timekeeper that sits on the back of your phone. One click starts a Snack Break and blocks the apps you chose; a second click ends it, and the app keeps an honest record of where your time went.</p>
+          <p class="meta mono">2026 &nbsp; Consumer hardware &nbsp; Fusion 360</p>
+        </div>
+        <div class="step" data-label="Thickness" data-model="snack" data-yaw="90" data-pitch="0" data-zoom="1" data-measure="z,y">
+          <h3>Under 8 mm.</h3>
+          <p>Revision R03 threw out the 9.8 mm stack and started clean at 64 by 78 by 7.6 mm. Every part had to fit a named volume after walls, corner radii, adhesive and battery swell, with 7.8 mm as a hard limit.</p>
+        </div>
+        <div class="step" data-label="Electronics" data-model="snack" data-yaw="-64" data-pitch="14" data-explode="1" data-zoom=".78">
+          <h3>Two boards in 7.6 mm.</h3>
+          <p>A main board with the USB-C port, a display board joined to it by a flex, the cell, the attachment ring and a deadfront glass, stacked inside the frame. A scripted audit checks 83 critical fits, down to 0.15 mm between the USB-C connector and its cage.</p>
+        </div>
+        <div class="step" data-label="Release" data-model="snack" data-yaw="24" data-pitch="10" data-explode=".4" data-zoom=".95">
+          <h3>Ready for a manufacturer's review.</h3>
+          <p>R07 is packaged for an OEM design-for-manufacture review: a BOM, a source ledger for every part, an interface net table, and a release checklist where nothing closes without an owner, an artifact, a date and an approver.</p>
+        </div>
+      </div>
+      <div class="rail mono" aria-label="Snack steps"></div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ordo-desktop" data-chapter aria-label="Ordo Desktop">
+    <div class="frame wrap">
+      <div class="steps">
+        <div class="step" data-label="Desk" data-model="ordo" data-yaw="-30" data-pitch="16" data-zoom="1.05">
+          <h2>Ordo Desktop</h2>
+          <p>A desk display for Ordo, my calendar app. A hull, a base plate, and a screen set into the face.</p>
+          <p class="meta mono">Spring 2026 &nbsp; Fusion 360 &nbsp; PLA</p>
+        </div>
+        <div class="step" data-label="Parts" data-model="ordo" data-yaw="-42" data-pitch="20" data-explode="1" data-zoom=".95">
+          <h3>Two prints and a screen.</h3>
+          <p>The hull and the base plate print separately on a Prusa MK4S, about five hours between them at 0.3 and 0.2 mm layers.</p>
+        </div>
+        <div class="step" data-label="Size" data-model="ordo" data-yaw="0" data-pitch="9" data-zoom="1.05" data-measure="x,y">
+          <h3>Sized for a desk.</h3>
+          <p>186 mm wide, 68 mm tall and 114 mm deep, with the base plate running out past the hull as a front ledge.</p>
+          <a class="go" href="https://useordoapp.com" target="_blank" rel="noopener">See Ordo <span aria-hidden="true">&#8599;</span></a>
+        </div>
+      </div>
+      <div class="rail mono" aria-label="Ordo Desktop steps"></div>
+    </div>
+  </section>
+
+  <section class="builds" id="builds" aria-labelledby="builds-title">
+    <div class="wrap">
+      <div class="builds-head">
+        <h2 id="builds-title">Smaller builds</h2>
+        <p>Coursework from MSE 2200 in spring 2026, all in Fusion 360.</p>
+      </div>
+      <article class="build">
+        <div class="thumb" data-model="portafilter" data-yaw="-68" data-pitch="26" data-hint="Hover to turn"></div>
+        <div>
+          <h3>Bottomless portafilter</h3>
+          <p>The one I pull espresso with every morning, modeled to its exact dimensions around a 58 mm basket, with two locking lugs instead of three. I scaled it down to fit a two-inch cube for the print.</p>
+          <p class="meta mono">February 2026</p>
+        </div>
+      </article>
+      <article class="build">
+        <div class="thumb" data-model="topology" data-yaw="-30" data-pitch="22" data-hint="Hover to turn"></div>
+        <div>
+          <h3>Topology optimization</h3>
+          <p>A Ti-6Al-4V strut between two fixed platforms, optimized in Fusion 360 for stiffness to weight under a 5,000 N load, with a safety factor of about 3.45.</p>
+          <p class="meta mono">April 2026</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <h2 class="section-head" id="how-title">How I run projects</h2>
       <div class="rows">
+        <div class="row">
+          <div><span class="rn">Gates, not opinions</span><span class="rw mono">Snack</span></div>
+          <p class="rd">Every unproven item is a release gate. A line on the checklist closes only with an owner, an artifact, a date and an approver; a render, a quote or a verbal yes doesn't count.</p>
+        </div>
+        <div class="row">
+          <div><span class="rn">One source of truth</span><span class="rw mono">Aperture</span></div>
+          <p class="rd">The drawings, the fit checks, the Fusion 360 model and the board outlines all rebuild from one parameters file, so a change can't drift between documents.</p>
+        </div>
+        <div class="row">
+          <div><span class="rn">Parallel tracks</span><span class="rw mono">Aperture</span></div>
+          <p class="rd">Prototype builds, head scans, and bench and wear tests run side by side, and their results feed back into the design before anything is tooled.</p>
+        </div>
+        <div class="row">
+          <div><span class="rn">People and schedules</span><span class="rw mono">Celestica</span></div>
+          <p class="rd">Project management on thermal interface material testing for AI data center hardware, and leading four interns building LLM agents for market research and operations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <section class="about" id="about" aria-labelledby="about-title">
+    <div class="wrap">
+      <h2 class="sr" id="about-title">About</h2>
+      <p class="about-lede">I like both halves of engineering: designing the part, and running the project that gets it built.</p>
+      <div class="about-body">
+        <div>
+          <p>I'm doing an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
+          <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Most of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. It's slow work and I like it.</p>
+        </div>
+        <div>
+          <p>Ordo went live on the App Store this August. I designed it and used AI tools to build it, got it through review myself, and still ship updates most weeks.</p>
+          <p>The new thing is an AI consumer electronics company I'm starting with my brother. Getting an object built is a different problem than shipping an app.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="experience" aria-labelledby="exp-title">
+    <div class="wrap">
+      <h2 class="section-head" id="exp-title">Experience</h2>
+      <div class="rows">
+        <div class="row">
+          <div><span class="rn">Celestica</span><span class="rw mono">Summer 2026</span></div>
+          <p class="rd">Project management and thermal engineering intern in San Jose, working on next generation data center infrastructure for AI. I tested thermal interface materials for cooling, and I led four interns building LLM agents for market research and ops.</p>
+        </div>
         <a class="row" href="https://useordoapp.com" target="_blank" rel="noopener">
-          <span class="rhead">
-            <span class="rname">Ordo</span>
-            <span class="rwhen">2026 to now</span>
-            <span class="out" aria-hidden="true">&#8599;</span>
-          </span>
-          <p class="rdesc">An iOS and web app built for people who hate how inconvenient calendars are. 1.0 shipped to the App Store in August 2026.</p>
+          <div><span class="rn">Ordo <span aria-hidden="true">&#8599;</span></span><span class="rw mono">2026 to now</span></div>
+          <p class="rd">An iOS and web app built for people who hate how inconvenient calendars are. 1.0 shipped to the App Store in August 2026.</p>
         </a>
-
         <div class="row">
-          <span class="rhead">
-            <span class="rname">Stealth startup</span>
-            <span class="rwhen">2026 to now</span>
-          </span>
-          <p class="rdesc">An AI consumer electronics company I'm starting with my brother.</p>
+          <div><span class="rn">Stealth startup</span><span class="rw mono">2026 to now</span></div>
+          <p class="rd">An AI consumer electronics company I'm starting with my brother.</p>
         </div>
-
         <div class="row">
-          <span class="rhead">
-            <span class="rname">Celestica</span>
-            <span class="rwhen">Summer 2026</span>
-          </span>
-          <p class="rdesc">Project management and thermal engineering intern in San Jose, working on next generation data center infrastructure for AI. I tested thermal interface materials for cooling, and I led four interns building LLM agents for market research and ops.</p>
+          <div><span class="rn">Ji Ma Lab, UVA</span><span class="rw mono">2025 to 26</span></div>
+          <p class="rd">Additive manufacturing research. I laser melted simulated lunar regolith and worked out which machine settings produced which phases, then modeled the cooling rates behind them.</p>
         </div>
-
         <div class="row">
-          <span class="rhead">
-            <span class="rname">Ji Ma Lab, UVA</span>
-            <span class="rwhen">2025 to 26</span>
-          </span>
-          <p class="rdesc">Additive manufacturing research. I laser melted simulated lunar regolith and worked out which machine settings produced which phases, then modeled the cooling rates behind them.</p>
-        </div>
-
-        <div class="row">
-          <span class="rhead">
-            <span class="rname">Setty &amp; Associates</span>
-            <span class="rwhen">2024</span>
-          </span>
-          <p class="rdesc">Mechanical engineering intern. CFD and Revit models for the HVAC systems in a dozen or so office and school buildings.</p>
-        </div>
-
-      </div>
-    </section>
-
-    <section>
-      <span class="label">Skills</span>
-      <div class="skills">
-        <div class="srow">
-          <span class="slabel">Characterization</span>
-          <span class="sval">SEM &#183; EDS &#183; XRD &#183; light microscopy &#183; hardness and tensile testing &#183; selective laser melting &#183; composite layup</span>
-        </div>
-        <div class="srow">
-          <span class="slabel">Design and simulation</span>
-          <span class="sval">Fusion 360 &#183; SolidWorks &#183; CFD &#183; Revit &#183; AutoCAD &#183; 3D printing</span>
-        </div>
-        <div class="srow">
-          <span class="slabel">Data</span>
-          <span class="sval">DoE &#183; ANOVA &#183; Minitab &#183; process modeling &#183; Arduino and sensor integration</span>
-        </div>
-        <div class="srow">
-          <span class="slabel">Software</span>
-          <span class="sval">I use AI tools to write code, and to bring design ideas or app ideas I have to life. Have worked with TypeScript, React Native, and Swift.</span>
+          <div><span class="rn">Setty &amp; Associates</span><span class="rw mono">2024</span></div>
+          <p class="rd">Mechanical engineering intern. CFD and Revit models for the HVAC systems in a dozen or so office and school buildings.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section>
-      <span class="label">Contact</span>
+  <section class="section" aria-labelledby="tools-title">
+    <div class="wrap">
+      <h2 class="section-head" id="tools-title">Tools</h2>
+      <div class="tools">
+        <div class="tool"><span class="mono">Design and simulation</span><p>Fusion 360, SolidWorks, CFD, Revit, AutoCAD, and 3D printing on a Prusa MK4S.</p></div>
+        <div class="tool"><span class="mono">Characterization</span><p>SEM, EDS, XRD, light microscopy, hardness and tensile testing, selective laser melting, composite layup.</p></div>
+        <div class="tool"><span class="mono">Electronics</span><p>Electronics integration and packaging, KiCad, rigid-flex boards, Arduino and sensor integration.</p></div>
+        <div class="tool"><span class="mono">Project management</span><p>Release checklists and gates, BOMs and source ledgers, build and test plans, DFM reviews, leading small teams.</p></div>
+        <div class="tool"><span class="mono">Data</span><p>DoE, ANOVA, Minitab, process modeling.</p></div>
+        <div class="tool"><span class="mono">Software</span><p>I use AI tools to write code, and to bring design ideas or app ideas I have to life. Have worked with TypeScript, React Native, and Swift.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 id="contact-title">Say hello.</h2>
       <div class="links">
-        <a class="link" href="mailto:kks7ys@virginia.edu">
-          <span class="k">Email</span><span class="v">kks7ys@virginia.edu</span><span class="a" aria-hidden="true">&#8599;</span>
-        </a>
-        <a class="link" href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener">
-          <span class="k">LinkedIn</span><span class="v">in/albert-sein03</span><span class="a" aria-hidden="true">&#8599;</span>
-        </a>
-        <a class="link" href="https://instagram.com/itsalbertsein" target="_blank" rel="noopener">
-          <span class="k">Instagram</span><span class="v">@itsalbertsein</span><span class="a" aria-hidden="true">&#8599;</span>
-        </a>
-        <a class="link" href="https://github.com/asein-03" target="_blank" rel="noopener">
-          <span class="k">GitHub</span><span class="v">github.com/asein-03</span><span class="a" aria-hidden="true">&#8599;</span>
-        </a>
-        <a class="link" href="https://useordoapp.com" target="_blank" rel="noopener">
-          <span class="k">Ordo</span><span class="v">useordoapp.com</span><span class="a" aria-hidden="true">&#8599;</span>
-        </a>
-        <a class="link" href="albert-sein-resume.pdf" target="_blank" rel="noopener">
-          <span class="k">R&#233;sum&#233;</span><span class="v">Albert_Sein_Resume_Fall2026.pdf</span><span class="a" aria-hidden="true">&#8599;</span>
-        </a>
+        <a class="link" href="mailto:kks7ys@virginia.edu"><span class="k mono">Email</span><span class="v">kks7ys@virginia.edu</span><span class="a" aria-hidden="true">&#8599;</span></a>
+        <a class="link" href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener"><span class="k mono">LinkedIn</span><span class="v">in/albert-sein03</span><span class="a" aria-hidden="true">&#8599;</span></a>
+        <a class="link" href="https://github.com/asein-03" target="_blank" rel="noopener"><span class="k mono">GitHub</span><span class="v">asein-03</span><span class="a" aria-hidden="true">&#8599;</span></a>
+        <a class="link" href="https://instagram.com/itsalbertsein" target="_blank" rel="noopener"><span class="k mono">Instagram</span><span class="v">@itsalbertsein</span><span class="a" aria-hidden="true">&#8599;</span></a>
+        <a class="link" href="albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="k mono">Résumé</span><span class="v">Albert_Sein_Resume_Fall2026.pdf</span><span class="a" aria-hidden="true">&#8599;</span></a>
       </div>
-    </section>
+    </div>
+  </section>
 
-  </main>
-</div>
+</main>
 
-<footer>
-  &copy; 2026 Albert Sein &#183; no cookies, no analytics
+<footer class="wrap mono">
+  <span>&copy; 2026 Albert Sein</span>
+  <span>No cookies, no analytics</span>
 </footer>
 
+<script>
+/* Shared state and the parts that don't need WebGL: smooth scroll, the contour field, the hero sequence,
+   the chapter steps and rails. The 3D module below reads window.AS each frame. */
+(() => {
+  const AS = window.AS = {};
+  const root = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+  Object.assign(AS, { clamp, smooth, reduce });
+
+  /* ---------- smooth scroll (skipped for reduced motion) ---------- */
+  AS.scrollTo = (y) => (AS.lenis ? AS.lenis.scrollTo(y, { duration: 1.4 }) : window.scrollTo({ top: y, behavior: reduce.matches ? 'auto' : 'smooth' }));
+  function startLenis() {
+    if (reduce.matches || !window.Lenis || AS.lenis) return;
+    AS.lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true });
+    const raf = (t) => { AS.lenis.raf(t); requestAnimationFrame(raf); };
+    requestAnimationFrame(raf);
+  }
+  AS.startLenis = startLenis;
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute('href').slice(1), el = id ? document.getElementById(id) : null;
+    if (!el && id !== 'top') return;
+    e.preventDefault();
+    let y = el ? el.getBoundingClientRect().top + scrollY : 0;
+    if (el && el.hasAttribute('data-chapter')) y += innerHeight * 0.02;
+    AS.scrollTo(id === 'top' ? 0 : y);
+  });
+
+  /* ---------- contour field: iso-lines of smooth noise, drawn once per size ---------- */
+  const cv = document.getElementById('contours');
+  const ctx = cv.getContext('2d');
+  const seed = 7349;
+  const hash = (x, y) => {
+    let h = (Math.imul(x, 374761393) + Math.imul(y, 668265263) + seed) | 0;
+    h = Math.imul(h ^ (h >>> 13), 1274126177);
+    return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
+  };
+  const vnoise = (x, y) => {
+    const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  };
+  const fbm = (x, y) => { let s = 0, a = 0.5, f = 1; for (let o = 0; o < 4; o++) { s += a * vnoise(x * f, y * f); f *= 2.03; a *= 0.5; } return s; };
+  function drawContours() {
+    const dpr = Math.min(devicePixelRatio || 1, 2), w = innerWidth, h = Math.round(innerHeight * 1.3);
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    const fg = getComputedStyle(root).getPropertyValue('--fg').trim() || '#ededed';
+    const step = w < 700 ? 7 : 9, cols = Math.ceil(w / step) + 1, rows = Math.ceil(h / step) + 1;
+    const sc = 1 / 260, F = new Float32Array(cols * rows);
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+      const x = i * step * sc, y = j * step * sc;
+      F[j * cols + i] = fbm(x + 0.35 * fbm(y + 3.1, x), y + 0.35 * fbm(x - 1.7, y));
+    }
+    ctx.strokeStyle = fg; ctx.lineJoin = 'round';
+    const L = 22;
+    for (let k = 0; k < L; k++) {
+      const iso = 0.18 + (k / (L - 1)) * 0.64, major = k % 5 === 0;
+      ctx.globalAlpha = major ? 0.26 : 0.12; ctx.lineWidth = major ? 1 : 0.7;
+      ctx.beginPath();
+      for (let j = 0; j < rows - 1; j++) for (let i = 0; i < cols - 1; i++) {
+        const a = F[j * cols + i], b = F[j * cols + i + 1], c = F[(j + 1) * cols + i + 1], d = F[(j + 1) * cols + i];
+        const idx = (a > iso) | ((b > iso) << 1) | ((c > iso) << 2) | ((d > iso) << 3);
+        if (idx === 0 || idx === 15) continue;
+        const x0 = i * step, y0 = j * step;
+        const top = () => [x0 + step * (iso - a) / (b - a), y0];
+        const right = () => [x0 + step, y0 + step * (iso - b) / (c - b)];
+        const bottom = () => [x0 + step * (iso - d) / (c - d), y0 + step];
+        const left = () => [x0, y0 + step * (iso - a) / (d - a)];
+        const seg = (p, q) => { ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); };
+        switch (idx) {
+          case 1: case 14: seg(left(), top()); break;
+          case 2: case 13: seg(top(), right()); break;
+          case 3: case 12: seg(left(), right()); break;
+          case 4: case 11: seg(right(), bottom()); break;
+          case 5: seg(left(), top()); seg(right(), bottom()); break;
+          case 6: case 9: seg(top(), bottom()); break;
+          case 7: case 8: seg(left(), bottom()); break;
+          case 10: seg(top(), right()); seg(left(), bottom()); break;
+        }
+      }
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+  let lastW = 0;
+  const redraw = () => { if (innerWidth !== lastW || !cv.width) { lastW = innerWidth; drawContours(); } };
+  redraw();
+  addEventListener('resize', redraw);
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change', drawContours);
+
+  /* ---------- chapters: rails and step state ---------- */
+  const ease = (t) => t * t * (3 - 2 * t);
+  AS.chapters = [...document.querySelectorAll('[data-chapter]')].map((el) => {
+    const steps = [...el.querySelectorAll('.step')];
+    const rail = el.querySelector('.rail');
+    el.style.setProperty('--n', steps.length);
+    rail.style.setProperty('--n', steps.length);
+    const buttons = steps.map((s, k) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = s.dataset.label;
+      b.addEventListener('click', () => {
+        const total = el.offsetHeight - innerHeight;
+        AS.scrollTo(el.getBoundingClientRect().top + scrollY + ((k + 0.5) / steps.length) * total);
+      });
+      rail.appendChild(b);
+      return b;
+    });
+    const pose = steps.map((s) => ({
+      model: s.dataset.model, yaw: +(s.dataset.yaw || 0), pitch: +(s.dataset.pitch || 0),
+      explode: +(s.dataset.explode || 0), zoom: +(s.dataset.zoom || 1),
+      measure: s.dataset.measure ? s.dataset.measure.split(',') : null,
+    }));
+    return { el, steps, buttons, pose, i: 0, t: 0, presence: 0 };
+  });
+
+  const intro = document.getElementById('heroIntro'), l1 = document.getElementById('heroLine1'), l2 = document.getElementById('heroLine2');
+  const hero = document.querySelector('.hero');
+  const show = (el, v, lift = 18) => {
+    el.style.opacity = v.toFixed(3);
+    el.style.filter = v > 0.995 ? 'none' : `blur(${((1 - v) * 10).toFixed(1)}px)`;
+    el.style.transform = `translateY(${((1 - v) * lift).toFixed(1)}px)`;
+  };
+
+  AS.update = () => {
+    const vh = innerHeight;
+    /* hero: the name, then two lines, each blurred in and out */
+    const hr = hero.getBoundingClientRect();
+    const hp = clamp(-hr.top / Math.max(1, hr.height - vh));
+    show(intro, 1 - smooth(0.08, 0.26, hp), -24);
+    show(l1, smooth(0.28, 0.42, hp) * (1 - smooth(0.56, 0.66, hp)));
+    show(l2, smooth(0.68, 0.8, hp) * (1 - smooth(0.94, 1, hp)));
+    root.style.setProperty('--contours', (1 - 0.72 * smooth(0.6, 1, hp)).toFixed(3));
+    cv.style.transform = `translate3d(0, ${(-Math.min(scrollY, vh * 3) * 0.06).toFixed(1)}px, 0)`;
+    root.style.setProperty('--nav-shade', smooth(vh * 1.6, vh * 2.2, scrollY).toFixed(3));
+
+    /* chapters: which step, how far into the next one, and how present the chapter is */
+    for (const ch of AS.chapters) {
+      const r = ch.el.getBoundingClientRect(), n = ch.steps.length;
+      const total = Math.max(1, r.height - vh), p = clamp(-r.top / total);
+      const s = clamp(p * n - 0.5, 0, n - 1), i = Math.min(n - 2, Math.floor(s));
+      const f = n > 1 ? s - i : 0, t = n > 1 ? ease(smooth(0.3, 0.7, f)) : 0;
+      ch.i = Math.max(0, i); ch.t = t;
+      ch.presence = smooth(vh * 0.9, vh * 0.15, r.top) * smooth(vh * 0.15, vh * 0.75, r.bottom);
+      if (ch.presence <= 0 && (r.bottom < -vh || r.top > 2 * vh)) continue;
+      ch.steps.forEach((el, k) => {
+        const w = k === ch.i ? 1 - t : k === ch.i + 1 ? t : 0;
+        el.classList.toggle('live', w > 0.01);
+        if (w > 0.01 || el.style.opacity !== '0') show(el, w, k === ch.i ? -26 : 26);
+      });
+      const cur = t > 0.5 ? ch.i + 1 : ch.i;
+      ch.buttons.forEach((b, k) => {
+        b.classList.toggle('on', k === cur);
+        b.style.setProperty('--fill', k < ch.i + (t > 0 ? 1 : 0) ? 1 : k === ch.i + (t > 0 ? 1 : 0) ? (n > 1 ? clamp(s - ch.i) : 1).toFixed(3) : 0);
+      });
+    }
+  };
+  addEventListener('scroll', () => AS.update(), { passive: true });
+  addEventListener('resize', () => AS.update());
+  AS.update();
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer onload="AS.startLenis()"></script>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+/* The models are the real CAD, converted to small binaries in models/ (see tools/cad). One renderer draws
+   the chapter model full screen and the small builds into their own boxes with scissor tests. */
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const AS = window.AS, { clamp, smooth, reduce } = AS;
+const root = document.documentElement;
+const D2R = Math.PI / 180;
+const lerp = (a, b, t) => a + (b - a) * t;
+
+const canvas = document.getElementById('stage');
+// without WebGL this throws, has-3d is never set, and the page stays text only
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+root.classList.add('has-3d');
+const mobileQ = matchMedia('(max-width: 820px)');
+renderer.setPixelRatio(Math.min(devicePixelRatio || 1, mobileQ.matches ? 1.6 : 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.setClearColor(0x000000, 0);
+renderer.autoClear = false;
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+const key = new THREE.DirectionalLight(0xffffff, 1.1); key.position.set(3, 5, 4); scene.add(key);
+const rim = new THREE.DirectionalLight(0xffffff, 1.8); rim.position.set(-5, 2, -4); scene.add(rim);
+const fill = new THREE.DirectionalLight(0xffffff, 0.35); fill.position.set(-3, -3, 3); scene.add(fill);
+
+const FOV = 26;
+const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
+const thumbCam = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
+
+/* ---------- materials: black, grey and white, as on the Aperture page ---------- */
+function brushedMaps() {
+  const S = 512, c = document.createElement('canvas'); c.width = c.height = S;
+  const g = c.getContext('2d');
+  g.fillStyle = '#808080'; g.fillRect(0, 0, S, S);
+  for (let i = 0; i < 3600; i++) {
+    const y = Math.random() * S, x = Math.random() * S, len = 30 + Math.random() * 420, v = Math.round(128 + (Math.random() - 0.5) * 70);
+    g.strokeStyle = `rgba(${v},${v},${v},${(0.2 + Math.random() * 0.35).toFixed(2)})`;
+    g.lineWidth = Math.random() < 0.9 ? 0.5 : 1.1;
+    for (const off of [0, -S]) { g.beginPath(); g.moveTo(x + off, y); g.lineTo(x + off + len, y); g.stroke(); }
+  }
+  const h = g.getImageData(0, 0, S, S).data, n = g.createImageData(S, S), k = 1.6;
+  const H = (x, y) => h[(((y + S) % S) * S + ((x + S) % S)) * 4] / 255;
+  for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
+    let nx = (H(x - 1, y) - H(x + 1, y)) * k * 0.2, ny = (H(x, y - 1) - H(x, y + 1)) * k, nz = 1;
+    const l = Math.hypot(nx, ny, nz); nx /= l; ny /= l; nz /= l;
+    const o = (y * S + x) * 4;
+    n.data[o] = (nx * 0.5 + 0.5) * 255; n.data[o + 1] = (ny * 0.5 + 0.5) * 255; n.data[o + 2] = (nz * 0.5 + 0.5) * 255; n.data[o + 3] = 255;
+  }
+  const nc = document.createElement('canvas'); nc.width = nc.height = S; nc.getContext('2d').putImageData(n, 0, 0);
+  const tex = (cv) => { const t = new THREE.CanvasTexture(cv); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.NoColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); return t; };
+  return { rough: tex(c), normal: tex(nc) };
+}
+const brushed = brushedMaps();
+const MATERIALS = {
+  metal: () => new THREE.MeshPhysicalMaterial({
+    color: 0x2a2a2a, metalness: 1, roughness: 0.6, roughnessMap: brushed.rough,
+    normalMap: brushed.normal, normalScale: new THREE.Vector2(0.08, 0.08),
+    clearcoat: 0.3, clearcoatRoughness: 0.35, envMapIntensity: 1.8,
+  }),
+  plastic: () => new THREE.MeshPhysicalMaterial({ color: 0x1c1c1c, metalness: 0, roughness: 0.8, clearcoat: 0.08, envMapIntensity: 0.9 }),
+  silicone: () => new THREE.MeshPhysicalMaterial({ color: 0xbdbdbd, metalness: 0, roughness: 0.6, sheen: 0.5, sheenRoughness: 0.8, envMapIntensity: 0.8 }),
+  glass: () => new THREE.MeshPhysicalMaterial({ color: 0x020202, metalness: 0, roughness: 0.14, clearcoat: 1, clearcoatRoughness: 0.06, envMapIntensity: 0.5 }),
+  // electronics: boards, part blocks, cells, plated metal, and the display's diffuser
+  pcb: () => new THREE.MeshPhysicalMaterial({ color: 0x262626, metalness: 0.1, roughness: 0.45, clearcoat: 0.5, clearcoatRoughness: 0.3, envMapIntensity: 1.1 }),
+  chip: () => new THREE.MeshPhysicalMaterial({ color: 0x0c0c0c, metalness: 0, roughness: 0.38, envMapIntensity: 1 }),
+  cell: () => new THREE.MeshPhysicalMaterial({ color: 0x8f8f8f, metalness: 0.7, roughness: 0.42, envMapIntensity: 1.2 }),
+  bright: () => new THREE.MeshPhysicalMaterial({ color: 0xcfcfcf, metalness: 1, roughness: 0.22, envMapIntensity: 1.4 }),
+  diffuser: () => new THREE.MeshPhysicalMaterial({ color: 0xd6d6d6, metalness: 0, roughness: 0.55, envMapIntensity: 0.8 }),
+};
+
+/* ---------- model files: a JSON header, then int16 positions, int8 normals and indices per part ---------- */
+function boxUV(P, N, n) {
+  const uv = new Float32Array(n * 2);
+  for (let i = 0; i < n; i++) {
+    const ax = Math.abs(N[i * 3]), ay = Math.abs(N[i * 3 + 1]), az = Math.abs(N[i * 3 + 2]);
+    const x = P[i * 3] / 32767, y = P[i * 3 + 1] / 32767, z = P[i * 3 + 2] / 32767;
+    const [u, v] = ax >= ay && ax >= az ? [z, y] : ay >= az ? [x, z] : [x, y];
+    uv[i * 2] = u * 1.6; uv[i * 2 + 1] = v * 1.6;
+  }
+  return uv;
+}
+const loading = new Map();
+const MODELS = {};
+function loadModel(id) {
+  if (!loading.has(id)) loading.set(id, fetch(`models/${id}.bin`).then((r) => { if (!r.ok) throw new Error(id); return r.arrayBuffer(); }).then((buf) => {
+    const hl = new DataView(buf).getUint32(0, true);
+    const head = JSON.parse(new TextDecoder().decode(new Uint8Array(buf, 4, hl)));
+    const base = 4 + hl;
+    const pivot = new THREE.Group(), spin = new THREE.Group();
+    pivot.add(spin);
+    const parts = head.parts.map((p) => {
+      const P = new Int16Array(buf, base + p.pos, p.vertices * 3), N = new Int8Array(buf, base + p.nrm, p.vertices * 3);
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.BufferAttribute(P, 3, true));
+      g.setAttribute('normal', new THREE.BufferAttribute(N, 3, true));
+      g.setAttribute('uv', new THREE.BufferAttribute(boxUV(P, N, p.vertices), 2));
+      g.setIndex(new THREE.BufferAttribute(p.idx32 ? new Uint32Array(buf, base + p.idx, p.indices) : new Uint16Array(buf, base + p.idx, p.indices), 1));
+      const mat = (MATERIALS[p.mat] || MATERIALS.metal)();
+      mat.transparent = true;
+      const mesh = new THREE.Mesh(g, mat);
+      spin.add(mesh);
+      return { mesh, explode: new THREE.Vector3(...p.explode) };
+    });
+    const box = new THREE.Box3();
+    for (const { mesh } of parts) { mesh.geometry.computeBoundingBox(); box.union(mesh.geometry.boundingBox); }
+    const m = { id, pivot, spin, parts, box, sizeMM: head.sizeMM, radius: box.getBoundingSphere(new THREE.Sphere()).radius, opacity: -1 };
+    pivot.visible = false;
+    scene.add(pivot);
+    MODELS[id] = m;
+    return m;
+  }));
+  return loading.get(id);
+}
+function setOpacity(m, o) {
+  if (Math.abs(m.opacity - o) < 0.002) return;
+  m.opacity = o;
+  for (const { mesh } of m.parts) { mesh.material.opacity = o; mesh.material.depthWrite = o > 0.6; }
+}
+
+/* main models load first, the small builds when you get near them */
+const mainIds = [...new Set(AS.chapters.flatMap((c) => c.pose.map((p) => p.model)))];
+mainIds.reduce((chain, id) => chain.then(() => loadModel(id)).catch(() => {}), Promise.resolve());
+const thumbs = [...document.querySelectorAll('.thumb[data-model]')].map((el) => ({
+  el, id: el.dataset.model, yaw: +(el.dataset.yaw || 0), pitch: +(el.dataset.pitch || 0), spin: 0, speed: 0, hover: false,
+}));
+thumbs.forEach((t) => {
+  t.el.addEventListener('pointerenter', () => { t.hover = true; });
+  t.el.addEventListener('pointerleave', () => { t.hover = false; });
+});
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries) if (e.isIntersecting) { loadModel(e.target.dataset.model).catch(() => {}); io.unobserve(e.target); }
+}, { rootMargin: '150% 0px' });
+thumbs.forEach((t) => io.observe(t.el));
+
+/* ---------- dragging the chapter model ---------- */
+const chip = document.getElementById('chip');
+const fine = matchMedia('(hover: hover) and (pointer: fine)');
+const user = { yaw: 0, pitch: 0, drag: null };
+const pointer = { x: -1, y: -1, onText: false };
+let hitRect = null;
+const overModel = (x, y) => hitRect && x > hitRect.l && x < hitRect.r && y > hitRect.t && y < hitRect.b;
+addEventListener('pointermove', (e) => {
+  pointer.x = e.clientX; pointer.y = e.clientY; pointer.onText = !!e.target.closest('a, button, .step');
+  if (user.drag) {
+    user.yaw = user.drag.yaw + (e.clientX - user.drag.x) * 0.45;
+    user.pitch = clamp(user.drag.pitch + (e.clientY - user.drag.y) * 0.3, -50, 50);
+  }
+  const on = fine.matches && (user.drag || (overModel(e.clientX, e.clientY) && !e.target.closest('a, button, .step')));
+  chip.classList.toggle('on', !!on);
+  if (on) chip.style.transform = `translate(${e.clientX + 16}px, ${e.clientY + 14}px)`;
+}, { passive: true });
+addEventListener('pointerdown', (e) => {
+  if (!fine.matches || e.button !== 0 || !overModel(e.clientX, e.clientY) || e.target.closest('a, button, .step')) return;
+  user.drag = { x: e.clientX, y: e.clientY, yaw: user.yaw, pitch: user.pitch };
+  document.body.classList.add('dragging');
+  AS.lenis?.stop();
+});
+const endDrag = () => { if (!user.drag) return; user.drag = null; document.body.classList.remove('dragging'); AS.lenis?.start(); };
+addEventListener('pointerup', endDrag);
+addEventListener('pointercancel', endDrag);
+
+/* ---------- dimension lines ---------- */
+const dims = document.getElementById('dims');
+const $ = (id) => document.getElementById(id);
+const setLine = (el, x1, y1, x2, y2) => { el.setAttribute('x1', x1.toFixed(1)); el.setAttribute('y1', y1.toFixed(1)); el.setAttribute('x2', x2.toFixed(1)); el.setAttribute('y2', y2.toFixed(1)); };
+const fmt = (mm) => `${mm >= 100 ? Math.round(mm) : +mm.toFixed(1)} mm`;
+const AXIS = { x: 0, y: 1, z: 2 };
+function drawDims(rect, m, axes, o) {
+  dims.style.opacity = o.toFixed(3);
+  if (o <= 0.001) return;
+  const gap = 26, tick = 5;
+  const by = rect.b + gap, rx = rect.r + gap;
+  setLine($('dxa'), rect.l, rect.b + 6, rect.l, by + tick); setLine($('dxb'), rect.r, rect.b + 6, rect.r, by + tick);
+  setLine($('dx'), rect.l, by, rect.r, by);
+  setLine($('dx1'), rect.l - tick, by + tick, rect.l + tick, by - tick); setLine($('dx2'), rect.r - tick, by + tick, rect.r + tick, by - tick);
+  const tx = $('dxt'); tx.setAttribute('x', ((rect.l + rect.r) / 2).toFixed(1)); tx.setAttribute('y', (by + 20).toFixed(1));
+  tx.textContent = fmt(m.sizeMM[AXIS[axes[0]]]);
+  setLine($('dya'), rect.r + 6, rect.t, rx + tick, rect.t); setLine($('dyb'), rect.r + 6, rect.b, rx + tick, rect.b);
+  setLine($('dy'), rx, rect.t, rx, rect.b);
+  setLine($('dy1'), rx - tick, rect.t + tick, rx + tick, rect.t - tick); setLine($('dy2'), rx - tick, rect.b + tick, rx + tick, rect.b - tick);
+  const ty = $('dyt'); ty.setAttribute('x', (rx + 14).toFixed(1)); ty.setAttribute('y', ((rect.t + rect.b) / 2 + 4).toFixed(1));
+  ty.textContent = fmt(m.sizeMM[AXIS[axes[1]]]);
+}
+const corner = new THREE.Vector3();
+// The model's box on screen. With axes given, the box is flattened to its mid-plane along the third axis,
+// so in a straight-on view the dimension lines sit on the outline instead of on the perspective of the back face.
+function screenRect(m, w, h, axes) {
+  const b = m.box, mid = b.getCenter(new THREE.Vector3()); let l = Infinity, r = -Infinity, t = Infinity, bt = -Infinity;
+  const flat = axes ? ['x', 'y', 'z'].find((a) => !axes.includes(a)) : null;
+  m.spin.updateWorldMatrix(true, false);
+  for (let i = 0; i < 8; i++) {
+    corner.set(i & 1 ? b.max.x : b.min.x, i & 2 ? b.max.y : b.min.y, i & 4 ? b.max.z : b.min.z);
+    if (flat) corner[flat] = mid[flat];
+    corner.applyMatrix4(m.spin.matrixWorld).project(camera);
+    const x = (corner.x * 0.5 + 0.5) * w, y = (-corner.y * 0.5 + 0.5) * h;
+    l = Math.min(l, x); r = Math.max(r, x); t = Math.min(t, y); bt = Math.max(bt, y);
+  }
+  return { l, r, t, b: bt };
+}
+
+/* ---------- pose ---------- */
+function applyPose(m, pose, o, time, lift) {
+  const idle = reduce.matches ? 0 : 1;
+  m.pivot.visible = o > 0.002;
+  if (!m.pivot.visible) return;
+  setOpacity(m, o);
+  m.pivot.rotation.set((pose.pitch + user.pitch) * D2R + idle * Math.sin(time * 0.31) * 0.025, 0, 0);
+  m.spin.rotation.set(0, (pose.yaw + user.yaw) * D2R + idle * Math.sin(time * 0.22) * 0.09, 0);
+  m.pivot.position.set(0, (1 - o) * lift + idle * Math.sin(time * 0.6) * 0.012, 0);
+  for (const p of m.parts) p.mesh.position.copy(p.explode).multiplyScalar(pose.explode);
+}
+const mixPose = (a, b, t) => ({
+  yaw: lerp(a.yaw, b.yaw, t), pitch: lerp(a.pitch, b.pitch, t), explode: lerp(a.explode, b.explode, t), zoom: lerp(a.zoom, b.zoom, t),
+});
+
+let W = 0, H = 0;
+function resize() {
+  W = innerWidth; H = innerHeight;
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, mobileQ.matches ? 1.6 : 2));
+  renderer.setSize(W, H, false);
+}
+resize();
+addEventListener('resize', resize);
+matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => { renderer.toneMappingExposure = lightMode() ? 1.05 : 0.9; });
+const lightMode = () => getComputedStyle(root).colorScheme === 'light';
+renderer.toneMappingExposure = lightMode() ? 1.05 : 0.9;
+
+const clock = new THREE.Clock();
+function frame() {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, clock.getDelta()), time = clock.elapsedTime;
+  if (!user.drag) { user.yaw *= 0.9; user.pitch *= 0.9; }
+
+  /* which models the chapters want, and in what pose */
+  const want = new Map();
+  let best = null;
+  for (const ch of AS.chapters) {
+    if (ch.presence <= 0.001) continue;
+    const a = ch.pose[ch.i], b = ch.pose[Math.min(ch.pose.length - 1, ch.i + 1)], t = ch.t;
+    const same = a.model === b.model;
+    const add = (id, pose, w, measure) => {
+      const prev = want.get(id);
+      if (!prev || prev.w < w) want.set(id, { pose, w, measure });
+    };
+    if (same) add(a.model, mixPose(a, b, t), ch.presence, (a.measure ? 1 - t : 0) + (b.measure ? t : 0));
+    else { add(a.model, a, ch.presence * (1 - t), a.measure ? 1 - t : 0); add(b.model, b, ch.presence * t, b.measure ? t : 0); }
+    const m = (t > 0.5 ? b : a);
+    if (!best || ch.presence > best.presence) best = { presence: ch.presence, id: m.model, axes: m.measure || a.measure || b.measure };
+  }
+
+  /* frame the chapter model: right of the words on wide screens, above them on phones */
+  const mobile = mobileQ.matches, aspect = W / Math.max(1, H);
+  camera.aspect = aspect;
+  if (mobile) camera.setViewOffset(W, H, 0, H * 0.17, W, H);
+  else camera.setViewOffset(W, H, -W * 0.2, 0, W, H);
+  camera.updateProjectionMatrix();
+
+  renderer.setScissorTest(false);
+  renderer.setViewport(0, 0, W, H);
+  renderer.clear();
+
+  for (const m of Object.values(MODELS)) m.pivot.visible = false;
+  let measured = null;
+  for (const [id, w] of want) {
+    const m = MODELS[id];
+    if (!m) continue;
+    const pose = w.pose;
+    const vt = Math.tan((FOV / 2) * D2R), ht = vt * aspect;
+    const fracV = mobile ? 0.36 : 0.6, fracH = mobile ? 0.82 : 0.4;
+    const dist = Math.max(m.radius / (vt * fracV), m.radius / (ht * fracH)) / pose.zoom;
+    camera.position.set(0, 0, dist);
+    camera.lookAt(0, 0, 0);
+    applyPose(m, pose, w.w, time, -0.35);
+    if (best && best.id === id) measured = { m, w };
+  }
+  if (want.size) renderer.render(scene, camera);
+
+  /* hit area for dragging, and the dimension lines in measure steps */
+  if (measured && measured.w.w > 0.5) {
+    hitRect = screenRect(measured.m, W, H);
+    const meas = measured.w.measure * smooth(0.6, 1, measured.w.w) * (user.drag ? 0 : 1) * clamp(1 - (Math.abs(user.yaw) + Math.abs(user.pitch)) / 6);
+    const axes = best.axes || ['x', 'y'];
+    drawDims(meas > 0.001 ? screenRect(measured.m, W, H, axes) : hitRect, measured.m, axes, meas);
+  } else { hitRect = null; drawDims(null, null, null, 0); }
+  // the page can scroll under a still pointer, so the chip is re-checked every frame
+  if (!user.drag && chip.classList.contains('on') && (!overModel(pointer.x, pointer.y) || pointer.onText)) chip.classList.remove('on');
+
+  /* small builds: each in its own box */
+  const visibleThumbs = thumbs.filter((t) => MODELS[t.id]);
+  if (visibleThumbs.length) {
+    renderer.setScissorTest(true);
+    for (const m of Object.values(MODELS)) m.pivot.visible = false;
+    for (const t of visibleThumbs) {
+      const r = t.el.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > H || r.width < 2) continue;
+      const m = MODELS[t.id];
+      t.speed = lerp(t.speed, t.hover ? 1.4 : reduce.matches ? 0 : 0.18, 0.06);
+      t.spin += t.speed * dt;
+      const appear = smooth(H, H * 0.75, r.top);
+      applyPose(m, { yaw: t.yaw + t.spin / D2R, pitch: t.pitch, explode: 0, zoom: 1 }, appear, time, -0.2);
+      m.pivot.rotation.x = t.pitch * D2R; m.spin.rotation.y = t.yaw * D2R + t.spin; // no drag offset here
+      thumbCam.aspect = r.width / r.height; thumbCam.clearViewOffset();
+      const vt = Math.tan((FOV / 2) * D2R);
+      thumbCam.position.set(0, 0, Math.max(m.radius / (vt * 0.78), m.radius / (vt * thumbCam.aspect * 0.78)));
+      thumbCam.lookAt(0, 0, 0); thumbCam.updateProjectionMatrix();
+      const bottom = H - r.bottom;
+      renderer.setViewport(r.left, bottom, r.width, r.height);
+      renderer.setScissor(r.left, bottom, r.width, r.height);
+      renderer.render(scene, thumbCam);
+      m.pivot.visible = false;
+    }
+    renderer.setScissorTest(false);
+  }
+}
+frame();
+</script>
 </body>
 </html>
