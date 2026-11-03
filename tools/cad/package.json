@@ -1,0 +1,14 @@
+{
+  "name": "personal-site-cad-tools",
+  "private": true,
+  "type": "module",
+  "description": "Converts CAD exports into the compact model files in ../../models",
+  "scripts": {
+    "models": "node convert.mjs ../../models"
+  },
+  "dependencies": {
+    "meshoptimizer": "0.21.0",
+    "occt-import-js": "0.0.22",
+    "three": "0.160.0"
+  }
+}
