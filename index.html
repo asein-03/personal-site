@@ -778,7 +778,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   AS.scrollTo = (y) => (AS.lenis ? AS.lenis.scrollTo(y, { duration: 1.4 }) : window.scrollTo({ top: y, behavior: reduce.matches ? 'auto' : 'smooth' }));
   function startLenis() {
     if (reduce.matches || !window.Lenis || AS.lenis) return;
-    AS.lenis = new window.Lenis({ lerp: 0.1, smoothWheel: true });
+    AS.lenis = new window.Lenis({ lerp: 0.085, smoothWheel: true });
     const raf = (t) => { AS.lenis.raf(t); requestAnimationFrame(raf); };
     requestAnimationFrame(raf);
   }
@@ -1003,7 +1003,8 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   requestAnimationFrame(tick);
 
   /* ---------- chapters: rails and step state ---------- */
-  const ease = (t) => t * t * (3 - 2 * t);
+  // an ease with no jolt at either end: speed and acceleration both start and finish at zero
+  const ease = (t) => t * t * t * (t * (t * 6 - 15) + 10);
   AS.chapters = [...document.querySelectorAll('[data-chapter]')].map((el) => {
     const steps = [...el.querySelectorAll('.step')];
     const rail = el.querySelector('.rail');
@@ -1024,39 +1025,64 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
       explode: +(s.dataset.explode || 0), zoom: +(s.dataset.zoom || 1), close: +(s.dataset.close || 0), detach: +(s.dataset.detach || 0),
       measure: s.dataset.measure ? s.dataset.measure.split(',') : null,
     }));
-    return { el, steps, buttons, pose, i: 0, t: 0, presence: 0 };
+    return { el, steps, buttons, pose, i: 0, t: 0, s: null, goal: 0, presence: 0 };
   });
 
   const nameplate = document.querySelector('.nameplate');
-  // steps cut over hard at the midpoint: no blur, no drift
-  const show = (el, v) => { el.style.opacity = clamp((v - 0.44) / 0.12).toFixed(3); };
+  // Step text hands over in sequence, never on top of itself: the outgoing step has gone before the incoming one
+  // appears, rising a few pixels as it goes. It plays the same backwards when scrolling up.
+  const show = (el, w, dir) => {
+    const o = smooth(0.5, 0.72, w);
+    el.style.opacity = o.toFixed(3);
+    el.style.transform = o > 0.999 ? '' : `translateY(${((1 - o) * 10 * dir).toFixed(1)}px)`;
+  };
+  // where a chapter is: which step, how far into the next, the words and the rail to match
+  function layout(ch) {
+    const n = ch.steps.length, s = ch.s, i = Math.max(0, Math.min(n - 2, Math.floor(s)));
+    // the change between steps takes most of the scroll between them, so it is never rushed
+    const f = n > 1 ? s - i : 0, t = n > 1 ? ease(clamp((f - 0.15) / 0.7)) : 0;
+    ch.i = i; ch.t = t;
+    ch.steps.forEach((el, k) => {
+      const w = k === i ? 1 - t : k === i + 1 ? t : 0;
+      el.classList.toggle('live', w > 0.5);
+      if (w > 0.01 || el.style.opacity !== '0') show(el, w, k === i ? -1 : 1);
+    });
+    const cur = t > 0.5 ? i + 1 : i;
+    ch.buttons.forEach((b, k) => {
+      b.classList.toggle('on', k === cur);
+      b.style.setProperty('--fill', k < i + (t > 0 ? 1 : 0) ? 1 : k === i + (t > 0 ? 1 : 0) ? (n > 1 ? clamp(s - i) : 1).toFixed(3) : 0);
+    });
+  }
 
   AS.update = () => {
     const vh = innerHeight;
     /* the running head fills in once the nameplate has scrolled under it */
     root.style.setProperty('--nav-shade', smooth(60, -10, nameplate.getBoundingClientRect().bottom).toFixed(3));
 
-    /* chapters: which step, how far into the next one, and how present the chapter is */
+    /* chapters: where the scroll says each one should be, and how present it is; settle() eases them there */
     for (const ch of AS.chapters) {
       const r = ch.el.getBoundingClientRect(), n = ch.steps.length;
       const total = Math.max(1, r.height - vh), p = clamp(-r.top / total);
-      const s = clamp(p * n - 0.5, 0, n - 1), i = Math.min(n - 2, Math.floor(s));
-      const f = n > 1 ? s - i : 0, t = n > 1 ? ease(smooth(0.3, 0.7, f)) : 0;
-      ch.i = Math.max(0, i); ch.t = t;
+      ch.goal = clamp(p * n - 0.5, 0, n - 1);
       ch.presence = smooth(vh * 0.9, vh * 0.15, r.top) * smooth(vh * 0.15, vh * 0.75, r.bottom);
-      if (ch.presence <= 0 && (r.bottom < -vh || r.top > 2 * vh)) continue;
-      ch.steps.forEach((el, k) => {
-        const w = k === ch.i ? 1 - t : k === ch.i + 1 ? t : 0;
-        el.classList.toggle('live', w > 0.01);
-        if (w > 0.01 || el.style.opacity !== '0') show(el, w);
-      });
-      const cur = t > 0.5 ? ch.i + 1 : ch.i;
-      ch.buttons.forEach((b, k) => {
-        b.classList.toggle('on', k === cur);
-        b.style.setProperty('--fill', k < ch.i + (t > 0 ? 1 : 0) ? 1 : k === ch.i + (t > 0 ? 1 : 0) ? (n > 1 ? clamp(s - ch.i) : 1).toFixed(3) : 0);
-      });
+      if (ch.s === null) { ch.s = ch.goal; layout(ch); }
     }
   };
+  /* Chapters follow the scroll through a short ease rather than jumping with it, so a flick of the wheel, a swipe
+     on a phone or a jump from the rail turns the model and swaps the words smoothly, the same going up or down. */
+  let settledAt = performance.now();
+  const settle = (now) => {
+    requestAnimationFrame(settle);
+    const k = reduce.matches ? 1 : 1 - Math.exp(-Math.min(0.05, (now - settledAt) / 1000) * 8);
+    settledAt = now;
+    for (const ch of AS.chapters) {
+      if (ch.s === null || ch.s === ch.goal) continue;
+      ch.s += (ch.goal - ch.s) * k;
+      if (Math.abs(ch.goal - ch.s) < 0.0005) ch.s = ch.goal;
+      layout(ch);
+    }
+  };
+  requestAnimationFrame(settle);
   addEventListener('scroll', () => AS.update(), { passive: true });
   addEventListener('resize', () => AS.update());
   AS.update();
@@ -1252,6 +1278,9 @@ const MODELS = {};
    texture, a band that sweeps up through it, and its hard edges traced in the same light. You see the electronics
    through the shells, and they glow brighter than the shells do. The halftone plate still prints the solid model. */
 const HOLO_ANGLE = 32;
+const idleQueue = [];
+const idleNext = () => (window.requestIdleCallback || ((cb) => setTimeout(cb, 16)))(() => { idleQueue.shift()?.(); if (idleQueue.length) idleNext(); }, { timeout: 400 });
+const whenIdle = (fn) => { idleQueue.push(fn); if (idleQueue.length === 1) idleNext(); };
 const HOLO_STRENGTH = { pcb: 1, chip: 1, bright: 0.95, cell: 0.8, diffuser: 0.7, print: 0.7, glass: 0.55, metal: 0.55, alu: 0.5, plastic: 0.5, frost: 0.45, silicone: 0.45 };
 const holo = { color: { value: new THREE.Color() }, alpha: { value: 1 }, time: { value: 0 }, edgeAlpha: 0.6, edgeHex: 0, blending: THREE.AdditiveBlending, led: 0xffdcb0 };
 // white light added to the night page; by day, black ink laid over the paper instead
@@ -1308,10 +1337,11 @@ function loadModel(id) {
       solid.transparent = true;
       const light = holoMaterial(HOLO_STRENGTH[p.mat] ?? 0.6);
       const mesh = new THREE.Mesh(g, light);
-      const edge = new THREE.LineSegments(new THREE.EdgesGeometry(g, HOLO_ANGLE), new THREE.LineBasicMaterial({
+      const edge = new THREE.LineSegments(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({
         color: holo.edgeHex, transparent: true, opacity: 0, blending: holo.blending, depthWrite: false, toneMapped: false,
       }));
       edge.renderOrder = 1;
+      whenIdle(() => { edge.geometry.dispose(); edge.geometry = new THREE.EdgesGeometry(g, HOLO_ANGLE); });
       mesh.add(edge);
       spin.add(mesh);
       const hinge = p.hinge && { p: new THREE.Vector3(...p.hinge.p), a: new THREE.Vector3(...p.hinge.a).normalize(), deg: p.hinge.deg };
@@ -1561,7 +1591,11 @@ function frame() {
       if (!prev || prev.w < w) want.set(id, { pose, w, measure });
     };
     if (same) add(a.model, mixPose(a, b, t), ch.presence, (a.measure ? 1 - t : 0) + (b.measure ? t : 0));
-    else { add(a.model, a, ch.presence * (1 - t), a.measure ? 1 - t : 0); add(b.model, b, ch.presence * t, b.measure ? t : 0); }
+    else {
+      // a change of model hands over in sequence, like the words: the first has gone before the second arrives
+      const out = smooth(0.45, 0.72, 1 - t), arrive = smooth(0.45, 0.72, t);
+      add(a.model, a, ch.presence * out, a.measure ? out : 0); add(b.model, b, ch.presence * arrive, b.measure ? arrive : 0);
+    }
     const m = (t > 0.5 ? b : a);
     if (!best || ch.presence > best.presence) best = { presence: ch.presence, id: m.model, axes: m.measure || a.measure || b.measure };
   }
