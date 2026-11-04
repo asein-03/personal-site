@@ -103,7 +103,8 @@ h3 { font-size: clamp(1.35rem, 1.9vw, 2.1rem); font-weight: 700; line-height: 1;
 .prose { text-wrap: pretty; }
 
 /* ---------- press and paper: a trace of grain, and the tears a glitch rips across the page ---------- */
-.stage { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+/* the 3D canvas is as tall as the large viewport, so a phone's address bar moving never resizes it or shifts the model */
+.stage { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100lvh; z-index: 1; pointer-events: none; }
 .dims { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; overflow: visible; opacity: 0; }
 .dims line { stroke: var(--fg); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .dims .ext { stroke: var(--line-2); }
@@ -785,6 +786,15 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
   Object.assign(AS, { clamp, smooth, reduce });
 
+  /* One steady screen height for all the scroll maths: the small viewport (100svh), the unit the chapters are laid out
+     in. A phone's address bar sliding in and out changes innerHeight but not this, so it never moves you between steps. */
+  const vhProbe = document.createElement('div');
+  vhProbe.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:100vh;height:100svh;visibility:hidden;pointer-events:none';
+  document.body.appendChild(vhProbe);
+  let steadyVH = vhProbe.offsetHeight || innerHeight;
+  addEventListener('resize', () => { steadyVH = vhProbe.offsetHeight || innerHeight; });
+  AS.vh = () => steadyVH;
+
   /* ---------- smooth scroll (skipped for reduced motion) ---------- */
   const easeOut = (t) => 1 - Math.pow(1 - t, 3);
   AS.scrollTo = (y, duration = 1.4) => (AS.lenis ? AS.lenis.scrollTo(y, { duration, easing: easeOut }) : window.scrollTo({ top: y, behavior: reduce.matches ? 'auto' : 'smooth' }));
@@ -802,7 +812,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     if (!el && id !== 'top') return;
     e.preventDefault();
     let y = el ? el.getBoundingClientRect().top + scrollY : 0;
-    if (el && el.hasAttribute('data-chapter')) y += innerHeight * 0.02;
+    if (el && el.hasAttribute('data-chapter')) y += AS.vh() * 0.02;
     AS.scrollTo(id === 'top' ? 0 : y);
   });
 
@@ -1026,7 +1036,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
       const b = document.createElement('button');
       b.type = 'button'; b.textContent = s.dataset.label;
       b.addEventListener('click', () => {
-        const total = el.offsetHeight - innerHeight;
+        const total = el.offsetHeight - AS.vh();
         AS.scrollTo(el.getBoundingClientRect().top + scrollY + ((k + 0.5) / steps.length) * total);
       });
       rail.appendChild(b);
@@ -1069,7 +1079,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   }
 
   AS.update = () => {
-    const vh = innerHeight;
+    const vh = AS.vh();
     /* the running head fills in once the nameplate has scrolled under it */
     root.style.setProperty('--nav-shade', smooth(60, -10, nameplate.getBoundingClientRect().bottom).toFixed(3));
 
@@ -1105,13 +1115,16 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
      It leans the way you were going: past a third of the way, it carries on; short of that, it falls back. Not while
      a model is being dragged, and not with reduced motion. */
   let restTimer = 0, lastY = scrollY, heading = 1;
+  // Touch screens already carry the scroll with momentum, and a finger resting mid-swipe would read as a stop, so
+  // detents are for mice and trackpads only.
+  const touch = matchMedia('(pointer: coarse)');
   const detent = () => {
-    if (reduce.matches || document.body.classList.contains('dragging')) return;
+    if (reduce.matches || touch.matches || document.body.classList.contains('dragging')) return;
     for (const ch of AS.chapters) {
       const n = ch.steps.length, g = ch.goal, base = Math.floor(g), frac = g - base;
       if (ch.presence < 0.98 || n < 2 || frac < 0.02 || frac > 0.98) continue;
       const k = heading > 0 ? (frac > 0.33 ? base + 1 : base) : (frac < 0.67 ? base : base + 1);
-      const r = ch.el.getBoundingClientRect(), total = ch.el.offsetHeight - innerHeight;
+      const r = ch.el.getBoundingClientRect(), total = ch.el.offsetHeight - AS.vh();
       AS.scrollTo(r.top + scrollY + ((Math.min(n - 1, k) + 0.5) / n) * total, 0.65);
       return;
     }
@@ -1601,7 +1614,9 @@ const mixPose = (a, b, t) => {
 
 let W = 0, H = 0;
 function resize() {
-  W = innerWidth; H = innerHeight;
+  const w = canvas.clientWidth || innerWidth, h = canvas.clientHeight || innerHeight;
+  if (w === W && h === H) return;
+  W = w; H = h;
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, mobileQ.matches ? 1.6 : 2));
   renderer.setSize(W, H, false);
 }
