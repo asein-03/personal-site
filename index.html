@@ -100,10 +100,8 @@ h3 { font-size: clamp(1.7rem, 2.8vw, 3.6rem); font-weight: 800; line-height: .95
 .kicker { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font: 500 .6rem/1 var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
 .kicker span { background: var(--signal); color: var(--signal-ink); padding: 5px 7px 4px; }
 .double { height: 6px; border-top: 3px solid var(--fg); border-bottom: 1px solid var(--fg); }
-.flag { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: end; column-gap: clamp(12px, 2vw, 28px); padding-top: 12px; border-top: 6px solid var(--fg); margin-bottom: clamp(22px, 4vh, 40px); }
+.flag { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; column-gap: clamp(12px, 2vw, 28px); padding-top: 12px; border-top: 6px solid var(--fg); margin-bottom: clamp(22px, 4vh, 40px); }
 .flag .mono { color: var(--dim); text-align: right; }
-/* section numbers, drawn in outline beside the title */
-.flag .no { font: 900 clamp(2.8rem, 7vw, 9rem)/.9 var(--font-head); font-stretch: var(--stretch); color: transparent; -webkit-text-stroke: 1.5px var(--fg); }
 .prose { text-wrap: pretty; }
 
 /* ---------- press and paper: grain, scanlines, aged edges, and the tears a glitch rips across the page ---------- */
@@ -235,7 +233,7 @@ h3 { font-size: clamp(1.7rem, 2.8vw, 3.6rem); font-weight: 800; line-height: .95
 .toc a { display: grid; grid-template-columns: auto minmax(24px, 1fr) auto; align-items: baseline; column-gap: 10px; padding: 14px 10px; border-bottom: 1px solid var(--line-2); text-decoration: none; }
 .toc .t { font: 800 clamp(1.5rem, 2.4vw, 2.1rem)/1 var(--font-head); font-stretch: var(--stretch); text-transform: uppercase; }
 .toc .leader { border-bottom: 1px solid var(--line-2); transform: translateY(-5px); }
-.toc .pg { font: 500 .7rem/1 var(--font-mono); letter-spacing: .1em; }
+.toc .to { font: 500 .8rem/1 var(--font-mono); }
 .toc .d { grid-column: 1 / -1; margin-top: 4px; font: 400 .98rem/1.3 var(--font-body); color: var(--dim); }
 /* hovers flip the whole row to a solid block, instantly */
 .toc a:hover { background: var(--fg); color: var(--bg); }
@@ -475,7 +473,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
           <p class="dropcap">I am doing an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
           <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Most of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. It's slow work and I like it.</p>
           <p>Ordo went live on the App Store this August. I designed it and used AI tools to build it, got it through review myself, and still ship updates most weeks.</p>
-          <p class="jump mono"><a href="#aperture">Continued: 02 Aperture</a></p>
+          <p class="jump mono"><a href="#aperture">Continued: Aperture</a></p>
         </div>
       </article>
       <figure class="photo">
@@ -490,16 +488,16 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="index" id="work" aria-labelledby="work-title">
     <div class="wrap">
-      <div class="flag"><span class="no" aria-hidden="true">01</span><h2 id="work-title">Work</h2><span class="mono">In this edition</span></div>
+      <div class="flag"><h2 id="work-title">Work</h2><span class="mono">In this edition</span></div>
       <ol class="toc">
-        <li><a href="#aperture"><span class="t">Aperture</span><span class="leader"></span><span class="pg">02</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
-        <li><a href="#snack"><span class="t">Snack</span><span class="leader"></span><span class="pg">03</span><span class="d">A physical timekeeper for your phone</span></a></li>
-        <li><a href="#ordo-desktop"><span class="t">Ordo Desktop</span><span class="leader"></span><span class="pg">04</span><span class="d">A desk display for Ordo</span></a></li>
-        <li><a href="#builds"><span class="t">Smaller builds</span><span class="leader"></span><span class="pg">05</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
-        <li><a href="#experience"><span class="t">Experience</span><span class="leader"></span><span class="pg">06</span><span class="d">Celestica, Ordo, Ji Ma Lab, Setty &amp; Associates</span></a></li>
-        <li><a href="#skills"><span class="t">Skills and tools</span><span class="leader"></span><span class="pg">07</span><span class="d">Design, electronics, project management, characterization, data, software</span></a></li>
-        <li><a href="#life"><span class="t">Off the clock</span><span class="leader"></span><span class="pg">08</span><span class="d">Yangon, coffee, golf, five songs on repeat and favorite films</span></a></li>
-        <li><a href="#contact"><span class="t">Contact</span><span class="leader"></span><span class="pg">09</span><span class="d">Email, LinkedIn, GitHub and résumé</span></a></li>
+        <li><a href="#aperture"><span class="t">Aperture</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
+        <li><a href="#snack"><span class="t">Snack</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">A physical timekeeper for your phone</span></a></li>
+        <li><a href="#ordo-desktop"><span class="t">Ordo Desktop</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">A desk display for Ordo</span></a></li>
+        <li><a href="#builds"><span class="t">Smaller builds</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
+        <li><a href="#experience"><span class="t">Experience</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">Celestica, Ordo, Ji Ma Lab, Setty &amp; Associates</span></a></li>
+        <li><a href="#skills"><span class="t">Skills and tools</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">Design, electronics, project management, characterization, data, software</span></a></li>
+        <li><a href="#life"><span class="t">Off the clock</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">Yangon, coffee, golf, five songs on repeat and favorite films</span></a></li>
+        <li><a href="#contact"><span class="t">Contact</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">Email, LinkedIn, GitHub and résumé</span></a></li>
       </ol>
     </div>
   </section>
@@ -507,7 +505,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   <!-- Each step's data-* sets the model's pose: yaw and pitch in degrees, explode 0 to 1, zoom, and which axes to measure. -->
   <section class="chapter" id="aperture" data-chapter aria-label="Aperture">
     <div class="frame wrap">
-      <div class="folio mono"><span>02</span><span>Hardware</span><span>Albert Sein</span></div>
+      <div class="folio mono"><span>Aperture</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
         <div class="step" data-label="Shape" data-model="aperture" data-yaw="-28" data-pitch="10" data-zoom="1">
           <p class="kicker"><span>Hardware</span> Wearable</p>
@@ -547,7 +545,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="chapter" id="snack" data-chapter aria-label="Snack">
     <div class="frame wrap">
-      <div class="folio mono"><span>03</span><span>Hardware</span><span>Albert Sein</span></div>
+      <div class="folio mono"><span>Snack</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
         <div class="step" data-label="Snack" data-model="snack" data-yaw="-30" data-pitch="12" data-zoom="1">
           <p class="kicker"><span>Hardware</span> Consumer device</p>
@@ -582,7 +580,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="chapter" id="ordo-desktop" data-chapter aria-label="Ordo Desktop">
     <div class="frame wrap">
-      <div class="folio mono"><span>04</span><span>Hardware</span><span>Albert Sein</span></div>
+      <div class="folio mono"><span>Ordo Desktop</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
         <div class="step" data-label="Desk" data-model="ordo" data-yaw="-30" data-pitch="16" data-zoom="1.05">
           <p class="kicker"><span>Hardware</span> Desk display</p>
@@ -606,7 +604,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="builds" id="builds" aria-labelledby="builds-title">
     <div class="wrap">
-      <div class="flag"><span class="no" aria-hidden="true">05</span><h2 id="builds-title">Smaller builds</h2><span class="mono">Briefs</span></div>
+      <div class="flag"><h2 id="builds-title">Smaller builds</h2><span class="mono">Briefs</span></div>
       <div class="briefs">
         <article class="build wide">
           <div class="thumb" data-model="skyfall" data-yaw="-14" data-pitch="14" data-axis="x" data-fit="box" data-explode data-hint="Hover to take it apart"></div>
@@ -635,7 +633,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="section" id="experience" aria-labelledby="exp-title">
     <div class="wrap">
-      <div class="flag"><span class="no" aria-hidden="true">06</span><h2 id="exp-title">Experience</h2><span class="mono">Classifieds</span></div>
+      <div class="flag"><h2 id="exp-title">Experience</h2><span class="mono">Classifieds</span></div>
       <div class="classifieds">
         <div class="ad">
           <p class="ad-head">Celestica</p><span class="ad-when mono">Summer 2026 &nbsp; San Jose</span>
@@ -659,7 +657,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="section" id="skills" aria-labelledby="tools-title">
     <div class="wrap">
-      <div class="flag"><span class="no" aria-hidden="true">07</span><h2 id="tools-title">Skills and tools</h2><span class="mono">Listings</span></div>
+      <div class="flag"><h2 id="tools-title">Skills and tools</h2><span class="mono">Listings</span></div>
       <div class="agate prose">
         <p><b>Design and simulation</b>Fusion 360, SolidWorks, CFD, Revit, AutoCAD, and 3D printing on a Prusa MK4S.</p>
         <p><b>Electronics</b>Electronics integration and packaging, KiCad, rigid-flex boards, Arduino and sensor integration.</p>
@@ -674,14 +672,14 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   <!-- Off the clock: who I am outside work. The songs and films are plain lists, quick to update. -->
   <section class="section" id="life" aria-labelledby="life-title">
     <div class="wrap">
-      <div class="flag"><span class="no" aria-hidden="true">08</span><h2 id="life-title">Off the clock</h2><span class="mono">Op-ed</span></div>
+      <div class="flag"><h2 id="life-title">Off the clock</h2><span class="mono">Op-ed</span></div>
       <div class="culture">
         <section class="profile" aria-labelledby="profile-title">
           <p class="kicker"><span>Profile</span> Outside work</p>
           <h3 id="profile-title">From Yangon, Myanmar</h3>
-          <p class="prose">I'm from Yangon, Myanmar, and grew up there. I've always been into fast cars, rockets and planes; the rocket I built in high school is <a href="#builds">Project Skyfall, in 05</a>.</p>
+          <p class="prose">I'm from Yangon, Myanmar, and grew up there. I've always been into fast cars, rockets and planes; the rocket I built in high school is <a href="#builds">Project Skyfall</a>.</p>
           <dl class="facts">
-            <div><dt class="mono">Coffee</dt><dd>A coffee fanatic. The portafilter in <a href="#builds">05</a> is a replica I modeled.</dd></div>
+            <div><dt class="mono">Coffee</dt><dd>A coffee fanatic. The portafilter in <a href="#builds">Smaller builds</a> is a replica I modeled.</dd></div>
             <div><dt class="mono">Sports</dt><dd>Golf, basketball and volleyball.</dd></div>
             <div><dt class="mono">Outdoors</dt><dd>Traveling and hiking.</dd></div>
           </dl>
@@ -741,7 +739,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="contact" id="contact" aria-labelledby="contact-title">
     <div class="wrap">
-      <div class="flag"><span class="no" aria-hidden="true">09</span><h2 id="contact-title">Contact</h2><span class="mono">Letters to the editor</span></div>
+      <div class="flag"><h2 id="contact-title">Contact</h2><span class="mono">Letters to the editor</span></div>
       <p class="letters-intro">Hiring for a team that builds things? I'd like to hear about it.</p>
       <div class="links">
         <a class="link" href="mailto:kks7ys@virginia.edu"><span class="k mono">Email</span><span class="leader"></span><span class="v">kks7ys@virginia.edu</span></a>
