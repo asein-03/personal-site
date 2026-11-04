@@ -132,6 +132,27 @@ const PROJECTS = [
     { name: 'shell-rings', step: `${AP}/BrainWave v4 - Shell.step`, bodies: [2, 3, 4, 5], mat: 'bright', explode: [0, 0.5, 0] },
     { name: 'shell-cover', step: `${AP}/BrainWave v4 - Shell.step`, bodies: [0], mat: 'metal', explode: [0, 0.5, 0] },
   ] },
+  // The shell going from its silicone base into the charging case, in one file so the page can fly it between them.
+  // The base (leave) fades once the shell has left it.
+  // The case sits where it was modelled (the shell's own frame, so the shell seats in its cups untouched), and the base
+  // is set 40 mm along x beside it, lowered 4.7 mm so both stand on the same table. The page moves the shell from the
+  // base (dock.from) up, over and down into the cups. Centred on the case body so the case holds still while the shell
+  // travels; frame is the case's box, for the camera and the platform. Offsets in mm on the display axes (y up).
+  { id: 'aperture-dock', up: 'z', center: [-10.8, 0, -4.46], frame: [[-32.29, -27.01, -11.3], [1.66, 27.01, 24.53]],
+    dock: { from: [40, 0, -4.72], lift: 14, arc: 9, pivot: [-11.7, 0, 0.875] }, parts: [
+    { name: 'case', step: `${AP}/BrainWave v4 - Case.step`, bodies: [0, 62, 65], mat: 'metal' },
+    { name: 'lid', step: `${AP}/BrainWave v4 - Case.step`, bodies: [63, 64], mat: 'metal', explodeMM: [0, 3.2, 0],
+      hinge: { pivot: [-22.3, 0, 1.3804647], axis: [0, 1, 0], deg: 105 } },
+    { name: 'cups', step: `${AP}/BrainWave v4 - Case.step`, bodies: range(1, 7), mat: 'bright' },
+    { name: 'board', step: `${AP}/BrainWave v4 - Case.step`, bodies: [9], mat: 'pcb', explodeMM: [0, -11.3, 0] },
+    { name: 'cell', step: `${AP}/BrainWave v4 - Case.step`, bodies: [8], mat: 'cell', explodeMM: [0, -16.7, 0] },
+    { name: 'usb', step: `${AP}/BrainWave v4 - Case.step`, bodies: [10], mat: 'bright', explodeMM: [0, -11.3, 0] },
+    { name: 'parts', step: `${AP}/BrainWave v4 - Case.step`, bodies: range(11, 61), mat: 'chip', explodeMM: [0, -11.3, 0] },
+    { name: 'base', step: `${AP}/BrainWave v4 - Base.step`, bodies: [0, 6, 7, 8, 9], mat: 'silicone', move: [40, 0, -4.72], leave: true },
+    { name: 'shell-tub', step: `${AP}/BrainWave v4 - Shell.step`, bodies: [1], mat: 'plastic', explodeMM: [0, 13.5, 0], ride: true },
+    { name: 'shell-rings', step: `${AP}/BrainWave v4 - Shell.step`, bodies: [2, 3, 4, 5], mat: 'bright', explodeMM: [0, 13.5, 0], ride: true },
+    { name: 'shell-cover', step: `${AP}/BrainWave v4 - Shell.step`, bodies: [0], mat: 'metal', explodeMM: [0, 13.5, 0], ride: true },
+  ] },
   // front face toward the camera (CAD z runs from the phone-contact plane to the front glass)
   { id: 'snack', up: 'y', leds: SNACK_LEDS, parts: SNACK_PARTS },
   // Snack on the back of the phone. Detach lifts the whole unit straight off the phone for the MagSafe snap; explode
@@ -255,16 +276,20 @@ const only = process.argv.slice(3);
 for (const proj of PROJECTS.filter((p) => !only.length || only.includes(p.id))) {
   const parts = proj.parts.map((p) => {
     const g = loadPart(p);
+    if (p.move) g.translate(...p.move); // mm, CAD frame
     if (proj.up === 'z') g.rotateX(-Math.PI / 2); // CAD z-up to three's y-up
     if (proj.rotZ) g.rotateZ(THREE.MathUtils.degToRad(proj.rotZ));
     return { p, g };
   });
   const box = new THREE.Box3();
   for (const { g } of parts) { g.computeBoundingBox(); box.union(g.boundingBox); }
-  const center = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
-  const half = Math.max(size.x, size.y, size.z) / 2;
-  // points and directions given in CAD coordinates, turned and scaled the same way as the geometry
+  // points and directions given in CAD coordinates, turned the same way as the geometry
   const turn = (v) => { if (proj.up === 'z') v.applyAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2); if (proj.rotZ) v.applyAxisAngle(new THREE.Vector3(0, 0, 1), THREE.MathUtils.degToRad(proj.rotZ)); return v; };
+  const size = box.getSize(new THREE.Vector3());
+  const center = proj.center ? turn(new THREE.Vector3(...proj.center)) : box.getCenter(new THREE.Vector3());
+  const half = proj.center
+    ? Math.max(...[box.min, box.max].flatMap((c) => [Math.abs(c.x - center.x), Math.abs(c.y - center.y), Math.abs(c.z - center.z)])) * 1.01
+    : Math.max(size.x, size.y, size.z) / 2;
   const toDisplay = (pt) => turn(new THREE.Vector3(...pt)).sub(center).divideScalar(half).toArray().map((v) => +v.toFixed(5));
 
   const chunks = [], header = { id: proj.id, sizeMM: size.toArray().map((v) => +(v * (proj.unit || 1)).toFixed(1)), parts: [] };
@@ -281,7 +306,8 @@ for (const proj of PROJECTS.filter((p) => !only.length || only.includes(p.id))) 
     }
     const idx32 = n > 65535, I = idx32 ? new Uint32Array(g.index.array) : new Uint16Array(g.index.array);
     header.parts.push({
-      name: p.name, mat: p.mat, explode: p.explode || [0, 0, 0], ...(p.detach && { detach: p.detach }), vertices: n, indices: I.length, idx32,
+      name: p.name, mat: p.mat, explode: p.explodeMM ? p.explodeMM.map((v) => +(v / half).toFixed(5)) : p.explode || [0, 0, 0],
+      ...(p.detach && { detach: p.detach }), ...(p.ride && { ride: true }), ...(p.leave && { leave: true }), vertices: n, indices: I.length, idx32,
       pos: push(q), nrm: push(qn), idx: push(I),
       ...(p.hinge && { hinge: { p: toDisplay(p.hinge.pivot), a: turn(new THREE.Vector3(...p.hinge.axis)).normalize().toArray().map((v) => +v.toFixed(5)), deg: p.hinge.deg } }),
     });
@@ -293,6 +319,17 @@ for (const proj of PROJECTS.filter((p) => !only.length || only.includes(p.id))) 
       cols: L.cols, rows: L.rows, w: +((L.x[1] - L.x[0]) / half).toFixed(5), h: +((L.y[1] - L.y[0]) / half).toFixed(5),
       src: { at: toDisplay([cx, cy, L.src.z]), part: L.src.part }, glow: { at: toDisplay([cx, cy, L.glow.z]), part: L.glow.part },
     };
+  }
+  // the box the camera and the platform frame, when it isn't the whole model
+  if (proj.frame) {
+    const fb = new THREE.Box3();
+    for (const x of [0, 1]) for (const y of [0, 1]) for (const z of [0, 1]) fb.expandByPoint(new THREE.Vector3(...toDisplay([proj.frame[x][0], proj.frame[y][1], proj.frame[z][2]])));
+    header.frame = { min: fb.min.toArray().map((v) => +v.toFixed(5)), max: fb.max.toArray().map((v) => +v.toFixed(5)) };
+  }
+  // where the riding parts start (an offset from where they sit), how high they lift and arc, and what they turn about
+  if (proj.dock) {
+    const D = proj.dock, unit = (v) => turn(new THREE.Vector3(...v)).divideScalar(half).toArray().map((x) => +x.toFixed(5));
+    header.dock = { from: unit(D.from), lift: +(D.lift / half).toFixed(5), arc: +(D.arc / half).toFixed(5), pivot: toDisplay(D.pivot) };
   }
   const json = Buffer.from(JSON.stringify(header));
   const hpad = (4 - ((4 + json.length) % 4)) % 4;

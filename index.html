@@ -297,7 +297,9 @@ h3 { font-size: clamp(1.35rem, 1.9vw, 2.1rem); font-weight: 700; line-height: 1;
   .step p:not(.mono):not(.kicker) { font-size: 1rem; }
   .step .meta { margin-top: 12px; }
   .js .rail { gap: 6px; }
-  .rail button { font-size: .5rem; letter-spacing: .08em; }
+  /* on a phone only the current step is named under the bars, so long labels never run together */
+  .rail button { font-size: .5rem; letter-spacing: .08em; white-space: nowrap; color: transparent; }
+  .rail button.on { color: var(--fg); }
   .folio span:last-child { display: none; }
 }
 
@@ -535,15 +537,19 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
           <h3>One file, three test tracks</h3>
           <p>Every dimension lives in one parameters file that rebuilds the drawings, the fit checks, the Fusion 360 model and both board outlines. The build and test plan runs three tracks side by side: build the first units, scan heads, and run bench and wear tests, with results feeding back into that file before anything is tooled.</p>
         </div>
-        <div class="step" data-label="Case" data-model="aperture-case" data-yaw="-128" data-pitch="30" data-zoom="1">
+        <div class="step" data-label="Lift" data-model="aperture-dock" data-yaw="-24" data-pitch="24" data-zoom=".62" data-travel=".28">
+          <h3>Off the base</h3>
+          <p>To charge it, the shell comes off its silicone base. The steel rings hold on to the base's magnets for a moment, then let go, and the base stays where it is.</p>
+        </div>
+        <div class="step" data-label="Case" data-model="aperture-dock" data-yaw="-128" data-pitch="30" data-zoom="1" data-travel="1">
           <h3>The charging case</h3>
           <p>I designed the case around the shell: a crescent base and a lid on a pin hinge. Magnets pull the shell into its cups, and it charges through the same steel rings that hold it to the base, much like AirPods in their case.</p>
         </div>
-        <div class="step" data-label="Inside" data-model="aperture-case" data-yaw="-118" data-pitch="22" data-explode="1" data-zoom=".86">
+        <div class="step" data-label="Inside" data-model="aperture-dock" data-yaw="-118" data-pitch="22" data-explode="1" data-zoom=".86" data-travel="1">
           <h3>Its own board and battery</h3>
           <p>Under the pocket sit the case's own board, cell and USB-C port. A Hall sensor watches the lid, and the contacts only switch on with the lid shut and a shell drawing current.</p>
         </div>
-        <div class="step" data-label="Closed" data-model="aperture-case" data-yaw="-132" data-pitch="26" data-close="1" data-zoom="1.08">
+        <div class="step" data-label="Closed" data-model="aperture-dock" data-yaw="-132" data-pitch="26" data-close="1" data-zoom="1.08" data-travel="1">
           <h3>Drop it in, close the lid</h3>
           <p>The shell settles into its cups, the lid swings shut on its pin hinge, and a magnet in the lid's front edge holds it closed while it charges.</p>
           <a class="go" href="https://aperture-kappa-three.vercel.app" target="_blank" rel="noopener">Visit Aperture <span aria-hidden="true">&#8599;</span></a>
@@ -1028,7 +1034,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     });
     const pose = steps.map((s) => ({
       model: s.dataset.model, yaw: +(s.dataset.yaw || 0), pitch: +(s.dataset.pitch || 0),
-      explode: +(s.dataset.explode || 0), zoom: +(s.dataset.zoom || 1), close: +(s.dataset.close || 0), detach: +(s.dataset.detach || 0),
+      explode: +(s.dataset.explode || 0), zoom: +(s.dataset.zoom || 1), close: +(s.dataset.close || 0), detach: +(s.dataset.detach || 0), travel: +(s.dataset.travel || 0),
       measure: s.dataset.measure ? s.dataset.measure.split(',') : null,
     }));
     return { el, steps, buttons, pose, i: 0, t: 0, s: null, v: 0, goal: 0, presence: 0 };
@@ -1382,12 +1388,15 @@ function loadModel(id) {
       mesh.add(edge);
       spin.add(mesh);
       const hinge = p.hinge && { p: new THREE.Vector3(...p.hinge.p), a: new THREE.Vector3(...p.hinge.a).normalize(), deg: p.hinge.deg };
-      return { name: p.name, mesh, glow, edge, solid, explode: new THREE.Vector3(...p.explode), detach: p.detach && new THREE.Vector3(...p.detach), hinge };
+      return { name: p.name, mesh, glow, edge, solid, explode: new THREE.Vector3(...p.explode), detach: p.detach && new THREE.Vector3(...p.detach), ride: !!p.ride, leave: !!p.leave, hinge };
     });
     const box = new THREE.Box3();
     for (const { mesh } of parts) { mesh.geometry.computeBoundingBox(); box.union(mesh.geometry.boundingBox); }
     const m = { id, pivot, spin, parts, box, sizeMM: head.sizeMM, radius: box.getBoundingSphere(new THREE.Sphere()).radius, opacity: -1 };
     m.snaps = parts.some((p) => p.detach);
+    // a model can frame the camera and the platform on part of itself (the case, while the shell travels from its base)
+    if (head.frame) { m.box = new THREE.Box3(new THREE.Vector3(...head.frame.min), new THREE.Vector3(...head.frame.max)); m.radius = m.box.getBoundingSphere(new THREE.Sphere()).radius; }
+    if (head.dock) m.dock = { from: new THREE.Vector3(...head.dock.from), lift: head.dock.lift, arc: head.dock.arc, pivot: new THREE.Vector3(...head.dock.pivot), gap: 1 };
     if (head.leds) m.leds = makeLeds(head.leds, parts, spin);
     pivot.visible = false;
     scene.add(pivot);
@@ -1487,6 +1496,28 @@ function screenRect(m, w, h, axes) {
   return { l, r, t, b: bt };
 }
 
+/* ---------- the shell's trip from its base into the case ----------
+   travel runs 0 to 1. Up to 0.28 it comes off the base: the magnets hold it a moment, then let go, and it peels up a
+   touch. To 0.8 it crosses to the case in an arc, turning once all the way round and banking into the turn, floating a
+   little while it hovers. The last stretch is the drop into the cups, run by the magnet snap: it eases down until the
+   magnets take it, then knocks and settles. */
+const dockPos = new THREE.Vector3(), dockQ = new THREE.Quaternion(), dockQa = new THREE.Quaternion(), dockTmp = new THREE.Vector3();
+const AXIS_X = new THREE.Vector3(1, 0, 0), AXIS_Y = new THREE.Vector3(0, 1, 0), AXIS_Z = new THREE.Vector3(0, 0, 1);
+const ease = (t) => t * t * t * (t * (t * 6 - 15) + 10); // starts and ends at rest
+function dockAt(D, travel, time) {
+  const a = clamp(travel / 0.28), b = clamp((travel - 0.28) / 0.52);
+  const off = ease(clamp((a - 0.22) / 0.78)), across = ease(b);
+  const hover = D.from.y + D.lift;
+  const float = reduce.matches || travel <= 0.22 || travel >= 0.8 ? 0 : Math.sin(time * 1.7) * D.lift * 0.035;
+  const y = travel > 0.8 ? hover * D.gap : D.from.y + D.lift * off + D.arc * Math.sin(Math.PI * b);
+  dockPos.set(D.from.x * (1 - across), y + float, D.from.z * (1 - across));
+  dockQ.setFromAxisAngle(AXIS_Y, Math.PI * 2 * across);
+  dockQ.multiply(dockQa.setFromAxisAngle(AXIS_X, Math.sin(Math.PI * b) * 0.22));
+  dockQ.multiply(dockQa.setFromAxisAngle(AXIS_Z, Math.sin(Math.PI * off) * 0.12));
+  // turn about the shell's own centre: p' = R(p - c) + c + offset
+  dockPos.add(D.pivot).sub(dockTmp.copy(D.pivot).applyQuaternion(dockQ));
+}
+
 /* ---------- pose ---------- */
 function applyPose(m, pose, o, time, lift) {
   const idle = reduce.matches ? 0 : 1;
@@ -1496,9 +1527,20 @@ function applyPose(m, pose, o, time, lift) {
   m.pivot.rotation.set((pose.pitch + user.pitch) * D2R + idle * Math.sin(time * 0.31) * 0.025, 0, 0);
   m.spin.rotation.set(0, (pose.yaw + user.yaw) * D2R + idle * Math.sin(time * 0.22) * 0.09, 0);
   m.pivot.position.set(0, (1 - o) * lift + idle * Math.sin(time * 0.6) * 0.012, 0);
+  if (m.dock) {
+    dockAt(m.dock, pose.travel || 0, time);
+    // the empty base steps aside once the shell has crossed to the case
+    const k = o * (1 - smooth(0.45, 0.8, pose.travel || 0));
+    for (const p of m.parts) if (p.leave) {
+      p.mesh.visible = k > 0.005;
+      p.solid.opacity = k; p.solid.depthWrite = k > 0.6;
+      p.glow.material.uniforms.uOpacity.value = k; p.edge.material.opacity = k * holo.edgeAlpha;
+    }
+  }
   for (const p of m.parts) {
     p.mesh.position.copy(p.explode).multiplyScalar(pose.explode);
     if (p.detach) p.mesh.position.addScaledVector(p.detach, pose.detach || 0);
+    if (p.ride && m.dock) { p.mesh.quaternion.copy(dockQ); p.mesh.position.add(dockPos); }
     if (!p.hinge) continue;
     // turn about the hinge line: v' = R(v - pivot) + pivot
     p.mesh.quaternion.setFromAxisAngle(p.hinge.a, p.hinge.deg * D2R * (pose.close || 0));
@@ -1551,6 +1593,7 @@ const mixPose = (a, b, t) => {
   const closing = (b.close || 0) > (a.close || 0);
   return {
     yaw: lerp(a.yaw, b.yaw, t), pitch: lerp(a.pitch, b.pitch, t), zoom: lerp(a.zoom, b.zoom, t), detach: lerp(a.detach || 0, b.detach || 0, t),
+    travel: lerp(a.travel || 0, b.travel || 0, t),
     explode: lerp(a.explode, b.explode, staged ? (closing ? settle : shut) : t),
     close: lerp(a.close || 0, b.close || 0, staged ? (closing ? shut : settle) : t),
   };
@@ -1637,7 +1680,8 @@ function frame() {
     else {
       // a change of model hands over in sequence, like the words: the first has gone before the second arrives
       const out = smooth(0.45, 0.72, 1 - t), arrive = smooth(0.45, 0.72, t);
-      add(a.model, a, ch.presence * out, a.measure ? out : 0); add(b.model, b, ch.presence * arrive, b.measure ? arrive : 0);
+      const bIn = b.travel ? { ...b, travel: b.travel * smooth(0.55, 1, t) } : b;
+      add(a.model, a, ch.presence * out, a.measure ? out : 0); add(b.model, bIn, ch.presence * arrive, b.measure ? arrive : 0);
     }
     const m = (t > 0.5 ? b : a);
     if (!best || ch.presence > best.presence) best = { presence: ch.presence, id: m.model, axes: m.measure || a.measure || b.measure };
@@ -1662,6 +1706,7 @@ function frame() {
     const m = MODELS[id];
     if (!m) continue;
     const pose = m.snaps ? { ...w.pose, detach: snapGap(m, w.pose.detach || 0, dt, time) } : w.pose;
+    if (m.dock) { const tr = pose.travel || 0; m.dock.gap = snapGap(m, tr > 0.8 ? (1 - tr) / 0.2 : 1, dt, time); }
     const vt = Math.tan((FOV / 2) * D2R), ht = vt * aspect;
     const fracV = mobile ? 0.36 : 0.6, fracH = mobile ? 0.82 : 0.4;
     const dist = Math.max(m.radius / (vt * fracV), m.radius / (ht * fracH)) / pose.zoom;
@@ -1746,7 +1791,7 @@ function renderPlate(time) {
   if (!P || !P.visible || !P.rw || plateTick++ % (fine.matches ? 2 : 4)) return;
   if (!reduce.matches && time - plateSince > 8) { AS.nextPlate(); AS.glitch?.(); }
   const spec = PLATE[plateIdx], m = MODELS[spec.id];
-  if (!m) return;
+  if (!m) { loadModel(spec.id).catch(() => {}); return; }
   const w = P.rw, h = P.rh;
   if (plateRT.width !== w || plateRT.height !== h) { plateRT.setSize(w, h); plateBuf = new Uint8Array(w * h * 4); }
   for (const mm of Object.values(MODELS)) mm.pivot.visible = false;
