@@ -775,7 +775,8 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   Object.assign(AS, { clamp, smooth, reduce });
 
   /* ---------- smooth scroll (skipped for reduced motion) ---------- */
-  AS.scrollTo = (y) => (AS.lenis ? AS.lenis.scrollTo(y, { duration: 1.4 }) : window.scrollTo({ top: y, behavior: reduce.matches ? 'auto' : 'smooth' }));
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  AS.scrollTo = (y, duration = 1.4) => (AS.lenis ? AS.lenis.scrollTo(y, { duration, easing: easeOut }) : window.scrollTo({ top: y, behavior: reduce.matches ? 'auto' : 'smooth' }));
   function startLenis() {
     if (reduce.matches || !window.Lenis || AS.lenis) return;
     AS.lenis = new window.Lenis({ lerp: 0.085, smoothWheel: true });
@@ -1025,7 +1026,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
       explode: +(s.dataset.explode || 0), zoom: +(s.dataset.zoom || 1), close: +(s.dataset.close || 0), detach: +(s.dataset.detach || 0),
       measure: s.dataset.measure ? s.dataset.measure.split(',') : null,
     }));
-    return { el, steps, buttons, pose, i: 0, t: 0, s: null, goal: 0, presence: 0 };
+    return { el, steps, buttons, pose, i: 0, t: 0, s: null, v: 0, goal: 0, presence: 0 };
   });
 
   const nameplate = document.querySelector('.nameplate');
@@ -1070,21 +1071,46 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
       if (ch.s === null) { ch.s = ch.goal; layout(ch); }
     }
   };
-  /* Chapters follow the scroll through a short ease rather than jumping with it, so a flick of the wheel, a swipe
-     on a phone or a jump from the rail turns the model and swaps the words smoothly, the same going up or down. */
+  /* Chapters ride the scroll on a critically damped spring rather than jumping with it: motion picks up gently,
+     carries a little momentum and comes to rest without overshooting, the same going up or down. */
+  const SPRING = 110, DAMP = 2 * Math.sqrt(SPRING);
   let settledAt = performance.now();
   const settle = (now) => {
     requestAnimationFrame(settle);
-    const k = reduce.matches ? 1 : 1 - Math.exp(-Math.min(0.05, (now - settledAt) / 1000) * 8);
+    const dt = Math.min(0.05, (now - settledAt) / 1000);
     settledAt = now;
     for (const ch of AS.chapters) {
-      if (ch.s === null || ch.s === ch.goal) continue;
-      ch.s += (ch.goal - ch.s) * k;
-      if (Math.abs(ch.goal - ch.s) < 0.0005) ch.s = ch.goal;
+      if (ch.s === null || (ch.s === ch.goal && ch.v === 0)) continue;
+      if (reduce.matches) { ch.s = ch.goal; ch.v = 0; layout(ch); continue; }
+      ch.v += ((ch.goal - ch.s) * SPRING - ch.v * DAMP) * dt;
+      ch.s = clamp(ch.s + ch.v * dt, 0, ch.steps.length - 1);
+      if (Math.abs(ch.goal - ch.s) < 0.0005 && Math.abs(ch.v) < 0.003) { ch.s = ch.goal; ch.v = 0; }
       layout(ch);
     }
   };
   requestAnimationFrame(settle);
+
+  /* Detents: when the scroll comes to rest between two steps, it eases on to one, like a dial clicking into place.
+     It leans the way you were going: past a third of the way, it carries on; short of that, it falls back. Not while
+     a model is being dragged, and not with reduced motion. */
+  let restTimer = 0, lastY = scrollY, heading = 1;
+  const detent = () => {
+    if (reduce.matches || document.body.classList.contains('dragging')) return;
+    for (const ch of AS.chapters) {
+      const n = ch.steps.length, g = ch.goal, base = Math.floor(g), frac = g - base;
+      if (ch.presence < 0.98 || n < 2 || frac < 0.02 || frac > 0.98) continue;
+      const k = heading > 0 ? (frac > 0.33 ? base + 1 : base) : (frac < 0.67 ? base : base + 1);
+      const r = ch.el.getBoundingClientRect(), total = ch.el.offsetHeight - innerHeight;
+      AS.scrollTo(r.top + scrollY + ((Math.min(n - 1, k) + 0.5) / n) * total, 0.65);
+      return;
+    }
+  };
+  addEventListener('scroll', () => {
+    if (scrollY !== lastY) heading = scrollY > lastY ? 1 : -1;
+    lastY = scrollY;
+    clearTimeout(restTimer);
+    restTimer = setTimeout(detent, 170);
+  }, { passive: true });
   addEventListener('scroll', () => AS.update(), { passive: true });
   addEventListener('resize', () => AS.update());
   AS.update();
@@ -1275,16 +1301,16 @@ function boxUV(P, N, n) {
 }
 const loading = new Map();
 const MODELS = {};
-/* ---------- the hologram ----------
-   Every CAD model is drawn the way a JARVIS display would show it, in the page's black and white: see-through light with bright rims, a fine scan
-   texture, a band that sweeps up through it, and its hard edges traced in the same light. You see the electronics
-   through the shells, and they glow brighter than the shells do. The halftone plate still prints the solid model. */
+/* ---------- the hologram layer ----------
+   Every CAD model is the real, solid product, with a JARVIS-style layer of light over it: a glow along its rims, a
+   fine scan texture, a band that sweeps up through it, and its hard edges traced faintly. Electronics glow a little
+   brighter than the shells. The halftone plate prints the solid model alone. */
 const HOLO_ANGLE = 32;
 const idleQueue = [];
 const idleNext = () => (window.requestIdleCallback || ((cb) => setTimeout(cb, 16)))(() => { idleQueue.shift()?.(); if (idleQueue.length) idleNext(); }, { timeout: 400 });
 const whenIdle = (fn) => { idleQueue.push(fn); if (idleQueue.length === 1) idleNext(); };
 const HOLO_STRENGTH = { pcb: 1, chip: 1, bright: 0.95, cell: 0.8, diffuser: 0.7, print: 0.7, glass: 0.55, metal: 0.55, alu: 0.5, plastic: 0.5, frost: 0.45, silicone: 0.45 };
-const holo = { color: { value: new THREE.Color() }, alpha: { value: 1 }, time: { value: 0 }, edgeAlpha: 0.6, edgeHex: 0, blending: THREE.AdditiveBlending, led: 0xffdcb0 };
+const holo = { color: { value: new THREE.Color() }, alpha: { value: 1 }, time: { value: 0 }, edgeAlpha: 0.22, edgeHex: 0, blending: THREE.AdditiveBlending, led: 0xffdcb0 };
 // white light added to the night page; by day, black ink laid over the paper instead
 function holoScheme() {
   const light = getComputedStyle(root).colorScheme === 'light';
@@ -1298,6 +1324,7 @@ holoScheme();
 function holoMaterial(strength) {
   return new THREE.ShaderMaterial({
     uniforms: { uColor: holo.color, uAlpha: holo.alpha, uTime: holo.time, uStrength: { value: strength }, uOpacity: { value: 0 } },
+    // drawn over the solid part: it sits a hair in front so it wins the depth test, and only the near side shows
     vertexShader: `
       varying vec3 vN; varying vec3 vV; varying float vY;
       void main() {
@@ -1314,10 +1341,11 @@ function holoMaterial(strength) {
         float rim = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.5);
         float scan = 0.82 + 0.18 * sin(vY * 220.0);
         float band = exp(-pow((vY - (fract(uTime * 0.16) * 2.8 - 1.4)) * 10.0, 2.0));
-        float a = ((0.06 + 0.8 * rim) * scan + 0.12 * band) * uStrength;
+        float a = (0.85 * rim * scan + 0.16 * band) * uStrength;
         gl_FragColor = vec4(uColor * (1.0 + 0.4 * band), clamp(a * uAlpha, 0.0, 1.0) * uOpacity);
       }`,
-    transparent: true, depthWrite: false, side: THREE.DoubleSide, blending: holo.blending,
+    transparent: true, depthWrite: false, blending: holo.blending,
+    polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1,
   });
 }
 function loadModel(id) {
@@ -1334,20 +1362,22 @@ function loadModel(id) {
       g.setAttribute('normal', new THREE.BufferAttribute(N, 3, true));
       g.setAttribute('uv', new THREE.BufferAttribute(boxUV(P, N, p.vertices), 2));
       g.setIndex(new THREE.BufferAttribute(p.idx32 ? new Uint32Array(buf, base + p.idx, p.indices) : new Uint16Array(buf, base + p.idx, p.indices), 1));
-      // the solid material is kept for the halftone plate; everywhere else the part is a hologram
+      // the solid part, a glow drawn over it, and its edges
       const solid = (MATERIALS[p.mat] || MATERIALS.metal)();
       solid.transparent = true;
-      const light = holoMaterial(HOLO_STRENGTH[p.mat] ?? 0.6);
-      const mesh = new THREE.Mesh(g, light);
+      const mesh = new THREE.Mesh(g, solid);
+      const glow = new THREE.Mesh(g, holoMaterial((HOLO_STRENGTH[p.mat] ?? 0.6) * 0.75));
+      glow.renderOrder = 1;
+      mesh.add(glow);
       const edge = new THREE.LineSegments(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({
         color: holo.edgeHex, transparent: true, opacity: 0, blending: holo.blending, depthWrite: false, toneMapped: false,
       }));
-      edge.renderOrder = 1;
+      edge.renderOrder = 2;
       whenIdle(() => { edge.geometry.dispose(); edge.geometry = new THREE.EdgesGeometry(g, HOLO_ANGLE); });
       mesh.add(edge);
       spin.add(mesh);
       const hinge = p.hinge && { p: new THREE.Vector3(...p.hinge.p), a: new THREE.Vector3(...p.hinge.a).normalize(), deg: p.hinge.deg };
-      return { name: p.name, mesh, edge, solid, holo: light, explode: new THREE.Vector3(...p.explode), detach: p.detach && new THREE.Vector3(...p.detach), hinge };
+      return { name: p.name, mesh, glow, edge, solid, explode: new THREE.Vector3(...p.explode), detach: p.detach && new THREE.Vector3(...p.detach), hinge };
     });
     const box = new THREE.Box3();
     for (const { mesh } of parts) { mesh.geometry.computeBoundingBox(); box.union(mesh.geometry.boundingBox); }
@@ -1366,7 +1396,7 @@ function setOpacity(m, o) {
   m.opacity = o;
   for (const p of m.parts) {
     p.solid.opacity = o; p.solid.depthWrite = o > 0.6;
-    p.holo.uniforms.uOpacity.value = o; p.edge.material.opacity = o * holo.edgeAlpha;
+    p.glow.material.uniforms.uOpacity.value = o; p.edge.material.opacity = o * holo.edgeAlpha;
   }
 }
 
@@ -1530,10 +1560,10 @@ function resize() {
 resize();
 addEventListener('resize', resize);
 matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
-  renderer.toneMappingExposure = lightMode() ? 1.05 : 0.9;
+  renderer.toneMappingExposure = lightMode() ? 1.08 : 1.15;
   holoScheme();
   for (const m of Object.values(MODELS)) for (const p of m.parts) {
-    p.holo.blending = holo.blending; p.edge.material.blending = holo.blending; p.edge.material.color.setHex(holo.edgeHex);
+    p.glow.material.blending = holo.blending; p.edge.material.blending = holo.blending; p.edge.material.color.setHex(holo.edgeHex);
   }
   for (const l of hudLines) { l.material.blending = holo.blending; l.material.color.setHex(holo.edgeHex); }
   for (const m of Object.values(MODELS)) if (m.leds) for (const layer of [m.leds.src, m.leds.glow]) { layer.mesh.material.blending = holo.blending; layer.mesh.material.color.setHex(holo.led); }
@@ -1573,12 +1603,18 @@ function placeHud(m, w, time) {
   for (const l of hudLines) l.material.opacity = l.userData.alpha * w;
 }
 const lightMode = () => getComputedStyle(root).colorScheme === 'light';
-renderer.toneMappingExposure = lightMode() ? 1.05 : 0.9;
+renderer.toneMappingExposure = lightMode() ? 1.08 : 1.15;
 
 const clock = new THREE.Clock();
+// The chapter model leans a few degrees with the speed of the scroll and lags a touch behind it, then rights itself
+// once the page is still, so the motion has weight.
+const sway = { lean: 0, drop: 0 };
 function frame() {
   requestAnimationFrame(frame);
   const dt = Math.min(0.05, clock.getDelta()), time = clock.elapsedTime;
+  const speed = reduce.matches || !AS.lenis ? 0 : AS.lenis.velocity || 0, follow = 1 - Math.exp(-dt * 5);
+  sway.lean += (clamp(-speed * 0.0022, -0.07, 0.07) - sway.lean) * follow;
+  sway.drop += (clamp(speed * 0.0016, -0.05, 0.05) - sway.drop) * follow;
   if (!user.drag) { user.yaw *= 0.9; user.pitch *= 0.9; }
 
   /* which models the chapters want, and in what pose */
@@ -1627,6 +1663,8 @@ function frame() {
     camera.position.set(0, 0, dist);
     camera.lookAt(0, 0, 0);
     applyPose(m, pose, w.w, time, -0.35);
+    m.pivot.rotation.x += sway.lean;
+    m.pivot.position.y += sway.drop;
     if (best && best.id === id) measured = { m, w };
   }
   placeHud(measured && measured.m, measured ? measured.w.w : 0, time);
@@ -1723,9 +1761,9 @@ function renderPlate(time) {
   renderer.clear();
   const hudWas = hud.visible;
   hud.visible = false;
-  for (const p of m.parts) { p.mesh.material = p.solid; p.edge.visible = false; }
+  for (const p of m.parts) { p.glow.visible = false; p.edge.visible = false; }
   renderer.render(scene, plateCam);
-  for (const p of m.parts) { p.mesh.material = p.holo; p.edge.visible = true; }
+  for (const p of m.parts) { p.glow.visible = true; p.edge.visible = true; }
   hud.visible = hudWas;
   renderer.setRenderTarget(null);
   renderer.readRenderTargetPixels(plateRT, 0, 0, w, h, plateBuf);
