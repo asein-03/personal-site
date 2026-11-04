@@ -156,6 +156,22 @@ h3 { font-size: clamp(1.35rem, 1.9vw, 2.1rem); font-weight: 700; line-height: 1;
 }
 .pill:hover { background: var(--signal); color: var(--signal-ink); border-color: var(--signal); }
 @media (max-width: 860px) { .nav-links a:not(.pill) { display: none; } }
+/* inside a section, the nav leads back to the contents, on every screen size */
+.nav-back { display: none; }
+body[data-page]:not([data-page="home"]) .nav-links .nav-back { display: inline-flex; color: var(--fg); }
+body[data-page]:not([data-page="home"]) .nav-links .nav-home { display: none; }
+.nav-links a.on { color: var(--fg); }
+
+/* ---------- views: the front page is the contents, and each section opens on its own ---------- */
+.js [data-view]:not(.on) { display: none !important; }
+.view-in { animation: view-in .5s var(--ease) both; }
+@keyframes view-in { from { opacity: 0; transform: translateY(12px); } }
+.pager { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 16px; padding-top: 16px; padding-bottom: 16px; border-top: 1px solid var(--fg); }
+.pager a { padding: 10px 12px; font: 700 clamp(1.05rem, 1.5vw, 1.4rem)/1 var(--font-head); font-stretch: var(--stretch); text-transform: uppercase; text-decoration: none; }
+.pager a:first-child { margin-left: -12px; }
+.pager a:last-child { margin-right: -12px; text-align: right; }
+.pager a:hover { background: var(--fg); color: var(--bg); }
+html:not(.js) .pager, body[data-page="home"] .pager { display: none; }
 
 /* ---------- front page ---------- */
 .front { position: relative; z-index: 2; padding-top: calc(env(safe-area-inset-top, 0px) + 58px); }
@@ -208,7 +224,7 @@ h3 { font-size: clamp(1.35rem, 1.9vw, 2.1rem); font-weight: 700; line-height: 1;
 }
 @keyframes ticker { to { transform: translateX(-50%); } }
 
-.front-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); padding: clamp(20px, 3.5vh, 36px) 0 clamp(40px, 8vh, 80px); }
+.front-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); padding: clamp(20px, 3.5vh, 36px) 0 clamp(32px, 6vh, 64px); }
 .lead { padding-right: clamp(18px, 2.5vw, 36px); border-right: 1px solid var(--line-2); }
 .headline { font-size: clamp(2rem, 3.6vw, 4rem); line-height: .98; margin-bottom: 20px; }
 .deck { max-width: 48ch; margin-bottom: 16px; font: 400 clamp(1.15rem, 1.6vw, 1.4rem)/1.4 var(--font-body); color: var(--dim); }
@@ -222,8 +238,17 @@ h3 { font-size: clamp(1.35rem, 1.9vw, 2.1rem); font-weight: 700; line-height: 1;
 .cols .jump { text-indent: 0; margin-top: 1em; }
 .jump a { text-decoration: none; border-bottom: 1px solid var(--line-2); }
 .jump a:hover { background: var(--signal); color: var(--signal-ink); }
-.photo { margin: 0; padding-left: clamp(18px, 2.5vw, 36px); }
-.plate { position: relative; aspect-ratio: 4 / 5; border: 1px solid var(--fg); overflow: hidden; cursor: crosshair; }
+.start { margin-top: 18px; }
+.start a { text-decoration: none; border-bottom: 1px solid var(--line-2); }
+.start a:hover { background: var(--signal); color: var(--signal-ink); }
+/* the contents sit beside the summary, so the first screen says who and where to go */
+.contents { padding-left: clamp(18px, 2.5vw, 36px); }
+.contents .flag { margin-bottom: 8px; }
+.contents .toc { columns: 1; }
+.contents .toc a { padding: 10px 10px; }
+/* the plate runs wide beneath them */
+.photo { margin: 0; padding-bottom: clamp(40px, 8vh, 80px); }
+.plate { position: relative; aspect-ratio: 21 / 8; border: 1px solid var(--fg); overflow: hidden; cursor: crosshair; }
 .plate canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .plate-status { position: absolute; left: 10px; bottom: 10px; padding: 5px 7px 4px; background: var(--bg); color: var(--fg); border: 1px solid var(--fg); transition: opacity .4s; }
 .plate-status::after { content: "\2026"; animation: blink 1s steps(2) infinite; }
@@ -232,7 +257,7 @@ h3 { font-size: clamp(1.35rem, 1.9vw, 2.1rem); font-weight: 700; line-height: 1;
 @media (max-width: 900px) {
   .front-grid { grid-template-columns: 1fr; }
   .lead { padding-right: 0; border-right: 0; }
-  .photo { padding-left: 0; margin-top: 28px; }
+  .contents { padding-left: 0; margin-top: 32px; }
   .plate { aspect-ratio: 1 / 1; }
 }
 
@@ -412,6 +437,7 @@ a.ad:hover .ad-when { color: inherit; }
 footer { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 14px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 36px); border-top: 1px solid var(--fg); color: var(--dim); }
 
 @media (prefers-reduced-motion: reduce) {
+  .view-in { animation: none; }
   .grain, .ticker-track, .ticker .live::before, .plate-status::after { animation: none; }
 }
 </style>
@@ -429,15 +455,16 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 <nav class="nav" aria-label="Main">
   <a class="brand" href="#top">Albert Sein</a>
   <div class="nav-links mono">
-    <a href="#work">Work</a>
-    <a href="#experience">Experience</a>
+    <a class="nav-back" href="#contents">&larr; Contents</a>
+    <a class="nav-home" href="#contents">Contents</a>
+    <a href="#background">Background</a>
     <a href="#life">Off the clock</a>
     <a href="#contact">Contact</a>
     <a class="pill" href="albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé</a>
   </div>
 </nav>
 
-<header class="front" id="top">
+<header class="front" id="top" data-view="home">
   <div class="wrap">
     <div class="topline mono">
       <span>Vol. I, No. 3</span>
@@ -481,41 +508,32 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <p class="deck">I study materials and systems engineering at UVA. So far I've shipped an app, designed a wearable and its charging case, packaged a phone-mounted timekeeper for a manufacturer's review, and printed a desk display.</p>
         <p class="seeking"><span class="kicker"><span>Looking for</span></span>Summer 2027 internships and new-grad roles in technical project management, product and hardware engineering. I do my best work on high-agency, fast-moving teams. <a href="mailto:kks7ys@virginia.edu">Email me</a> or <a href="albert-sein-resume.pdf" target="_blank" rel="noopener">read my résumé</a>.</p>
         <p class="byline mono">By Albert Sein &nbsp; | &nbsp; Charlottesville, Va.</p>
-        <div class="cols prose">
-          <p>I am studying for an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
-          <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Half of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. The other half was supply chain: using AI tools to automate work that would otherwise take dozens of hours, including competitor and market intelligence and Clear-to-Build models for executive presentations.</p>
-          <p>Ordo went live on the App Store this August. I designed it, built it with AI tools, and still ship updates almost every week.</p>
-          <p class="jump mono"><a href="#aperture">Continued: Aperture</a></p>
-        </div>
       </article>
-      <figure class="photo">
-        <div class="plate" id="plate" title="Click for the next model"><canvas id="field" aria-hidden="true"></canvas><span class="plate-status mono" id="plateStatus" aria-hidden="true">Printing</span></div>
-        <figcaption><span id="plateCaption">Aperture, printed live from its CAD.</span><span class="mono">Click for the next model</span></figcaption>
-      </figure>
+      <nav class="contents" id="contents" aria-labelledby="contents-title">
+        <div class="flag"><h2 id="contents-title">Contents</h2><span class="mono">Start here</span></div>
+        <ol class="toc">
+          <li><a href="#aperture"><span class="t">Aperture</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
+          <li><a href="#snack"><span class="t">Snack</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">A physical timekeeper for your phone</span></a></li>
+          <li><a href="#ordo-desktop"><span class="t">Ordo Desktop</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">A desk display for Ordo</span></a></li>
+          <li><a href="#builds"><span class="t">Smaller builds</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
+          <li><a href="#background"><span class="t">Background</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">Studies at UVA, Celestica, Ordo, experience and skills</span></a></li>
+          <li><a href="#life"><span class="t">Off the clock</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">Yangon, coffee, golf, five songs on repeat and favorite films</span></a></li>
+          <li><a href="#contact"><span class="t">Contact</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">Email, LinkedIn, GitHub and résumé</span></a></li>
+          <li><a href="albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="t">Résumé</span><span class="leader"></span><span class="to" aria-hidden="true">&#8599;</span><span class="d">The PDF</span></a></li>
+        </ol>
+      </nav>
     </div>
+    <figure class="photo">
+      <div class="plate" id="plate" title="Click for the next model"><canvas id="field" aria-hidden="true"></canvas><span class="plate-status mono" id="plateStatus" aria-hidden="true">Printing</span></div>
+      <figcaption><span id="plateCaption">Aperture, printed live from its CAD.</span><span class="mono">Click for the next model</span></figcaption>
+    </figure>
   </div>
 </header>
 
 <main>
 
-  <section class="index" id="work" aria-labelledby="work-title">
-    <div class="wrap">
-      <div class="flag"><h2 id="work-title">Work</h2><span class="mono">In this edition</span></div>
-      <ol class="toc">
-        <li><a href="#aperture"><span class="t">Aperture</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
-        <li><a href="#snack"><span class="t">Snack</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">A physical timekeeper for your phone</span></a></li>
-        <li><a href="#ordo-desktop"><span class="t">Ordo Desktop</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">A desk display for Ordo</span></a></li>
-        <li><a href="#builds"><span class="t">Smaller builds</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
-        <li><a href="#experience"><span class="t">Experience</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">Celestica, Ordo, Ji Ma Lab, Setty &amp; Associates</span></a></li>
-        <li><a href="#skills"><span class="t">Skills and tools</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">Design, electronics, project management, characterization, data, software</span></a></li>
-        <li><a href="#life"><span class="t">Off the clock</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">Yangon, coffee, golf, five songs on repeat and favorite films</span></a></li>
-        <li><a href="#contact"><span class="t">Contact</span><span class="leader"></span><span class="to" aria-hidden="true">&darr;</span><span class="d">Email, LinkedIn, GitHub and résumé</span></a></li>
-      </ol>
-    </div>
-  </section>
-
   <!-- Each step's data-* sets the model's pose: yaw and pitch in degrees, explode 0 to 1, zoom, and which axes to measure. -->
-  <section class="chapter" id="aperture" data-chapter aria-label="Aperture">
+  <section class="chapter" id="aperture" data-view="aperture" data-chapter aria-label="Aperture">
     <div class="frame wrap">
       <div class="folio mono"><span>Aperture</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
@@ -560,7 +578,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     </div>
   </section>
 
-  <section class="chapter" id="snack" data-chapter aria-label="Snack">
+  <section class="chapter" id="snack" data-view="snack" data-chapter aria-label="Snack">
     <div class="frame wrap">
       <div class="folio mono"><span>Snack</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
@@ -595,7 +613,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     </div>
   </section>
 
-  <section class="chapter" id="ordo-desktop" data-chapter aria-label="Ordo Desktop">
+  <section class="chapter" id="ordo-desktop" data-view="ordo-desktop" data-chapter aria-label="Ordo Desktop">
     <div class="frame wrap">
       <div class="folio mono"><span>Ordo Desktop</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
@@ -619,7 +637,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     </div>
   </section>
 
-  <section class="builds" id="builds" aria-labelledby="builds-title">
+  <section class="builds" id="builds" data-view="builds" aria-labelledby="builds-title">
     <div class="wrap">
       <div class="flag"><h2 id="builds-title">Smaller builds</h2><span class="mono">Briefs</span></div>
       <div class="briefs">
@@ -648,7 +666,18 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     </div>
   </section>
 
-  <section class="section" id="experience" aria-labelledby="exp-title">
+  <section class="section" id="background" data-view="background" aria-labelledby="bg-title">
+    <div class="wrap">
+      <div class="flag"><h2 id="bg-title">Background</h2><span class="mono">Profile</span></div>
+      <div class="cols prose">
+        <p>I am studying for an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
+        <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Half of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. The other half was supply chain: using AI tools to automate work that would otherwise take dozens of hours, including competitor and market intelligence and Clear-to-Build models for executive presentations.</p>
+        <p>Ordo went live on the App Store this August. I designed it, built it with AI tools, and still ship updates almost every week.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="experience" data-view="background" aria-labelledby="exp-title">
     <div class="wrap">
       <div class="flag"><h2 id="exp-title">Experience</h2><span class="mono">Classifieds</span></div>
       <div class="classifieds">
@@ -672,7 +701,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     </div>
   </section>
 
-  <section class="section" id="skills" aria-labelledby="tools-title">
+  <section class="section" id="skills" data-view="background" aria-labelledby="tools-title">
     <div class="wrap">
       <div class="flag"><h2 id="tools-title">Skills and tools</h2><span class="mono">Listings</span></div>
       <div class="agate prose">
@@ -687,7 +716,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   </section>
 
   <!-- Off the clock: who I am outside work. The songs and films are plain lists, quick to update. -->
-  <section class="section" id="life" aria-labelledby="life-title">
+  <section class="section" id="life" data-view="life" aria-labelledby="life-title">
     <div class="wrap">
       <div class="flag"><h2 id="life-title">Off the clock</h2><span class="mono">Op-ed</span></div>
       <div class="culture">
@@ -754,7 +783,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     </div>
   </section>
 
-  <section class="contact" id="contact" aria-labelledby="contact-title">
+  <section class="contact" id="contact" data-view="contact" aria-labelledby="contact-title">
     <div class="wrap">
       <div class="flag"><h2 id="contact-title">Contact</h2><span class="mono">Letters to the editor</span></div>
       <p class="letters-intro">Hiring for a team that builds things? I'd like to hear about it.</p>
@@ -769,6 +798,11 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   </section>
 
 </main>
+
+<nav class="pager wrap" id="pager" aria-label="Sections">
+  <a class="back" href="#contents">&larr; Contents</a>
+  <a class="next" href="#snack">Next: Snack &rarr;</a>
+</nav>
 
 <footer class="wrap mono">
   <span>&copy; 2026 Albert Sein &nbsp; Printed on the web</span>
@@ -805,16 +839,6 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     requestAnimationFrame(raf);
   }
   AS.startLenis = startLenis;
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href^="#"]');
-    if (!a) return;
-    const id = a.getAttribute('href').slice(1), el = id ? document.getElementById(id) : null;
-    if (!el && id !== 'top') return;
-    e.preventDefault();
-    let y = el ? el.getBoundingClientRect().top + scrollY : 0;
-    if (el && el.hasAttribute('data-chapter')) y += AS.vh() * 0.02;
-    AS.scrollTo(id === 'top' ? 0 : y);
-  });
 
   /* ---------- today's date on the masthead ---------- */
   const today = document.getElementById('today');
@@ -1081,7 +1105,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   AS.update = () => {
     const vh = AS.vh();
     /* the running head fills in once the nameplate has scrolled under it */
-    root.style.setProperty('--nav-shade', smooth(60, -10, nameplate.getBoundingClientRect().bottom).toFixed(3));
+    root.style.setProperty('--nav-shade', document.body.dataset.page && document.body.dataset.page !== 'home' ? '1' : smooth(60, -10, nameplate.getBoundingClientRect().bottom).toFixed(3));
 
     /* chapters: where the scroll says each one should be, and how present it is; settle() eases them there */
     for (const ch of AS.chapters) {
@@ -1138,6 +1162,56 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   addEventListener('scroll', () => AS.update(), { passive: true });
   addEventListener('resize', () => AS.update());
   AS.update();
+
+  /* ---------- views ----------
+     The front page is a contents page; each section opens on its own. A link to #aperture, #background and so on
+     switches the view and starts it at the top (or at the part asked for, like #skills), the browser's back button
+     returns, and Esc goes back to the contents. Every view has its own address, so a link can open straight to it. */
+  const ORDER = ['aperture', 'snack', 'ordo-desktop', 'builds', 'background', 'life', 'contact'];
+  const NAMES = { aperture: 'Aperture', snack: 'Snack', 'ordo-desktop': 'Ordo Desktop', builds: 'Smaller builds', background: 'Background', life: 'Off the clock', contact: 'Contact' };
+  const pagerNext = document.querySelector('#pager .next');
+  let view = null;
+  function route(hash, gently) {
+    const id = (hash || '').replace(/^#/, '') || 'top';
+    const target = document.getElementById(id);
+    const next = (target && target.closest('[data-view]')?.dataset.view) || 'home';
+    const changed = next !== view;
+    if (changed) {
+      view = next;
+      document.body.dataset.page = view;
+      document.querySelectorAll('[data-view]').forEach((el) => {
+        const on = el.dataset.view === view;
+        el.classList.toggle('on', on);
+        el.classList.remove('view-in');
+        if (on && !reduce.matches) { void el.offsetWidth; el.classList.add('view-in'); }
+      });
+      document.querySelectorAll('.nav-links a[href^="#"]').forEach((a) => a.classList.toggle('on', a.getAttribute('href') === `#${view}`));
+      const after = ORDER[ORDER.indexOf(view) + 1];
+      pagerNext.setAttribute('href', after ? `#${after}` : '#contents');
+      pagerNext.textContent = after ? `Next: ${NAMES[after]} \u2192` : 'Back to contents \u2192';
+      // every chapter starts from its first step, not wherever it was left
+      for (const ch of AS.chapters) { ch.s = null; ch.v = 0; }
+    }
+    const first = document.querySelector(`[data-view="${view}"]`);
+    const y = target && target !== first && id !== 'top' ? Math.max(0, target.getBoundingClientRect().top + scrollY - 64) : 0;
+    if (changed || !gently) { AS.lenis?.scrollTo(y, { immediate: true, force: true }); window.scrollTo(0, y); }
+    else AS.scrollTo(y, 1);
+    AS.update();
+  }
+  const go = (hash) => {
+    if (hash !== location.hash) history.pushState(null, '', hash === '#top' ? location.pathname + location.search : hash);
+    route(hash, true);
+  };
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    go(a.getAttribute('href'));
+  });
+  addEventListener('popstate', () => route(location.hash));
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && view !== 'home') go('#contents'); });
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  route(location.hash);
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer onload="AS.startLenis()"></script>
