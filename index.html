@@ -1840,11 +1840,16 @@ function frame() {
    next model every few seconds (or on a click), with a glitch at each change. */
 const plateRT = new THREE.WebGLRenderTarget(32, 32);
 const plateCam = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
+// every CAD build, in turn; each loads when its turn comes
 const PLATE = [
   { id: 'aperture', caption: 'Aperture, printed live from its CAD.', pitch: 14 },
   { id: 'aperture-case', caption: "Aperture's charging case, printed live from its CAD.", pitch: 30 },
   { id: 'snack', caption: 'Snack, printed live from its CAD.', pitch: 14 },
+  { id: 'snack-phone', caption: 'Snack on an iPhone 17 Pro, printed live from its CAD.', pitch: 16 },
   { id: 'ordo', caption: 'Ordo Desktop, printed live from its CAD.', pitch: 18 },
+  { id: 'skyfall', caption: 'Project Skyfall, printed live from its CAD.', pitch: 16 },
+  { id: 'portafilter', caption: 'The bottomless portafilter, printed live from its CAD.', pitch: 26 },
+  { id: 'topology', caption: 'The topology-optimized strut, printed live from its CAD.', pitch: 22 },
 ];
 let plateIdx = 0, plateSince = 0, plateBuf = null, plateTick = 0;
 AS.nextPlate = () => { plateIdx = (plateIdx + 1) % PLATE.length; plateSince = clock.elapsedTime; };
