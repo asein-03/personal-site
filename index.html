@@ -525,7 +525,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     </div>
     <figure class="photo">
       <div class="plate" id="plate" title="Click for the next model"><canvas id="field" aria-hidden="true"></canvas><span class="plate-status mono" id="plateStatus" aria-hidden="true">Printing</span></div>
-      <figcaption><span id="plateCaption">Aperture, printed live from its CAD.</span><span class="mono">Click for the next model</span></figcaption>
+      <figcaption><span id="plateCaption">Aperture in its charging case, printed live from its CAD.</span><span class="mono">Click for the next model</span></figcaption>
     </figure>
   </div>
 </header>
@@ -1842,9 +1842,7 @@ const plateRT = new THREE.WebGLRenderTarget(32, 32);
 const plateCam = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
 // every CAD build, in turn; each loads when its turn comes
 const PLATE = [
-  { id: 'aperture', caption: 'Aperture, printed live from its CAD.', pitch: 14 },
-  { id: 'aperture-case', caption: "Aperture's charging case, printed live from its CAD.", pitch: 30 },
-  { id: 'snack', caption: 'Snack, printed live from its CAD.', pitch: 14 },
+  { id: 'aperture-case', caption: 'Aperture in its charging case, printed live from its CAD.', pitch: 30 },
   { id: 'snack-phone', caption: 'Snack on an iPhone 17 Pro, printed live from its CAD.', pitch: 16 },
   { id: 'ordo', caption: 'Ordo Desktop, printed live from its CAD.', pitch: 18 },
   { id: 'skyfall', caption: 'Project Skyfall, printed live from its CAD.', pitch: 16 },
