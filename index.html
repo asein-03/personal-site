@@ -723,9 +723,9 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <section class="profile" aria-labelledby="profile-title">
           <p class="kicker"><span>Profile</span> Outside work</p>
           <h3 id="profile-title">From Yangon, Myanmar</h3>
-          <p class="prose">I'm from Yangon, Myanmar, and grew up there. I've always been into fast cars, rockets and planes; the rocket I built in high school is <a href="#builds">Project Skyfall</a>.</p>
+          <p class="prose">I'm from Yangon, Myanmar, and grew up there. For as long as I can remember I've loved fixing things and building tools, and the best gift I got in middle school was my first 3D printer, a Creality. I printed little parts to fix things around the house, like our faucet and refrigerator. Growing up somewhere technology was slow to arrive, then suddenly being in San Francisco and New York, opened my eyes to what was possible and how I could be part of it. I've always been into cars, rockets and planes; the rocket I built in high school is <a href="#builds">Project Skyfall</a>.</p>
           <dl class="facts">
-            <div><dt class="mono">Coffee</dt><dd>A coffee fanatic. The portafilter in <a href="#builds">Smaller builds</a> is a replica I modeled.</dd></div>
+            <div><dt class="mono">Coffee</dt><dd>A coffee fanatic, and I'll tell you honestly if your favorite cafe's coffee is bad. The portafilter in <a href="#builds">Smaller builds</a> is a replica I modeled.</dd></div>
             <div><dt class="mono">Sports</dt><dd>Golf, basketball and volleyball.</dd></div>
             <div><dt class="mono">Outdoors</dt><dd>Traveling and hiking.</dd></div>
           </dl>
@@ -734,6 +734,9 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
             <li class="done"><span class="box" aria-hidden="true"></span>Shenandoah<span class="mono">Done</span></li>
             <li class="done"><span class="box" aria-hidden="true"></span>Yosemite<span class="mono">Done</span></li>
             <li><span class="box" aria-hidden="true"></span>Half Dome<span class="mono">Back in Yosemite, soon</span></li>
+            <li><span class="box" aria-hidden="true"></span>Yellowstone<span class="mono">Spring 2027</span></li>
+            <li><span class="box" aria-hidden="true"></span>Grand Teton<span class="mono">Summer 2027</span></li>
+            <li><span class="box" aria-hidden="true"></span>Mount Rainier<span class="mono">Fall 2027 (PLEASE)</span></li>
             <li><span class="box" aria-hidden="true"></span>The Dolomites<span class="mono">Within five years</span></li>
           </ul>
         </section>
@@ -1019,8 +1022,14 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     if (caption && P.caption && caption.textContent !== P.caption) caption.textContent = P.caption;
   }
   sizeField(); drawField(0);
-  let fieldW = innerWidth;
-  addEventListener('resize', () => { if (innerWidth !== fieldW) { fieldW = innerWidth; sizeField(); drawField(Math.max(0, F.last)); } });
+  // The front page is a view that may be shown after this runs, and the plate's box can change with the layout, so it
+  // re-sizes whenever its own box does (only when the width or height really change).
+  let fieldBox = '';
+  new ResizeObserver(() => {
+    const r = cv.getBoundingClientRect(), box = `${Math.round(r.width)}x${Math.round(r.height)}`;
+    if (box === fieldBox || !r.width) return;
+    fieldBox = box; sizeField(); drawField(Math.max(0, F.last));
+  }).observe(cv);
   matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => { sizeField(); drawField(Math.max(0, F.last)); });
   addEventListener('pointermove', (e) => {
     const r = cv.getBoundingClientRect();
