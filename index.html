@@ -161,8 +161,8 @@ h3 { font-size: clamp(1.35rem, 1.9vw, 2.1rem); font-weight: 700; line-height: 1;
 .topline { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; padding: 9px 0; border-top: 1px solid var(--fg); border-bottom: 1px solid var(--fg); color: var(--dim); }
 .topline > :nth-child(2) { text-align: center; color: var(--fg); }
 .topline > :last-child { text-align: right; }
-/* the name and the motto share a line: the name a wordmark in the headline face, the motto set against it */
-.mast { display: flex; justify-content: space-between; align-items: end; gap: 24px; padding: clamp(28px, 5vh, 56px) 0 clamp(14px, 2vh, 22px); }
+/* the name is centered at the top, a wordmark in the headline face, with the motto beneath it */
+.mast { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: clamp(28px, 5vh, 56px) 0 clamp(14px, 2vh, 22px); }
 .nameplate { position: relative; font: 800 clamp(2.4rem, 4.4vw, 4.8rem)/.9 var(--font-head); font-stretch: var(--stretch); letter-spacing: -.01em; text-transform: uppercase; white-space: nowrap; cursor: pointer; }
 .nameplate span { display: inline-block; }
 .mast-row { display: flex; justify-content: space-between; gap: 24px; padding: 10px 0; border-top: 1px solid var(--line-2); }
@@ -174,10 +174,8 @@ h3 { font-size: clamp(1.35rem, 1.9vw, 2.1rem); font-weight: 700; line-height: 1;
 .ear { max-width: 34rem; font: 400 .95rem/1.4 var(--font-body); color: var(--dim); }
 .ear .mono { margin-right: 10px; color: var(--fg); }
 .ear.right { text-align: right; }
-.motto { max-width: 26ch; margin: 0; text-align: right; font: 400 1.02rem/1.35 var(--font-body); color: var(--dim); }
+.motto { max-width: 40ch; margin: 0; text-align: center; font: 400 1.02rem/1.35 var(--font-body); color: var(--dim); }
 @media (max-width: 900px) {
-  .mast { flex-direction: column; align-items: start; }
-  .motto { text-align: left; }
   .mast-row { display: none; }
   .topline { grid-template-columns: 1fr 1fr; }
   .topline > :nth-child(2) { display: none; }
@@ -199,6 +197,13 @@ h3 { font-size: clamp(1.35rem, 1.9vw, 2.1rem); font-weight: 700; line-height: 1;
   .ticker-track { padding: 6px 0; }
   .ticker-track span { padding: 0 14px; }
   .ticker-track span::before { margin-right: 14px; }
+}
+/* On a phone the paragraphs are set justified, like a newspaper column, so each block runs edge to edge and sits
+   square in the page instead of leaning on its ragged right edge. Long words hyphenate rather than leave gaps. */
+@media (max-width: 720px) {
+  .deck, .seeking, .cols p, .step p:not(.mono):not(.kicker), .build .prose, .ad p, .profile .prose, .letters-intro {
+    text-align: justify; hyphens: auto; -webkit-hyphens: auto;
+  }
 }
 @keyframes ticker { to { transform: translateX(-50%); } }
 
@@ -289,7 +294,7 @@ h3 { font-size: clamp(1.35rem, 1.9vw, 2.1rem); font-weight: 700; line-height: 1;
   }
   .step h2 { font-size: clamp(2.2rem, 11vw, 3.2rem); margin-bottom: 12px; }
   .step h3 { font-size: 1.5rem; margin-bottom: 10px; }
-  .step p:not(.mono):not(.kicker) { font-size: 1rem; text-align: left; }
+  .step p:not(.mono):not(.kicker) { font-size: 1rem; }
   .step .meta { margin-top: 12px; }
   .js .rail { gap: 6px; }
   .rail button { font-size: .5rem; letter-spacing: .08em; }
@@ -438,7 +443,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     </div>
     <div class="mast">
       <h1 class="nameplate" data-text="Albert Sein"><span>Albert Sein</span></h1>
-      <p class="motto">All the things I've built, and the people I built them with.</p>
+      <p class="motto">All the things I've built, and the things I love.</p>
     </div>
     <div class="mast-row">
       <aside class="ear left"><span class="mono">Write in</span><a href="mailto:kks7ys@virginia.edu">kks7ys@virginia.edu</a></aside>
@@ -449,15 +454,15 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
       <div class="ticker-view">
         <div class="ticker-track">
           <span>Aperture charging case designed around the shell</span>
-          <span>Snack R07 packaged for a manufacturer's design review</span>
-          <span>Ordo 1.0 on the App Store since August</span>
+          <span>Snack R07 packaged for manufacturing</span>
+          <span>Ordo on the App Store since August, with a big update in September</span>
           <span>Celestica internship wraps: liquid metal TIMs tested on the TIMA5</span>
           <span>Ordo Desktop printed in two parts on a Prusa MK4S</span>
           <span>Open to Summer 2027 internships and new-grad roles</span>
           <span>Now playing: Eyelar (shutters), Fred again..</span>
           <span aria-hidden="true">Aperture charging case designed around the shell</span>
-          <span aria-hidden="true">Snack R07 packaged for a manufacturer's design review</span>
-          <span aria-hidden="true">Ordo 1.0 on the App Store since August</span>
+          <span aria-hidden="true">Snack R07 packaged for manufacturing</span>
+          <span aria-hidden="true">Ordo on the App Store since August, with a big update in September</span>
           <span aria-hidden="true">Celestica internship wraps: liquid metal TIMs tested on the TIMA5</span>
           <span aria-hidden="true">Ordo Desktop printed in two parts on a Prusa MK4S</span>
           <span aria-hidden="true">Open to Summer 2027 internships and new-grad roles</span>
@@ -471,12 +476,12 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <p class="kicker"><span>Front page</span> Profile</p>
         <h2 class="headline">A product person who loves building things, and loves working with people even more</h2>
         <p class="deck">I study materials and systems engineering at UVA. So far I've shipped an app, designed a wearable and its charging case, packaged a phone-mounted timekeeper for a manufacturer's review, and printed a desk display.</p>
-        <p class="seeking"><span class="kicker"><span>Looking for</span></span>Summer 2027 internships and new-grad roles in technical project management, product and hardware engineering. <a href="mailto:kks7ys@virginia.edu">Email me</a> or <a href="albert-sein-resume.pdf" target="_blank" rel="noopener">read my résumé</a>.</p>
+        <p class="seeking"><span class="kicker"><span>Looking for</span></span>Summer 2027 internships and new-grad roles in technical project management, product and hardware engineering. I do my best work on high-agency, fast-moving teams. <a href="mailto:kks7ys@virginia.edu">Email me</a> or <a href="albert-sein-resume.pdf" target="_blank" rel="noopener">read my résumé</a>.</p>
         <p class="byline mono">By Albert Sein &nbsp; | &nbsp; Charlottesville, Va.</p>
         <div class="cols prose">
-          <p>I am doing an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
-          <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Most of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. It's slow work and I like it.</p>
-          <p>Ordo went live on the App Store this August. I designed it and used AI tools to build it, got it through review myself, and still ship updates most weeks.</p>
+          <p>I am studying for an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
+          <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Half of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. The other half was supply chain: using AI tools to automate work that would otherwise take dozens of hours, including competitor and market intelligence and Clear-to-Build models for executive presentations.</p>
+          <p>Ordo went live on the App Store this August. I designed it, built it with AI tools, and still ship updates almost every week.</p>
           <p class="jump mono"><a href="#aperture">Continued: Aperture</a></p>
         </div>
       </article>
@@ -532,7 +537,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         </div>
         <div class="step" data-label="Case" data-model="aperture-case" data-yaw="-128" data-pitch="30" data-zoom="1">
           <h3>The charging case</h3>
-          <p>I designed the case around the shell: a crescent base and a lid on a pin hinge. Magnets pull the shell into its cups, and it charges through the same steel rings that hold it to the base.</p>
+          <p>I designed the case around the shell: a crescent base and a lid on a pin hinge. Magnets pull the shell into its cups, and it charges through the same steel rings that hold it to the base, much like AirPods in their case.</p>
         </div>
         <div class="step" data-label="Inside" data-model="aperture-case" data-yaw="-118" data-pitch="22" data-explode="1" data-zoom=".86">
           <h3>Its own board and battery</h3>
