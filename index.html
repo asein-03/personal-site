@@ -18,7 +18,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cstyle%3Erect%7Bfill:%230e0d0b%7Dtext%7Bfill:%23ebe4d2%7D%40media (prefers-color-scheme:light)%7Brect%7Bfill:%23ebe5d6%7Dtext%7Bfill:%2317140f%7D%7D%3C/style%3E%3Crect width='32' height='32' rx='7'/%3E%3Ctext x='16' y='23.5' font-family='Georgia,serif' font-size='21' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,300..500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Grenze+Gotisch:wght@700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,300..500&family=Newsreader:opsz,wght@6..72,300..600&family=Playfair+Display:wght@700;900&family=Grenze+Gotisch:wght@700&display=swap">
 <link rel="preload" href="models/aperture.bin" as="fetch" crossorigin>
 <script>document.documentElement.classList.add('js');</script>
 <style>
@@ -105,10 +105,10 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .dims line { stroke: var(--fg); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .dims .ext { stroke: var(--line-2); }
 .dims text { fill: var(--fg); font: 400 10px/1 var(--font-mono); letter-spacing: .12em; }
-/* Grain, scanlines and aged edges share the 3D canvas's layer and come after it, so they texture the paper and the
-   models but sit under every line of text. */
+/* Grain, scanlines and aged edges texture the paper only: they sit under the 3D canvas, so the models stay crisp,
+   and under every line of text. */
 .grain {
-  position: fixed; inset: -60px; z-index: 1; pointer-events: none; opacity: .07;
+  position: fixed; inset: -60px; z-index: 0; pointer-events: none; opacity: .07;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .38 0 0 0 1.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain 1.2s steps(6) infinite;
 }
@@ -117,10 +117,10 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
   60% { transform: translate(-10px, -8px); } 80% { transform: translate(20px, 16px); } 100% { transform: translate(0, 0); }
 }
 .scan {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .5;
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5;
   background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, .22) 0 1px, transparent 1px 3px);
 }
-.age { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse 80% 75% at 50% 45%, transparent 55%, rgba(0, 0, 0, .42) 100%); }
+.age { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 80% 75% at 50% 45%, transparent 55%, rgba(0, 0, 0, .42) 100%); }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) .grain { opacity: .11; mix-blend-mode: multiply; }
   :root:not([data-theme="dark"]) .scan { opacity: .22; }
@@ -173,10 +173,10 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .tearing .nameplate::before { opacity: .95; color: var(--red); clip-path: inset(var(--c1, 18%) 0 var(--c2, 52%) 0); transform: translateX(var(--gx1, -8px)); }
 .tearing .nameplate::after { opacity: .95; color: var(--cyan); clip-path: inset(var(--c3, 58%) 0 var(--c4, 12%) 0); transform: translateX(var(--gx2, 8px)); }
 .tearing .nameplate { translate: var(--gx, 0) 0; }
-.ear { border: 1px solid var(--fg); padding: 10px 12px; max-width: 15rem; font: italic 400 .95rem/1.3 var(--font-body); }
-.ear .mono { display: block; margin-bottom: 6px; font-style: normal; color: var(--dim); }
+.ear { border: 1px solid var(--fg); padding: 10px 12px; max-width: 15rem; font: 400 .95rem/1.3 var(--font-body); }
+.ear .mono { display: block; margin-bottom: 6px; color: var(--dim); }
 .ear.right { justify-self: end; }
-.motto { text-align: center; padding-bottom: 10px; font: italic 400 1.02rem/1.3 var(--font-body); color: var(--dim); }
+.motto { text-align: center; padding-bottom: 10px; font: 400 1.02rem/1.3 var(--font-body); color: var(--dim); }
 @media (max-width: 900px) {
   .mast { grid-template-columns: 1fr; }
   .ear { display: none; }
@@ -197,7 +197,7 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .front-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); padding: clamp(20px, 3.5vh, 36px) 0 clamp(40px, 8vh, 80px); }
 .lead { padding-right: clamp(18px, 2.5vw, 36px); border-right: 1px solid var(--line-2); }
 .headline { font-size: clamp(2.3rem, 4.6vw, 4.3rem); line-height: .98; margin-bottom: 18px; }
-.deck { max-width: 48ch; margin-bottom: 16px; font: italic 400 clamp(1.15rem, 1.6vw, 1.4rem)/1.4 var(--font-body); color: var(--dim); }
+.deck { max-width: 48ch; margin-bottom: 16px; font: 400 clamp(1.15rem, 1.6vw, 1.4rem)/1.4 var(--font-body); color: var(--dim); }
 .seeking { margin: 0 0 16px; padding: 12px 14px; border: 1px solid var(--fg); font-size: 1.08rem; line-height: 1.5; }
 .seeking .kicker { display: inline-flex; margin: 0 10px 0 0; vertical-align: 2px; }
 .seeking a, .ear a { text-decoration: none; border-bottom: 1px solid var(--line-2); }
@@ -215,8 +215,7 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .plate-status { position: absolute; left: 10px; bottom: 10px; padding: 5px 7px 4px; background: var(--signal); color: var(--signal-ink); transition: opacity .4s; }
 .plate-status::after { content: "\2026"; animation: blink 1s steps(2) infinite; }
 .plate-status.done { opacity: 0; }
-.photo figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 10px; font: italic 400 .95rem/1.35 var(--font-body); color: var(--dim); }
-.photo figcaption .mono { font-style: normal; }
+.photo figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 10px; font: 400 .95rem/1.35 var(--font-body); color: var(--dim); }
 @media (max-width: 900px) {
   .front-grid { grid-template-columns: 1fr; }
   .lead { padding-right: 0; border-right: 0; }
@@ -232,7 +231,7 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .toc .t { font: 700 clamp(1.3rem, 2vw, 1.7rem)/1.1 var(--font-head); }
 .toc .leader { border-bottom: 2px dotted var(--line-2); transform: translateY(-5px); }
 .toc .pg { font: 500 .7rem/1 var(--font-mono); letter-spacing: .1em; }
-.toc .d { grid-column: 1 / -1; margin-top: 4px; font: italic 400 .98rem/1.3 var(--font-body); color: var(--dim); }
+.toc .d { grid-column: 1 / -1; margin-top: 4px; font: 400 .98rem/1.3 var(--font-body); color: var(--dim); }
 .toc a:hover .t { background: var(--signal); color: var(--signal-ink); }
 
 /* ---------- chapters: a pinned page per project ---------- */
@@ -322,8 +321,8 @@ html:not(.has-3d) .thumb { display: none; }
 .oped-body { columns: 2 19rem; column-gap: 32px; column-rule: 1px solid var(--line); font-size: 1.08rem; line-height: 1.6; }
 .oped-body h4 { margin: 0 0 4px; font: 700 1.15rem/1.15 var(--font-head); break-after: avoid; }
 .oped-body p { margin-bottom: 1.1em; }
-.pullquote { align-self: start; margin: 0; padding: 18px 0; border-top: 3px solid var(--fg); border-bottom: 1px solid var(--fg); font: italic 700 clamp(1.6rem, 2.5vw, 2.2rem)/1.15 var(--font-head); }
-.pullquote cite { display: block; margin-top: 14px; font: 400 .6rem/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; font-style: normal; color: var(--dim); }
+.pullquote { align-self: start; margin: 0; padding: 18px 0; border-top: 3px solid var(--fg); border-bottom: 1px solid var(--fg); font: 700 clamp(1.6rem, 2.5vw, 2.2rem)/1.15 var(--font-head); }
+.pullquote cite { display: block; margin-top: 14px; font: 400 .6rem/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
 @media (max-width: 820px) { .oped { grid-template-columns: 1fr; } }
 
 .classifieds { columns: 3 17rem; column-gap: 18px; }
@@ -339,7 +338,7 @@ a.ad:hover .ad-when { color: inherit; }
 .agate b { margin-right: 8px; font: 500 .64rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
 
 .contact { position: relative; z-index: 2; padding: 10vh 0 8vh; }
-.letters-intro { max-width: 46ch; margin-bottom: 22px; font: italic 400 1.15rem/1.4 var(--font-body); color: var(--dim); }
+.letters-intro { max-width: 46ch; margin-bottom: 22px; font: 400 1.15rem/1.4 var(--font-body); color: var(--dim); }
 .links { border-top: 1px solid var(--fg); }
 .link { display: grid; grid-template-columns: auto minmax(24px, 1fr) auto; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
 .link .leader { border-bottom: 2px dotted var(--line-2); transform: translateY(-5px); }
@@ -424,8 +423,8 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         </div>
       </article>
       <figure class="photo">
-        <div class="plate" id="plate" title="Click to jam the press"><canvas id="field" aria-hidden="true"></canvas><span class="plate-status mono" id="plateStatus" aria-hidden="true">Printing</span></div>
-        <figcaption><span id="plateCaption">Aperture, printed live from its CAD.</span><span class="mono">Click to jam the press</span></figcaption>
+        <div class="plate" id="plate" title="Click for the next model"><canvas id="field" aria-hidden="true"></canvas><span class="plate-status mono" id="plateStatus" aria-hidden="true">Printing</span></div>
+        <figcaption><span id="plateCaption">Aperture, printed live from its CAD.</span><span class="mono">Click for the next model</span></figcaption>
       </figure>
     </div>
   </div>
@@ -460,27 +459,27 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
           <p class="meta mono">2026 &nbsp; Wearable &nbsp; Fusion 360 &nbsp; KiCad</p>
         </div>
         <div class="step" data-label="Profile" data-model="aperture" data-yaw="86" data-pitch="4" data-zoom="1.05">
-          <h3>Shaped to the head.</h3>
+          <h3>Shaped to the head</h3>
           <p>The shell's face follows the curve of the head along its length, so it stays the same thickness from tip to tip instead of lifting off at the ends.</p>
         </div>
         <div class="step" data-label="Electronics" data-model="aperture" data-yaw="68" data-pitch="12" data-explode="1" data-zoom=".8">
-          <h3>Electronics, folded to the curve.</h3>
+          <h3>Electronics, folded to the curve</h3>
           <p>The board is rigid-flex in three sections, each sitting tangent to the shell's curve and joined by short flex hinges. Steel rings soldered to it pass through the floor to meet the magnets in the base. Part positions come back from the KiCad layouts into the CAD, and every rebuild reruns the interference check.</p>
         </div>
         <div class="step" data-label="Plan" data-model="aperture" data-yaw="0" data-pitch="0" data-zoom="1" data-measure="x,y">
-          <h3>One file, three test tracks.</h3>
+          <h3>One file, three test tracks</h3>
           <p>Every dimension lives in one parameters file that rebuilds the drawings, the fit checks, the Fusion 360 model and both board outlines. The build and test plan runs three tracks side by side: build the first units, scan heads, and run bench and wear tests, with results feeding back into that file before anything is tooled.</p>
         </div>
         <div class="step" data-label="Case" data-model="aperture-case" data-yaw="-128" data-pitch="30" data-zoom="1">
-          <h3>The charging case.</h3>
+          <h3>The charging case</h3>
           <p>I designed the case around the shell: a crescent base and a lid on a pin hinge. Magnets pull the shell into its cups, and it charges through the same steel rings that hold it to the base.</p>
         </div>
         <div class="step" data-label="Inside" data-model="aperture-case" data-yaw="-118" data-pitch="22" data-explode="1" data-zoom=".86">
-          <h3>Its own board and battery.</h3>
+          <h3>Its own board and battery</h3>
           <p>Under the pocket sit the case's own board, cell and USB-C port. A Hall sensor watches the lid, and the contacts only switch on with the lid shut and a shell drawing current.</p>
         </div>
         <div class="step" data-label="Closed" data-model="aperture-case" data-yaw="-132" data-pitch="26" data-close="1" data-zoom="1.08">
-          <h3>Drop it in, close the lid.</h3>
+          <h3>Drop it in, close the lid</h3>
           <p>The shell settles into its cups, the lid swings shut on its pin hinge, and a magnet in the lid's front edge holds it closed while it charges.</p>
           <a class="go" href="https://aperture-kappa-three.vercel.app" target="_blank" rel="noopener">Visit Aperture <span aria-hidden="true">&#8599;</span></a>
         </div>
@@ -500,15 +499,23 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
           <p class="meta mono">2026 &nbsp; Consumer hardware &nbsp; Fusion 360</p>
         </div>
         <div class="step" data-label="Thickness" data-model="snack" data-yaw="90" data-pitch="0" data-zoom="1" data-measure="z,y">
-          <h3>Under 8 mm.</h3>
+          <h3>Under 8 mm</h3>
           <p>Revision R03 threw out the 9.8 mm stack and started clean at 64 by 78 by 7.6 mm. Every part had to fit a named volume after walls, corner radii, adhesive and battery swell, with 7.8 mm as a hard limit.</p>
         </div>
         <div class="step" data-label="Electronics" data-model="snack" data-yaw="-64" data-pitch="14" data-explode="1" data-zoom=".78">
-          <h3>Two boards in 7.6 mm.</h3>
+          <h3>Two boards in 7.6 mm</h3>
           <p>A main board with the USB-C port, a display board joined to it by a flex, the cell, the attachment ring and a deadfront glass, stacked inside the frame. A scripted audit checks 83 critical fits, down to 0.15 mm between the USB-C connector and its cage.</p>
         </div>
-        <div class="step" data-label="Release" data-model="snack" data-yaw="24" data-pitch="10" data-explode=".4" data-zoom=".95">
-          <h3>Ready for a manufacturer's review.</h3>
+        <div class="step" data-label="MagSafe" data-model="snack-phone" data-yaw="-52" data-pitch="12" data-detach="1" data-zoom="1">
+          <h3>Made for the back of an iPhone</h3>
+          <p>The attachment ring sits on the MagSafe axis from Apple's accessory drawing, so Snack lands in the same place on every iPhone 17 Pro. Its top edge stops about 4 mm short of the camera plateau, and the top 10 mm is a nonconductive cap that keeps the metal frame out of the zone Apple asks accessories to leave clear.</p>
+        </div>
+        <div class="step" data-label="Snap" data-model="snack-phone" data-yaw="-22" data-pitch="8" data-zoom="1.2">
+          <h3>Snaps on, then lights up</h3>
+          <p>The magnets take it the last few millimetres. The face is dead front: 512 warm-white LEDs in a 32 by 16 grid sit behind the glass, invisible until they light. Here they confirm the snap, then run a break timer.</p>
+        </div>
+        <div class="step" data-label="Release" data-model="snack-phone" data-yaw="-58" data-pitch="16" data-explode=".85" data-zoom=".92">
+          <h3>Ready for a manufacturer's review</h3>
           <p>R07 is packaged for an OEM design-for-manufacture review: a BOM, a source ledger for every part, an interface net table, and a release checklist where nothing closes without an owner, an artifact, a date and an approver.</p>
         </div>
       </div>
@@ -527,11 +534,11 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
           <p class="meta mono">Spring 2026 &nbsp; Fusion 360 &nbsp; PLA</p>
         </div>
         <div class="step" data-label="Parts" data-model="ordo" data-yaw="-42" data-pitch="20" data-explode="1" data-zoom=".95">
-          <h3>Two prints and a screen.</h3>
+          <h3>Two prints and a screen</h3>
           <p>The hull and the base plate print separately on a Prusa MK4S, about five hours between them at 0.3 and 0.2 mm layers.</p>
         </div>
         <div class="step" data-label="Size" data-model="ordo" data-yaw="0" data-pitch="9" data-zoom="1.05" data-measure="x,y">
-          <h3>Sized for a desk.</h3>
+          <h3>Sized for a desk</h3>
           <p>186 mm wide, 68 mm tall and 114 mm deep, with the base plate running out past the hull as a front ledge.</p>
           <a class="go" href="https://useordoapp.com" target="_blank" rel="noopener">See Ordo <span aria-hidden="true">&#8599;</span></a>
         </div>
@@ -830,7 +837,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     ptr.on = e.pointerType === 'mouse' && ptr.x > -60 && ptr.y > -60 && ptr.x < r.width + 60 && ptr.y < r.height + 60;
   }, { passive: true });
   document.addEventListener('pointerleave', () => { ptr.on = false; });
-  // a click on the plate jams the press: a glitch, and the next model goes on
+  // a click on the plate glitches it and puts the next model on
   document.getElementById('plate').addEventListener('pointerdown', () => { AS.glitch(); AS.nextPlate?.(); });
   new IntersectionObserver(([e]) => { AS.plate.visible = e.isIntersecting; }, { rootMargin: '100px' }).observe(cv);
 
@@ -869,7 +876,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     });
     const pose = steps.map((s) => ({
       model: s.dataset.model, yaw: +(s.dataset.yaw || 0), pitch: +(s.dataset.pitch || 0),
-      explode: +(s.dataset.explode || 0), zoom: +(s.dataset.zoom || 1), close: +(s.dataset.close || 0),
+      explode: +(s.dataset.explode || 0), zoom: +(s.dataset.zoom || 1), close: +(s.dataset.close || 0), detach: +(s.dataset.detach || 0),
       measure: s.dataset.measure ? s.dataset.measure.split(',') : null,
     }));
     return { el, steps, buttons, pose, i: 0, t: 0, presence: 0 };
@@ -994,7 +1001,96 @@ const MATERIALS = {
   bright: () => new THREE.MeshPhysicalMaterial({ color: 0xcfcfcf, metalness: 1, roughness: 0.22, envMapIntensity: 1.4 }),
   diffuser: () => new THREE.MeshPhysicalMaterial({ color: 0xd6d6d6, metalness: 0, roughness: 0.55, envMapIntensity: 0.8 }),
   print: () => new THREE.MeshPhysicalMaterial({ color: 0x8a8a8a, metalness: 0, roughness: 0.72, envMapIntensity: 0.95 }),
+  // the phone Snack rides on: bead-blasted aluminium and frosted back glass, lighter than Snack so the two read apart
+  alu: () => new THREE.MeshPhysicalMaterial({ color: 0x9a9a98, metalness: 1, roughness: 0.4, envMapIntensity: 1.3 }),
+  frost: () => new THREE.MeshPhysicalMaterial({ color: 0xa6a6a3, metalness: 0, roughness: 0.55, clearcoat: 0.5, clearcoatRoughness: 0.4, envMapIntensity: 1 }),
 };
+
+/* ---------- Snack's pixel field ----------
+   32 by 16 warm-white LEDs behind dead-front glass: blank when off, lit pixels glowing through when on. Each model with
+   an LED field gets two planes from the same pixels: crisp dots on the LED board, which show when the glass is lifted
+   away, and a soft glow on the glass itself. */
+const DIGITS = ['01110 10001 10011 10101 11001 10001 01110', '00100 01100 00100 00100 00100 00100 01110',
+  '01110 10001 00001 00010 00100 01000 11111', '11111 00010 00100 00010 00001 10001 01110',
+  '00010 00110 01010 10010 11111 00010 00010', '11111 10000 11110 00001 00001 10001 01110',
+  '00110 01000 10000 11110 10001 10001 01110', '11111 00001 00010 00100 01000 01000 01000',
+  '01110 10001 10001 01110 10001 10001 01110', '01110 10001 10001 01111 00001 00010 01100'].map((d) => d.split(' '));
+const CHECK = ['000000001', '000000011', '000000110', '100001100', '110011000', '011110000', '001100000'];
+function ledSprite(size, soft) {
+  const c = document.createElement('canvas'); c.width = c.height = size;
+  const g = c.getContext('2d'), h = size / 2;
+  if (soft) {
+    const r = g.createRadialGradient(h, h, 0, h, h, h);
+    r.addColorStop(0, 'rgba(255,255,255,.75)'); r.addColorStop(0.18, 'rgba(255,255,255,.45)'); r.addColorStop(0.45, 'rgba(255,255,255,.1)'); r.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = r; g.fillRect(0, 0, size, size);
+  } else {
+    g.fillStyle = '#fff'; g.beginPath(); g.roundRect(size * 0.22, size * 0.22, size * 0.56, size * 0.56, size * 0.12); g.fill();
+  }
+  return c;
+}
+const LED_SPRITE = { src: ledSprite(16, false), glow: ledSprite(48, true) };
+function makeLeds(L, parts, spin) {
+  const S = 16, layer = (cols, rows, w, h, at, part) => {
+    const c = document.createElement('canvas'); c.width = cols * S; c.height = rows * S;
+    const map = new THREE.CanvasTexture(c); map.colorSpace = THREE.SRGBColorSpace;
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({
+      map, color: 0xffdcb0, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false,
+      polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2,
+    }));
+    mesh.renderOrder = 2; mesh.visible = false; spin.add(mesh);
+    return { c, g: c.getContext('2d'), map, mesh, at: new THREE.Vector3(...at), part: parts.find((p) => p.name === part) };
+  };
+  return {
+    cols: L.cols, rows: L.rows, S, px: new Float32Array(L.cols * L.rows), key: '', level: 0,
+    src: layer(L.cols, L.rows, L.w, L.h, L.src.at, L.src.part),
+    // the glow spreads past the field, so its canvas has a one-LED margin all round
+    glow: layer(L.cols + 2, L.rows + 2, L.w * (L.cols + 2) / L.cols, L.h * (L.rows + 2) / L.rows, L.glow.at, L.glow.part),
+  };
+}
+// What the pixels show. off: nothing. wake: a ripple out from the middle, then a tick, then the break timer from 0:00.
+// timer: a break already running. The timer is minutes and seconds over a bar that fills once a minute.
+function drawLeds(led, mode, tau) {
+  const { cols, rows, px } = led;
+  px.fill(0);
+  const set = (x, y, b) => { if (x >= 0 && y >= 0 && x < cols && y < rows) px[y * cols + x] = Math.max(px[y * cols + x], b); };
+  let key = mode;
+  if (mode === 'wake' && tau < 0.5) {
+    const r = (tau / 0.5) * 19;
+    for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) set(x, y, Math.max(0, 1 - Math.abs(Math.hypot(x - 15.5, y - 7.5) - r) / 1.6));
+    key += Math.round(tau * 60);
+  } else if (mode === 'wake' && tau < 1.4) {
+    const b = smooth(0.5, 0.65, tau);
+    CHECK.forEach((row, y) => [...row].forEach((on, x) => on === '1' && set(11 + x, 4 + y, b)));
+    key += Math.round(tau * 30);
+  } else if (mode !== 'off') {
+    const e = mode === 'wake' ? tau - 1.4 : tau, sec = Math.floor(e);
+    const text = `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
+    const colon = e % 1 < 0.5;
+    const width = [...text].reduce((w, ch) => w + (ch === ':' ? 2 : 6), -1);
+    let x0 = Math.floor((cols - width) / 2);
+    for (const ch of text) {
+      if (ch === ':') { if (colon) { set(x0, 4, 1); set(x0, 8, 1); } x0 += 2; continue; }
+      DIGITS[+ch].forEach((row, y) => [...row].forEach((on, x) => on === '1' && set(x0 + x, 3 + y, 1)));
+      x0 += 6;
+    }
+    const fill = Math.round(((sec % 60) / 60) * 26);
+    for (let x = 0; x < 26; x++) for (const y of [12, 13]) set(3 + x, y, x < fill ? 0.85 : 0.08);
+    key += `${sec}${colon}`;
+  }
+  if (key === led.key) return;
+  led.key = key;
+  for (const [layer, sprite, pad, grow] of [[led.src, LED_SPRITE.src, 0, 1], [led.glow, LED_SPRITE.glow, 1, 3]]) {
+    const { g, c } = layer, S = led.S;
+    g.clearRect(0, 0, c.width, c.height);
+    for (let i = 0; i < px.length; i++) {
+      if (px[i] < 0.02) continue;
+      const x = (i % cols) + pad + 0.5, y = Math.floor(i / cols) + pad + 0.5;
+      g.globalAlpha = px[i]; g.drawImage(sprite, (x - grow / 2) * S, (y - grow / 2) * S, grow * S, grow * S);
+    }
+    g.globalAlpha = 1;
+    layer.map.needsUpdate = true;
+  }
+}
 
 /* ---------- model files: a JSON header, then int16 positions, int8 normals and indices per part ---------- */
 function boxUV(P, N, n) {
@@ -1028,11 +1124,13 @@ function loadModel(id) {
       const mesh = new THREE.Mesh(g, mat);
       spin.add(mesh);
       const hinge = p.hinge && { p: new THREE.Vector3(...p.hinge.p), a: new THREE.Vector3(...p.hinge.a).normalize(), deg: p.hinge.deg };
-      return { mesh, explode: new THREE.Vector3(...p.explode), hinge };
+      return { name: p.name, mesh, explode: new THREE.Vector3(...p.explode), detach: p.detach && new THREE.Vector3(...p.detach), hinge };
     });
     const box = new THREE.Box3();
     for (const { mesh } of parts) { mesh.geometry.computeBoundingBox(); box.union(mesh.geometry.boundingBox); }
     const m = { id, pivot, spin, parts, box, sizeMM: head.sizeMM, radius: box.getBoundingSphere(new THREE.Sphere()).radius, opacity: -1 };
+    m.snaps = parts.some((p) => p.detach);
+    if (head.leds) m.leds = makeLeds(head.leds, parts, spin);
     pivot.visible = false;
     scene.add(pivot);
     MODELS[id] = m;
@@ -1139,10 +1237,48 @@ function applyPose(m, pose, o, time, lift) {
   m.pivot.position.set(0, (1 - o) * lift + idle * Math.sin(time * 0.6) * 0.012, 0);
   for (const p of m.parts) {
     p.mesh.position.copy(p.explode).multiplyScalar(pose.explode);
+    if (p.detach) p.mesh.position.addScaledVector(p.detach, pose.detach || 0);
     if (!p.hinge) continue;
     // turn about the hinge line: v' = R(v - pivot) + pivot
     p.mesh.quaternion.setFromAxisAngle(p.hinge.a, p.hinge.deg * D2R * (pose.close || 0));
     p.mesh.position.add(p.hinge.p).sub(hingeTmp.copy(p.hinge.p).applyQuaternion(p.mesh.quaternion));
+  }
+  if (m.leds) {
+    const { src, glow, level } = m.leds;
+    // the glow is light through the glass, so it goes as the glass lifts away
+    const gs = o * level, gg = o * level * (1 - smooth(0.02, 0.2, pose.explode));
+    src.mesh.position.copy(src.at).add(src.part.mesh.position); src.mesh.material.opacity = gs; src.mesh.visible = gs > 0.005;
+    glow.mesh.position.copy(glow.at).add(glow.part.mesh.position); glow.mesh.material.opacity = gg; glow.mesh.visible = gg > 0.005;
+  }
+}
+
+/* ---------- the MagSafe snap ----------
+   detach is how far Snack sits off the back of the phone (1 is about 24 mm). Scrolling moves it until it's within
+   magnet range; from there the magnets pull it the rest of the way, fast, and it knocks against the phone. Scrolling
+   back past a little further than that pulls it off again. */
+function snapGap(m, target, dt, time) {
+  const s = m.snap || (m.snap = { gap: target, vel: 0, stuck: target < 0.45, hit: -1 });
+  if (reduce.matches) { s.gap = target; s.stuck = target < 0.45; return target; }
+  if (s.stuck && target > 0.55) { s.stuck = false; s.hit = -1; }
+  if (!s.stuck) {
+    if (target < 0.45) {
+      s.vel += 30 * dt; s.gap = Math.max(0, s.gap - s.vel * dt);
+      if (s.gap === 0) { s.stuck = true; s.vel = 0; s.hit = time; }
+    } else { s.vel = 0; s.gap = lerp(s.gap, target, 1 - Math.exp(-dt * 12)); }
+  }
+  const tau = time - s.hit;
+  return s.gap + (s.hit >= 0 && tau < 0.8 ? 0.035 * Math.abs(Math.sin(tau * 26)) * Math.exp(-tau * 8) : 0);
+}
+// Snack alone always shows a break in progress. On the phone it's dark until it snaps on, then wakes.
+function tickLeds(time, dt) {
+  for (const m of Object.values(MODELS)) {
+    const led = m.leds;
+    if (!led) continue;
+    if (!m.snaps) { led.level = 1; drawLeds(led, 'timer', 462 + time); continue; }
+    const s = m.snap, on = !!(s && s.stuck);
+    led.level = on ? (s.hit >= 0 ? 1 : lerp(led.level, 1, 1 - Math.exp(-dt * 6))) : lerp(led.level, 0, 1 - Math.exp(-dt * 14));
+    if (on) { s.on ??= time; drawLeds(led, s.hit >= 0 ? 'wake' : 'timer', time - (s.hit >= 0 ? s.hit : s.on)); }
+    else if (s) s.on = undefined;
   }
 }
 const hingeTmp = new THREE.Vector3();
@@ -1153,7 +1289,7 @@ const mixPose = (a, b, t) => {
   const settle = staged ? smooth(0, 0.55, t) : t, shut = staged ? smooth(0.45, 1, t) : t;
   const closing = (b.close || 0) > (a.close || 0);
   return {
-    yaw: lerp(a.yaw, b.yaw, t), pitch: lerp(a.pitch, b.pitch, t), zoom: lerp(a.zoom, b.zoom, t),
+    yaw: lerp(a.yaw, b.yaw, t), pitch: lerp(a.pitch, b.pitch, t), zoom: lerp(a.zoom, b.zoom, t), detach: lerp(a.detach || 0, b.detach || 0, t),
     explode: lerp(a.explode, b.explode, staged ? (closing ? settle : shut) : t),
     close: lerp(a.close || 0, b.close || 0, staged ? (closing ? shut : settle) : t),
   };
@@ -1206,11 +1342,12 @@ function frame() {
   renderer.clear();
 
   for (const m of Object.values(MODELS)) m.pivot.visible = false;
+  tickLeds(time, dt);
   let measured = null;
   for (const [id, w] of want) {
     const m = MODELS[id];
     if (!m) continue;
-    const pose = w.pose;
+    const pose = m.snaps ? { ...w.pose, detach: snapGap(m, w.pose.detach || 0, dt, time) } : w.pose;
     const vt = Math.tan((FOV / 2) * D2R), ht = vt * aspect;
     const fracV = mobile ? 0.36 : 0.6, fracH = mobile ? 0.82 : 0.4;
     const dist = Math.max(m.radius / (vt * fracV), m.radius / (ht * fracH)) / pose.zoom;

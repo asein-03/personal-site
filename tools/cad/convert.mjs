@@ -1,6 +1,7 @@
 // Convert CAD exports (STEP, STL, OBJ) into one compact binary per project for the portfolio page.
 //
 //   cd tools/cad && npm install && npm run models      (writes ../../models)
+//   npm run models -- snack snack-phone                 (just those)
 //
 // The source paths below point at the CAD folders on Albert's Mac. To add a project, add an entry
 // to PROJECTS and a chapter (or a .thumb) with the same id in index.html.
@@ -42,6 +43,66 @@ const SKY_AT = {
 };
 const sky = (file) => ({ file: `${SKY}${file}.stl`, m: SKY_AT[file.slice(0, 5)] });
 
+// Snack's hardware is the Otto R07 build (in the file's own coordinates: x across, y up, z from the phone-contact
+// plane at 0 to the front glass at 7.6 mm). The LED board is drawn by the page, not the CAD.
+const SNACK_PARTS = [
+  { name: 'skin', step: R07, bodies: [0, 1, 2, 23], mat: 'plastic', explode: [0, 0, -1] },
+  { name: 'ring', step: R07, bodies: range(17, 22), mat: 'bright', explode: [0, 0, -0.7] },
+  { name: 'cell', step: R07, bodies: [...range(12, 16), 30, 31], mat: 'cell', explode: [0, 0, -0.46] },
+  { name: 'board', step: R07, bodies: [40], mat: 'pcb', explode: [0, 0, -0.2] },
+  { name: 'usb', step: R07, bodies: range(41, 58), mat: 'bright', explode: [0, 0, -0.2] },
+  { name: 'parts', step: R07, bodies: [38, 39, ...range(59, 73), ...range(87, 90), ...range(92, 98)], mat: 'chip', explode: [0, 0, -0.2] },
+  { name: 'frame', step: R07, bodies: [3, 4, 5, 6, 7, 10, 11, 91], mat: 'metal', explode: [0, 0, 0] },
+  { name: 'hardware', step: R07, bodies: [...range(24, 29), ...range(32, 37), ...range(99, 110)], mat: 'bright', explode: [0, 0, 0] },
+  { name: 'pixel-board', step: R07, bodies: [74], mat: 'pcb', explode: [0, 0, 0.26] },
+  { name: 'pixel-parts', step: R07, bodies: range(75, 81), mat: 'chip', explode: [0, 0, 0.26] },
+  { name: 'display', step: R07, bodies: range(82, 86), mat: 'diffuser', explode: [0, 0, 0.48] },
+  { name: 'glass', step: R07, bodies: [8, 9], mat: 'glass', explode: [0, 0, 0.76] },
+];
+
+// The pixel field: 32 by 16 warm-white LEDs under the dead-front glass, lit by the page. src sits on the LED board and
+// moves with it; glow is the same light seen on the glass, which only shows while the glass is in place.
+const SNACK_LEDS = { cols: 32, rows: 16, x: [-15.82, 15.82], y: [1.32, 16.68], src: { z: 6.17, part: 'pixel-parts' }, glow: { z: 7.66, part: 'glass' } };
+
+// An iPhone 17 Pro to show Snack on. It's built here from the measurements in Apple's accessory drawing rather than
+// taken from Apple's own 3D model, which stays reference-only in the Fusion file. Same frame as Otto R07: the phone's
+// back glass is z 0, its screen faces -z, and the MagSafe axis (x 0, y 9.70) runs through Snack's ring.
+const IPHONE = { w: 71.85, h: 150.01, r: 13.6, cy: 12.435 };
+function roundRect(w, h, rb, rt = rb) {
+  const s = new THREE.Shape(), x = w / 2, y = h / 2;
+  s.moveTo(-x + rb, -y);
+  s.lineTo(x - rb, -y); s.absarc(x - rb, -y + rb, rb, -Math.PI / 2, 0);
+  s.lineTo(x, y - rt); s.absarc(x - rt, y - rt, rt, 0, Math.PI / 2);
+  s.lineTo(-x + rt, y); s.absarc(-x + rt, y - rt, rt, Math.PI / 2, Math.PI);
+  s.lineTo(-x, -y + rb); s.absarc(-x + rb, -y + rb, rb, Math.PI, Math.PI * 1.5);
+  return s;
+}
+// a slab w by h from z0 to z1, corner radius r (rt at the top), its edges rounded over by `round`
+function slab(w, h, z0, z1, { r, rt = r, round = 0, cx = 0, cy = 0 }) {
+  const shape = roundRect(w - 2 * round, h - 2 * round, Math.max(0.05, r - round), Math.max(0.05, rt - round));
+  const g = new THREE.ExtrudeGeometry(shape, { depth: z1 - z0 - 2 * round, bevelEnabled: round > 0, bevelThickness: round, bevelSize: round, bevelSegments: 4, curveSegments: 10 });
+  return g.translate(cx, cy, z0 + round);
+}
+const disc = (d, z0, z1, cx, cy) => new THREE.CylinderGeometry(d / 2, d / 2, z1 - z0, 48).rotateX(Math.PI / 2).translate(cx, cy, (z0 + z1) / 2);
+const LENSES = [[-21.56, 73.07], [-21.56, 53.83], [-3.57, 63.45]];
+const PHONE_PARTS = [
+  { name: 'phone', mat: 'alu', simplify: 6000, gen: () => merge([
+    slab(IPHONE.w, IPHONE.h, -8.6, -0.05, { r: IPHONE.r, round: 1.8, cy: IPHONE.cy }),
+    // the camera plateau runs the full width from y 43.13 to the top
+    slab(IPHONE.w - 1, 43.81, -1, 2.5, { r: 7, rt: IPHONE.r - 0.5, round: 0.7, cy: 65.035 }),
+    // action and volume buttons on the left as you hold it, the side button on the right
+    ...[[53.16, 6.92], [39.01, 11.22], [24.81, 11.22]].map(([y, l]) => slab(1.2, l, -5.7, -3.04, { r: 0.55, round: 0.3, cx: 35.78, cy: y })),
+    slab(1.2, 17.71, -5.7, -3.04, { r: 0.55, round: 0.3, cx: -35.78, cy: 31.91 }),
+  ]) },
+  { name: 'phone-back', mat: 'frost', gen: () => slab(64.25, 97.44, -0.4, 0, { r: 10.5, cy: -10.05 }) },
+  { name: 'phone-screen', mat: 'glass', simplify: 800, gen: () => slab(69.45, 147.61, -8.75, -8.3, { r: 12.6, round: 0.15, cy: IPHONE.cy }) },
+  { name: 'phone-lenses', mat: 'chip', gen: () => merge(LENSES.map(([x, y]) => disc(16.21, 2, 4, x, y))) },
+  { name: 'phone-glass', mat: 'glass', gen: () => merge([
+    ...LENSES.map(([x, y]) => disc(13.86, 3.9, 4.43, x, y)),
+    disc(6.69, 2.2, 2.56, 22.11, 53.28), disc(6.74, 2.2, 2.56, 22.11, 73.62),
+  ]) },
+];
+
 // up: which CAD axis points up. explode: offset per part, in display units (the model spans about 2).
 // Electronics are plain blocks at their KiCad positions, as in Fusion; no copper or part markings.
 const PROJECTS = [
@@ -72,19 +133,13 @@ const PROJECTS = [
     { name: 'shell-cover', step: `${AP}/BrainWave v4 - Shell.step`, bodies: [0], mat: 'metal', explode: [0, 0.5, 0] },
   ] },
   // front face toward the camera (CAD z runs from the phone-contact plane to the front glass)
-  { id: 'snack', up: 'y', parts: [
-    { name: 'skin', step: R07, bodies: [0, 1, 2, 23], mat: 'plastic', explode: [0, 0, -1] },
-    { name: 'ring', step: R07, bodies: range(17, 22), mat: 'bright', explode: [0, 0, -0.7] },
-    { name: 'cell', step: R07, bodies: [...range(12, 16), 30, 31], mat: 'cell', explode: [0, 0, -0.46] },
-    { name: 'board', step: R07, bodies: [40], mat: 'pcb', explode: [0, 0, -0.2] },
-    { name: 'usb', step: R07, bodies: range(41, 58), mat: 'bright', explode: [0, 0, -0.2] },
-    { name: 'parts', step: R07, bodies: [38, 39, ...range(59, 73), ...range(87, 90), ...range(92, 98)], mat: 'chip', explode: [0, 0, -0.2] },
-    { name: 'frame', step: R07, bodies: [3, 4, 5, 6, 7, 10, 11, 91], mat: 'metal', explode: [0, 0, 0] },
-    { name: 'hardware', step: R07, bodies: [...range(24, 29), ...range(32, 37), ...range(99, 110)], mat: 'bright', explode: [0, 0, 0] },
-    { name: 'pixel-board', step: R07, bodies: [74], mat: 'pcb', explode: [0, 0, 0.26] },
-    { name: 'pixel-parts', step: R07, bodies: range(75, 81), mat: 'chip', explode: [0, 0, 0.26] },
-    { name: 'display', step: R07, bodies: range(82, 86), mat: 'diffuser', explode: [0, 0, 0.48] },
-    { name: 'glass', step: R07, bodies: [8, 9], mat: 'glass', explode: [0, 0, 0.76] },
+  { id: 'snack', up: 'y', leds: SNACK_LEDS, parts: SNACK_PARTS },
+  // Snack on the back of the phone. Detach lifts the whole unit straight off the phone for the MagSafe snap; explode
+  // fans its layers out away from the phone. This file spans the phone's 150 mm instead of Snack's 78, so the same
+  // offsets are about half as many display units, and they're shifted so the rear skin stays on the phone.
+  { id: 'snack-phone', up: 'y', leds: SNACK_LEDS, parts: [
+    ...PHONE_PARTS,
+    ...SNACK_PARTS.map((p) => ({ ...p, explode: [0, 0, +((p.explode[2] + 1) * 0.52).toFixed(3)], detach: [0, 0, 0.32] })),
   ] },
   // the OBJ is in centimetres
   { id: 'ordo', up: 'y', unit: 10, parts: [
@@ -138,9 +193,11 @@ function loadPart(p) {
     });
     return merge(geos);
   }
-  let g;
+  let g = p.gen ? p.gen() : null;
   const readSTL = (file) => { const buf = fs.readFileSync(file); return new STLLoader().parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)); };
-  if (p.stls) {
+  if (g) {
+    // generated above
+  } else if (p.stls) {
     // several STLs as one part, each moved to its place in the assembly first
     g = merge(p.stls.map(({ file, m }) => { const s = readSTL(file); if (m) s.applyMatrix4(new THREE.Matrix4().set(...m)); return s; }));
   } else if (p.stl) {
@@ -194,7 +251,8 @@ await MeshoptSimplifier.ready;
 const outDir = process.argv[2];
 fs.mkdirSync(outDir, { recursive: true });
 
-for (const proj of PROJECTS) {
+const only = process.argv.slice(3);
+for (const proj of PROJECTS.filter((p) => !only.length || only.includes(p.id))) {
   const parts = proj.parts.map((p) => {
     const g = loadPart(p);
     if (proj.up === 'z') g.rotateX(-Math.PI / 2); // CAD z-up to three's y-up
@@ -223,10 +281,18 @@ for (const proj of PROJECTS) {
     }
     const idx32 = n > 65535, I = idx32 ? new Uint32Array(g.index.array) : new Uint16Array(g.index.array);
     header.parts.push({
-      name: p.name, mat: p.mat, explode: p.explode || [0, 0, 0], vertices: n, indices: I.length, idx32,
+      name: p.name, mat: p.mat, explode: p.explode || [0, 0, 0], ...(p.detach && { detach: p.detach }), vertices: n, indices: I.length, idx32,
       pos: push(q), nrm: push(qn), idx: push(I),
       ...(p.hinge && { hinge: { p: toDisplay(p.hinge.pivot), a: turn(new THREE.Vector3(...p.hinge.axis)).normalize().toArray().map((v) => +v.toFixed(5)), deg: p.hinge.deg } }),
     });
+  }
+  // the LED field as a rectangle in display units (up 'y' projects only: x and y are not turned)
+  if (proj.leds) {
+    const L = proj.leds, cx = (L.x[0] + L.x[1]) / 2, cy = (L.y[0] + L.y[1]) / 2;
+    header.leds = {
+      cols: L.cols, rows: L.rows, w: +((L.x[1] - L.x[0]) / half).toFixed(5), h: +((L.y[1] - L.y[0]) / half).toFixed(5),
+      src: { at: toDisplay([cx, cy, L.src.z]), part: L.src.part }, glow: { at: toDisplay([cx, cy, L.glow.z]), part: L.glow.part },
+    };
   }
   const json = Buffer.from(JSON.stringify(header));
   const hpad = (4 - ((4 + json.length) % 4)) % 4;
