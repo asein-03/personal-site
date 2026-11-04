@@ -1047,10 +1047,12 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
       el.classList.toggle('live', w > 0.5);
       if (w > 0.01 || el.style.opacity !== '0') show(el, w, k === i ? -1 : 1);
     });
-    const cur = t > 0.5 ? i + 1 : i;
+    // each step's bar fills on the way to that step and stays full once you're there: one continuous measure of
+    // the scroll, so it never snaps back as you cross from one step into the next
+    const cur = Math.round(s);
     ch.buttons.forEach((b, k) => {
       b.classList.toggle('on', k === cur);
-      b.style.setProperty('--fill', k < i + (t > 0 ? 1 : 0) ? 1 : k === i + (t > 0 ? 1 : 0) ? (n > 1 ? clamp(s - i) : 1).toFixed(3) : 0);
+      b.style.setProperty('--fill', clamp(s - k + 1).toFixed(3));
     });
   }
 
