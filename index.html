@@ -191,6 +191,15 @@ h3 { font-size: clamp(1.35rem, 1.9vw, 2.1rem); font-weight: 700; line-height: 1;
 .ticker-track { display: inline-flex; white-space: nowrap; padding: 10px 0; animation: ticker 70s linear infinite; }
 .ticker-track span { padding: 0 20px; }
 .ticker-track span::before { content: "/"; margin-right: 20px; color: var(--faint); }
+/* on a phone the bar is a thin strip */
+@media (max-width: 720px) {
+  .ticker { font-size: .54rem; }
+  .ticker .live { padding: 6px 10px 6px 0; gap: 6px; }
+  .ticker .live::before { width: 5px; height: 5px; }
+  .ticker-track { padding: 6px 0; }
+  .ticker-track span { padding: 0 14px; }
+  .ticker-track span::before { margin-right: 14px; }
+}
 @keyframes ticker { to { transform: translateX(-50%); } }
 
 .front-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); padding: clamp(20px, 3.5vh, 36px) 0 clamp(40px, 8vh, 80px); }
@@ -507,6 +516,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
           <h2>Aperture</h2>
           <p>A wearable for your mind. It rests in the groove behind your ear: a crescent of dark brushed aluminium on a soft silicone base. I worked on the mechanical design, the electronics integration and the charging case.</p>
           <p class="meta mono">2026 &nbsp; Wearable &nbsp; Fusion 360 &nbsp; KiCad</p>
+          <a class="go" href="https://aperture-kappa-three.vercel.app" target="_blank" rel="noopener">Visit Aperture <span aria-hidden="true">&#8599;</span></a>
         </div>
         <div class="step" data-label="Profile" data-model="aperture" data-yaw="86" data-pitch="4" data-zoom="1.05">
           <h3>Shaped to the head</h3>
