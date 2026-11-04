@@ -18,7 +18,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cstyle%3Erect%7Bfill:%230e0d0b%7Dtext%7Bfill:%23ebe4d2%7D%40media (prefers-color-scheme:light)%7Brect%7Bfill:%23ebe5d6%7Dtext%7Bfill:%2317140f%7D%7D%3C/style%3E%3Crect width='32' height='32' rx='7'/%3E%3Ctext x='16' y='23.5' font-family='Georgia,serif' font-size='21' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,300..500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=UnifrakturMaguntia&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,300..500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Grenze+Gotisch:wght@700&display=swap">
 <link rel="preload" href="models/aperture.bin" as="fetch" crossorigin>
 <script>document.documentElement.classList.add('js');</script>
 <style>
@@ -42,7 +42,8 @@
   --red: #ff2a4d;           /* glitch fringes only */
   --cyan: #21e6ff;
 
-  --font-mast: "UnifrakturMaguntia", "Old English Text MT", "Times New Roman", serif;
+  /* a legible blackletter: a true Fraktur makes the A and S read as U and G */
+  --font-mast: "Grenze Gotisch", "Old English Text MT", "Times New Roman", serif;
   --font-head: "Playfair Display", "Times New Roman", Georgia, serif;
   --font-body: "Newsreader", "Iowan Old Style", Georgia, serif;
   --font-mono: "Martian Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -148,7 +149,7 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
   background: var(--bg); border-bottom: 3px double var(--fg);
   opacity: var(--nav-shade, 0); transition: opacity .2s;
 }
-.brand { font: 400 1.7rem/1 var(--font-mast); text-decoration: none; opacity: var(--nav-shade, 0); transition: opacity .2s; }
+.brand { font: 700 1.6rem/1 var(--font-mast); text-decoration: none; opacity: var(--nav-shade, 0); transition: opacity .2s; }
 .nav-links { display: flex; align-items: center; gap: clamp(12px, 2.2vw, 30px); }
 .nav-links a:not(.pill) { color: var(--dim); text-decoration: none; transition: color .2s; }
 .nav-links a:not(.pill):hover { color: var(--fg); }
@@ -166,7 +167,7 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .topline > :nth-child(2) { text-align: center; color: var(--fg); }
 .topline > :last-child { text-align: right; }
 .mast { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: clamp(12px, 3vw, 40px); padding: clamp(12px, 2.4vh, 26px) 0 clamp(4px, 1vh, 10px); }
-.nameplate { position: relative; font: 400 clamp(3.4rem, 11.5vw, 10.5rem)/.95 var(--font-mast); letter-spacing: 0; text-align: center; white-space: nowrap; cursor: pointer; }
+.nameplate { position: relative; font: 700 clamp(3.4rem, 11.5vw, 10.5rem)/.95 var(--font-mast); letter-spacing: 0; text-align: center; white-space: nowrap; cursor: pointer; }
 /* two offset copies of the nameplate, cut into strips, that show only while the page tears */
 .nameplate::before, .nameplate::after { content: attr(data-text); position: absolute; inset: 0; pointer-events: none; opacity: 0; }
 .tearing .nameplate::before { opacity: .95; color: var(--red); clip-path: inset(var(--c1, 18%) 0 var(--c2, 52%) 0); transform: translateX(var(--gx1, -8px)); }
@@ -197,6 +198,10 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .lead { padding-right: clamp(18px, 2.5vw, 36px); border-right: 1px solid var(--line-2); }
 .headline { font-size: clamp(2.3rem, 4.6vw, 4.3rem); line-height: .98; margin-bottom: 18px; }
 .deck { max-width: 48ch; margin-bottom: 16px; font: italic 400 clamp(1.15rem, 1.6vw, 1.4rem)/1.4 var(--font-body); color: var(--dim); }
+.seeking { margin: 0 0 16px; padding: 12px 14px; border: 1px solid var(--fg); font-size: 1.08rem; line-height: 1.5; }
+.seeking .kicker { display: inline-flex; margin: 0 10px 0 0; vertical-align: 2px; }
+.seeking a, .ear a { text-decoration: none; border-bottom: 1px solid var(--line-2); }
+.seeking a:hover, .ear a:hover { background: var(--signal); color: var(--signal-ink); }
 .byline { padding: 9px 0; margin-bottom: 18px; border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); color: var(--dim); }
 .cols { columns: 2 19rem; column-gap: 32px; column-rule: 1px solid var(--line); font-size: 1.1rem; line-height: 1.62; }
 .cols p + p { margin-top: .6em; text-indent: 1.2em; }
@@ -362,11 +367,10 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 <nav class="nav" aria-label="Main">
   <a class="brand" href="#top">Albert Sein</a>
   <div class="nav-links mono">
-    <a href="#work">Contents</a>
-    <a href="#about">Front page</a>
-    <a href="#how">Op-ed</a>
-    <a href="#experience">Classifieds</a>
-    <a href="#contact">Letters</a>
+    <a href="#work">Work</a>
+    <a href="#how">Process</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
     <a class="pill" href="albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé</a>
   </div>
 </nav>
@@ -379,7 +383,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
       <span>Late edition &nbsp; Free</span>
     </div>
     <div class="mast">
-      <aside class="ear left"><span class="mono">Now available</span>Open to Summer 2027 internships and new-grad roles.</aside>
+      <aside class="ear left"><span class="mono">Write in</span><a href="mailto:kks7ys@virginia.edu">kks7ys@virginia.edu</a></aside>
       <h1 class="nameplate" data-text="Albert Sein">Albert Sein</h1>
       <aside class="ear right"><span class="mono">Inside</span>A wearable, a timekeeper and a desk display, printed from the CAD.</aside>
     </div>
@@ -410,6 +414,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <p class="kicker"><span>Front page</span> Profile</p>
         <h2 class="headline">A product person who loves building things, and loves working with people even more</h2>
         <p class="deck">I study materials and systems engineering at UVA. So far I've shipped an app, designed a wearable and its charging case, packaged a phone-mounted timekeeper for a manufacturer's review, and printed a desk display.</p>
+        <p class="seeking"><span class="kicker"><span>Looking for</span></span>Summer 2027 internships and new-grad roles in technical project management, product and hardware engineering. <a href="mailto:kks7ys@virginia.edu">Email me</a> or <a href="albert-sein-resume.pdf" target="_blank" rel="noopener">read my résumé</a>.</p>
         <p class="byline mono">By Albert Sein &nbsp; | &nbsp; Charlottesville, Va.</p>
         <div class="cols prose">
           <p class="dropcap">I am doing an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
@@ -430,15 +435,15 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="index" id="work" aria-labelledby="work-title">
     <div class="wrap">
-      <div class="flag"><h2 id="work-title">In this edition</h2><span class="mono">The models are the real CAD</span></div>
+      <div class="flag"><h2 id="work-title">Work</h2><span class="mono">In this edition</span></div>
       <ol class="toc">
         <li><a href="#aperture"><span class="t">Aperture</span><span class="leader"></span><span class="pg">A2</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
         <li><a href="#snack"><span class="t">Snack</span><span class="leader"></span><span class="pg">A3</span><span class="d">A physical timekeeper for your phone</span></a></li>
         <li><a href="#ordo-desktop"><span class="t">Ordo Desktop</span><span class="leader"></span><span class="pg">A4</span><span class="d">A desk display for Ordo</span></a></li>
-        <li><a href="#builds"><span class="t">Briefs</span><span class="leader"></span><span class="pg">B1</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
-        <li><a href="#how"><span class="t">Op-ed</span><span class="leader"></span><span class="pg">B2</span><span class="d">How I run projects</span></a></li>
-        <li><a href="#experience"><span class="t">Classifieds</span><span class="leader"></span><span class="pg">C1</span><span class="d">Positions held, and tools of the trade</span></a></li>
-        <li><a href="#contact"><span class="t">Letters</span><span class="leader"></span><span class="pg">C2</span><span class="d">Write to me</span></a></li>
+        <li><a href="#builds"><span class="t">Smaller builds</span><span class="leader"></span><span class="pg">B1</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
+        <li><a href="#how"><span class="t">How I run projects</span><span class="leader"></span><span class="pg">B2</span><span class="d">Gates, one source of truth, parallel tracks, people</span></a></li>
+        <li><a href="#experience"><span class="t">Experience</span><span class="leader"></span><span class="pg">C1</span><span class="d">Celestica, Ordo, Ji Ma Lab, Setty &amp; Associates, and skills</span></a></li>
+        <li><a href="#contact"><span class="t">Contact</span><span class="leader"></span><span class="pg">C2</span><span class="d">Email, LinkedIn, GitHub and résumé</span></a></li>
       </ol>
     </div>
   </section>
@@ -537,7 +542,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="builds" id="builds" aria-labelledby="builds-title">
     <div class="wrap">
-      <div class="flag"><h2 id="builds-title">Briefs</h2><span class="mono">Smaller builds</span></div>
+      <div class="flag"><h2 id="builds-title">Smaller builds</h2><span class="mono">Briefs</span></div>
       <div class="briefs">
         <article class="build wide">
           <div class="thumb" data-model="skyfall" data-yaw="-14" data-pitch="14" data-axis="x" data-fit="box" data-explode data-hint="Hover to take it apart"></div>
@@ -588,7 +593,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="section" id="experience" aria-labelledby="exp-title">
     <div class="wrap">
-      <div class="flag"><h2 id="exp-title">Classifieds</h2><span class="mono">Positions held</span></div>
+      <div class="flag"><h2 id="exp-title">Experience</h2><span class="mono">Classifieds</span></div>
       <div class="classifieds">
         <div class="ad">
           <p class="ad-head">Celestica</p><span class="ad-when mono">Summer 2026 &nbsp; San Jose</span>
@@ -612,7 +617,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="section" aria-labelledby="tools-title">
     <div class="wrap">
-      <div class="flag"><h2 id="tools-title">Tools of the trade</h2><span class="mono">Listings</span></div>
+      <div class="flag"><h2 id="tools-title">Skills and tools</h2><span class="mono">Listings</span></div>
       <div class="agate prose">
         <p><b>Design and simulation</b>Fusion 360, SolidWorks, CFD, Revit, AutoCAD, and 3D printing on a Prusa MK4S.</p>
         <p><b>Electronics</b>Electronics integration and packaging, KiCad, rigid-flex boards, Arduino and sensor integration.</p>
@@ -626,14 +631,14 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="contact" id="contact" aria-labelledby="contact-title">
     <div class="wrap">
-      <div class="flag"><h2 id="contact-title">Letters</h2><span class="mono">Write to me</span></div>
+      <div class="flag"><h2 id="contact-title">Contact</h2><span class="mono">Letters to the editor</span></div>
       <p class="letters-intro">Hiring for a team that builds things? I'd like to hear about it.</p>
       <div class="links">
         <a class="link" href="mailto:kks7ys@virginia.edu"><span class="k mono">Email</span><span class="leader"></span><span class="v">kks7ys@virginia.edu</span></a>
         <a class="link" href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener"><span class="k mono">LinkedIn</span><span class="leader"></span><span class="v">in/albert-sein03</span></a>
         <a class="link" href="https://github.com/asein-03" target="_blank" rel="noopener"><span class="k mono">GitHub</span><span class="leader"></span><span class="v">asein-03</span></a>
         <a class="link" href="https://instagram.com/itsalbertsein" target="_blank" rel="noopener"><span class="k mono">Instagram</span><span class="leader"></span><span class="v">@itsalbertsein</span></a>
-        <a class="link" href="albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="k mono">Résumé</span><span class="leader"></span><span class="v">Albert_Sein_Resume_Fall2026.pdf</span></a>
+        <a class="link" href="albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="k mono">Résumé</span><span class="leader"></span><span class="v">Albert_Sein_Resume_2027.pdf</span></a>
       </div>
     </div>
   </section>
@@ -681,9 +686,10 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   if (today) today.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
   /* ---------- front-page glitches: the nameplate tears into red and cyan strips and the lead headline splits.
-     They only fire while the front page is on screen, so nothing jumps under text you're reading further down. ---------- */
+     Once, shortly after the page opens, and then only when someone hovers or clicks the nameplate, so a first-time
+     visitor never mistakes it for a rendering bug. ---------- */
   const front = document.querySelector('.front');
-  const T = { next: 4, until: 0 };
+  const T = { next: 1.2, until: 0 };
   const rnd = (a, b) => a + Math.random() * (b - a);
   AS.tear = () => { T.next = 0; };
   function tearTick(t) {
@@ -692,14 +698,16 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
       root.style.setProperty('--c1', `${a.toFixed(0)}%`); root.style.setProperty('--c2', `${(100 - a - rnd(8, 30)).toFixed(0)}%`);
       root.style.setProperty('--c3', `${b.toFixed(0)}%`); root.style.setProperty('--c4', `${Math.max(0, 100 - b - rnd(6, 20)).toFixed(0)}%`);
       document.body.classList.add('tearing');
-      T.until = t + rnd(0.06, 0.18); T.next = T.until + rnd(3.5, 8);
+      T.until = t + rnd(0.12, 0.26); T.next = Infinity;
     }
     if (t <= T.until) {
       root.style.setProperty('--gx', `${rnd(-5, 5).toFixed(1)}px`);
       root.style.setProperty('--gx1', `${rnd(-10, -3).toFixed(1)}px`); root.style.setProperty('--gx2', `${rnd(3, 10).toFixed(1)}px`);
     } else if (document.body.classList.contains('tearing')) document.body.classList.remove('tearing');
   }
-  document.querySelector('.nameplate').addEventListener('pointerdown', () => AS.tear());
+  const nameplateEl = document.querySelector('.nameplate');
+  nameplateEl.addEventListener('pointerdown', () => AS.tear());
+  nameplateEl.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') AS.tear(); });
 
   /* ---------- the front-page plate: a newsprint halftone of the CAD, printed live ----------
      The 3D module renders a model small into AS.plate (RGBA pixels); every dot here takes its size from the
@@ -753,7 +761,6 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     G.split = Math.random() < 0.8;
     G.until = t + rnd(0.07, 0.24);
     G.next = G.until + rnd(1.4, 4);
-    if (G.split && Math.random() < 0.3) AS.tear();
   }
   AS.glitch = () => { G.next = 0; };
   const bandAt = (y, t) => { if (t > G.until) return null; for (const b of G.bands) if (y >= b.y0 && y < b.y1) return b; return null; };
@@ -824,7 +831,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   }, { passive: true });
   document.addEventListener('pointerleave', () => { ptr.on = false; });
   // a click on the plate jams the press: a glitch, and the next model goes on
-  document.getElementById('plate').addEventListener('pointerdown', () => { AS.glitch(); AS.tear(); AS.nextPlate?.(); });
+  document.getElementById('plate').addEventListener('pointerdown', () => { AS.glitch(); AS.nextPlate?.(); });
   new IntersectionObserver(([e]) => { AS.plate.visible = e.isIntersecting; }, { rootMargin: '100px' }).observe(cv);
 
   // About 30 frames a second while the plate is on screen (15 on phones); with reduced motion it reprints only when the model changes.
@@ -1283,7 +1290,7 @@ function renderPlate(time) {
   const P = AS.plate;
   // every other frame on a laptop, every fourth on a phone
   if (!P || !P.visible || !P.rw || plateTick++ % (fine.matches ? 2 : 4)) return;
-  if (!reduce.matches && time - plateSince > 8) { AS.nextPlate(); AS.glitch?.(); AS.tear?.(); }
+  if (!reduce.matches && time - plateSince > 8) { AS.nextPlate(); AS.glitch?.(); }
   const spec = PLATE[plateIdx], m = MODELS[spec.id];
   if (!m) return;
   const w = P.rw, h = P.rh;
