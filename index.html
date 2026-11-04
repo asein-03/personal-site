@@ -7,7 +7,7 @@
 <meta name="description" content="Albert Sein, a product person who loves building things and loves working with people even more. Materials and systems engineering at UVA; Aperture, Snack, Ordo and Ordo Desktop. Open to Summer 2027 internships and new-grad roles.">
 <meta name="author" content="Albert Sein">
 <meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0e0d0b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#ebe5d6" media="(prefers-color-scheme: light)">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Albert Sein">
@@ -15,10 +15,10 @@
 <meta property="og:url" content="https://albertsein.com/">
 <link rel="canonical" href="https://albertsein.com/">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cstyle%3Erect%7Bfill:%230e0d0b%7Dtext%7Bfill:%23ebe4d2%7D%40media (prefers-color-scheme:light)%7Brect%7Bfill:%23ebe5d6%7Dtext%7Bfill:%2317140f%7D%7D%3C/style%3E%3Crect width='32' height='32' rx='7'/%3E%3Ctext x='16' y='23.5' font-family='Georgia,serif' font-size='21' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cstyle%3Erect%7Bfill:%23000%7Dtext%7Bfill:%23f5f5f5%7D%40media (prefers-color-scheme:light)%7Brect%7Bfill:%23ebe5d6%7Dtext%7Bfill:%2317140f%7D%7D%3C/style%3E%3Crect width='32' height='32' rx='7'/%3E%3Ctext x='16' y='23.5' font-family='Georgia,serif' font-size='21' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,300..500&family=Newsreader:opsz,wght@6..72,300..600&family=Playfair+Display:wght@700;900&family=Grenze+Gotisch:wght@700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,300..500&family=Newsreader:opsz,wght@6..72,300..600&family=Archivo:wdth,wght@62..125,500..900&family=Grenze+Gotisch:wght@700&display=swap">
 <link rel="preload" href="models/aperture.bin" as="fetch" crossorigin>
 <script>document.documentElement.classList.add('js');</script>
 <style>
@@ -27,24 +27,25 @@
    measured, then briefs, an op-ed, classifieds and letters. Newsprint by day, a night edition in dark mode
    (it follows the system setting), and every so often the press glitches. */
 :root {
-  --bg: #0e0d0b;
-  --bg-2: #171512;
-  --fg: #ebe4d2;
-  --dim: #9d9584;
-  --faint: #5f594f;
-  --line: rgba(235, 228, 210, .16);
-  --line-2: rgba(235, 228, 210, .36);
-  --accent: #ebe4d2;
-  --accent-ink: #0e0d0b;
-  --shade: rgba(14, 13, 11, .93);
+  --bg: #000;
+  --bg-2: #0a0a0a;
+  --fg: #f5f5f5;
+  --dim: #a8a8a8;
+  --faint: #666;
+  --line: rgba(255, 255, 255, .16);
+  --line-2: rgba(255, 255, 255, .36);
+  --accent: #f5f5f5;
+  --accent-ink: #000;
+  --shade: rgba(0, 0, 0, .93);
   --signal: #fcee0a;        /* the one loud colour: highlighter yellow */
-  --signal-ink: #0e0d0b;
+  --signal-ink: #000;
   --red: #ff2a4d;           /* glitch fringes only */
   --cyan: #21e6ff;
 
   /* a legible blackletter: a true Fraktur makes the A and S read as U and G */
   --font-mast: "Grenze Gotisch", "Old English Text MT", "Times New Roman", serif;
-  --font-head: "Playfair Display", "Times New Roman", Georgia, serif;
+  --font-head: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --stretch: 72%;           /* Archivo's width axis: condensed */
   --font-body: "Newsreader", "Iowan Old Style", Georgia, serif;
   --font-mono: "Martian Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --ease: cubic-bezier(.16, 1, .3, 1);
@@ -82,9 +83,10 @@ a { color: inherit; }
 ::selection { background: var(--signal); color: var(--signal-ink); }
 :focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
 p { margin: 0; }
-h1, h2, h3, h4 { margin: 0; font-family: var(--font-head); font-weight: 900; letter-spacing: -.01em; line-height: .98; text-wrap: balance; }
-h2 { font-size: clamp(2.4rem, 5.4vw, 4.8rem); }
-h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.05; }
+h1, h2, h3, h4 { margin: 0; font-family: var(--font-head); font-weight: 900; letter-spacing: -.01em; line-height: .9; text-wrap: balance; }
+h2, h3, h4 { font-stretch: var(--stretch); text-transform: uppercase; }
+h2 { font-size: clamp(2.8rem, 7vw, 6.4rem); }
+h3 { font-size: clamp(1.7rem, 2.8vw, 2.6rem); font-weight: 800; line-height: .95; }
 .wrap {
   width: 100%; max-width: 1400px; margin-inline: auto;
   padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
@@ -95,8 +97,10 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .kicker { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font: 500 .6rem/1 var(--font-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
 .kicker span { background: var(--signal); color: var(--signal-ink); padding: 5px 7px 4px; }
 .double { height: 6px; border-top: 3px solid var(--fg); border-bottom: 1px solid var(--fg); }
-.flag { display: flex; justify-content: space-between; align-items: end; gap: 16px; padding-top: 12px; border-top: 3px solid var(--fg); margin-bottom: clamp(22px, 4vh, 40px); }
+.flag { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: end; column-gap: clamp(12px, 2vw, 28px); padding-top: 12px; border-top: 6px solid var(--fg); margin-bottom: clamp(22px, 4vh, 40px); }
 .flag .mono { color: var(--dim); text-align: right; }
+/* section numbers, drawn in outline beside the title */
+.flag .no { font: 900 clamp(2.8rem, 7vw, 6.4rem)/.9 var(--font-head); font-stretch: var(--stretch); color: transparent; -webkit-text-stroke: 1.5px var(--fg); }
 .prose { text-wrap: pretty; }
 
 /* ---------- press and paper: grain, scanlines, aged edges, and the tears a glitch rips across the page ---------- */
@@ -105,10 +109,10 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .dims line { stroke: var(--fg); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .dims .ext { stroke: var(--line-2); }
 .dims text { fill: var(--fg); font: 400 10px/1 var(--font-mono); letter-spacing: .12em; }
-/* Grain, scanlines and aged edges texture the paper only: they sit under the 3D canvas, so the models stay crisp,
+/* Grain and scanlines texture the paper only: they sit under the 3D canvas, so the models stay crisp,
    and under every line of text. */
 .grain {
-  position: fixed; inset: -60px; z-index: 0; pointer-events: none; opacity: .07;
+  position: fixed; inset: -60px; z-index: 0; pointer-events: none; opacity: .02;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .38 0 0 0 1.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain 1.2s steps(6) infinite;
 }
@@ -120,11 +124,9 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
   position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5;
   background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, .22) 0 1px, transparent 1px 3px);
 }
-.age { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 80% 75% at 50% 45%, transparent 55%, rgba(0, 0, 0, .42) 100%); }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) .grain { opacity: .11; mix-blend-mode: multiply; }
   :root:not([data-theme="dark"]) .scan { opacity: .22; }
-  :root:not([data-theme="dark"]) .age { background: radial-gradient(ellipse 80% 75% at 50% 45%, transparent 50%, rgba(110, 80, 30, .22) 100%); }
 }
 /* glitches stay on the front page: the lead headline splits red and cyan with the nameplate */
 .tearing .front .headline { text-shadow: -3px 0 var(--red), 3px 0 var(--cyan); translate: var(--gx, 0) 0; }
@@ -132,9 +134,9 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
   position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none;
   padding: 7px 10px; background: var(--signal); color: var(--signal-ink);
   font: 500 .56rem/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase;
-  opacity: 0; scale: .7; transition: opacity .25s, scale .35s var(--ease);
+  opacity: 0;
 }
-.cursor-chip.on { opacity: 1; scale: 1; }
+.cursor-chip.on { opacity: 1; }
 
 /* ---------- nav: a running head that fills in once the masthead scrolls away ---------- */
 .nav {
@@ -147,23 +149,22 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .nav::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background: var(--bg); border-bottom: 3px double var(--fg);
-  opacity: var(--nav-shade, 0); transition: opacity .2s;
+  opacity: var(--nav-shade, 0);
 }
-.brand { font: 700 1.6rem/1 var(--font-mast); text-decoration: none; opacity: var(--nav-shade, 0); transition: opacity .2s; }
+.brand { font: 700 1.6rem/1 var(--font-mast); text-decoration: none; opacity: var(--nav-shade, 0); }
 .nav-links { display: flex; align-items: center; gap: clamp(12px, 2.2vw, 30px); }
-.nav-links a:not(.pill) { color: var(--dim); text-decoration: none; transition: color .2s; }
+.nav-links a:not(.pill) { color: var(--dim); text-decoration: none; }
 .nav-links a:not(.pill):hover { color: var(--fg); }
 .pill {
   display: inline-flex; align-items: center; padding: 8px 12px; border: 1.5px solid var(--fg); color: var(--fg); text-decoration: none;
-  font: 500 .6rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; background: var(--bg);
-  transition: background .15s, color .15s, border-color .15s;
+  font: 500 .6rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; background: var(--bg); border-width: 2px;
 }
 .pill:hover { background: var(--signal); color: var(--signal-ink); border-color: var(--signal); }
 @media (max-width: 860px) { .nav-links a:not(.pill) { display: none; } }
 
 /* ---------- front page ---------- */
 .front { position: relative; z-index: 2; padding-top: calc(env(safe-area-inset-top, 0px) + 58px); }
-.topline { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; padding: 9px 0; border-top: 1px solid var(--fg); border-bottom: 1px solid var(--fg); color: var(--dim); }
+.topline { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; padding: 9px 0; border-top: 2px solid var(--fg); border-bottom: 2px solid var(--fg); color: var(--dim); }
 .topline > :nth-child(2) { text-align: center; color: var(--fg); }
 .topline > :last-child { text-align: right; }
 .mast { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: clamp(12px, 3vw, 40px); padding: clamp(12px, 2.4vh, 26px) 0 clamp(4px, 1vh, 10px); }
@@ -173,7 +174,7 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .tearing .nameplate::before { opacity: .95; color: var(--red); clip-path: inset(var(--c1, 18%) 0 var(--c2, 52%) 0); transform: translateX(var(--gx1, -8px)); }
 .tearing .nameplate::after { opacity: .95; color: var(--cyan); clip-path: inset(var(--c3, 58%) 0 var(--c4, 12%) 0); transform: translateX(var(--gx2, 8px)); }
 .tearing .nameplate { translate: var(--gx, 0) 0; }
-.ear { border: 1px solid var(--fg); padding: 10px 12px; max-width: 15rem; font: 400 .95rem/1.3 var(--font-body); }
+.ear { border: 2px solid var(--fg); padding: 10px 12px; max-width: 15rem; font: 400 .95rem/1.3 var(--font-body); }
 .ear .mono { display: block; margin-bottom: 6px; color: var(--dim); }
 .ear.right { justify-self: end; }
 .motto { text-align: center; padding-bottom: 10px; font: 400 1.02rem/1.3 var(--font-body); color: var(--dim); }
@@ -184,9 +185,9 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
   .topline > :nth-child(2) { display: none; }
 }
 
-.ticker { display: flex; align-items: stretch; border-bottom: 1px solid var(--fg); font: 500 .64rem/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+.ticker { display: flex; align-items: stretch; border-bottom: 2px solid var(--fg); font: 500 .64rem/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
 .ticker .live { flex: none; display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--signal); color: var(--signal-ink); }
-.ticker .live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: blink 1s steps(2) infinite; }
+.ticker .live::before { content: ""; width: 7px; height: 7px; background: var(--red); animation: blink 1s steps(2) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 .ticker-view { flex: 1; overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent, #000 3%, #000 97%, transparent); mask-image: linear-gradient(to right, transparent, #000 3%, #000 97%, transparent); }
 .ticker-track { display: inline-flex; white-space: nowrap; padding: 10px 0; animation: ticker 70s linear infinite; }
@@ -195,22 +196,23 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 @keyframes ticker { to { transform: translateX(-50%); } }
 
 .front-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); padding: clamp(20px, 3.5vh, 36px) 0 clamp(40px, 8vh, 80px); }
-.lead { padding-right: clamp(18px, 2.5vw, 36px); border-right: 1px solid var(--line-2); }
-.headline { font-size: clamp(2.3rem, 4.6vw, 4.3rem); line-height: .98; margin-bottom: 18px; }
+.lead { padding-right: clamp(18px, 2.5vw, 36px); border-right: 2px solid var(--fg); }
+.headline { font-size: clamp(2.8rem, 5.6vw, 5.4rem); line-height: .9; margin-bottom: 18px; }
 .deck { max-width: 48ch; margin-bottom: 16px; font: 400 clamp(1.15rem, 1.6vw, 1.4rem)/1.4 var(--font-body); color: var(--dim); }
-.seeking { margin: 0 0 16px; padding: 12px 14px; border: 1px solid var(--fg); font-size: 1.08rem; line-height: 1.5; }
+.seeking { margin: 0 0 16px; padding: 12px 14px; border: 2px solid var(--fg); font-size: 1.08rem; line-height: 1.5; }
 .seeking .kicker { display: inline-flex; margin: 0 10px 0 0; vertical-align: 2px; }
 .seeking a, .ear a { text-decoration: none; border-bottom: 1px solid var(--line-2); }
 .seeking a:hover, .ear a:hover { background: var(--signal); color: var(--signal-ink); }
 .byline { padding: 9px 0; margin-bottom: 18px; border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); color: var(--dim); }
 .cols { columns: 2 19rem; column-gap: 32px; column-rule: 1px solid var(--line); font-size: 1.1rem; line-height: 1.62; }
 .cols p + p { margin-top: .6em; text-indent: 1.2em; }
-.dropcap::first-letter { float: left; margin: .05em .09em 0 0; font: 900 4.2em/.8 var(--font-head); }
+/* the drop cap is set in the nameplate's blackletter: in the grotesk an "I" is only a bar */
+.dropcap::first-letter { float: left; margin: .02em .08em 0 0; font: 700 4.4em/.8 var(--font-mast); }
 .cols .jump { text-indent: 0; margin-top: 1em; }
 .jump a { text-decoration: none; border-bottom: 1px solid var(--line-2); }
 .jump a:hover { background: var(--signal); color: var(--signal-ink); }
 .photo { margin: 0; padding-left: clamp(18px, 2.5vw, 36px); }
-.plate { position: relative; aspect-ratio: 4 / 5; border: 1px solid var(--fg); overflow: hidden; cursor: crosshair; }
+.plate { position: relative; aspect-ratio: 4 / 5; border: 2px solid var(--fg); overflow: hidden; cursor: crosshair; }
 .plate canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .plate-status { position: absolute; left: 10px; bottom: 10px; padding: 5px 7px 4px; background: var(--signal); color: var(--signal-ink); transition: opacity .4s; }
 .plate-status::after { content: "\2026"; animation: blink 1s steps(2) infinite; }
@@ -227,26 +229,28 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .index { position: relative; z-index: 2; padding: 6vh 0 12vh; }
 .toc { list-style: none; margin: 0; padding: 0; columns: 2 22rem; column-gap: 48px; column-rule: 1px solid var(--line); }
 .toc li { break-inside: avoid; }
-.toc a { display: grid; grid-template-columns: auto minmax(24px, 1fr) auto; align-items: baseline; column-gap: 10px; padding: 14px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
-.toc .t { font: 700 clamp(1.3rem, 2vw, 1.7rem)/1.1 var(--font-head); }
-.toc .leader { border-bottom: 2px dotted var(--line-2); transform: translateY(-5px); }
+.toc a { display: grid; grid-template-columns: auto minmax(24px, 1fr) auto; align-items: baseline; column-gap: 10px; padding: 14px 10px; border-bottom: 1px solid var(--line-2); text-decoration: none; }
+.toc .t { font: 800 clamp(1.5rem, 2.4vw, 2.1rem)/1 var(--font-head); font-stretch: var(--stretch); text-transform: uppercase; }
+.toc .leader { border-bottom: 1px solid var(--line-2); transform: translateY(-5px); }
 .toc .pg { font: 500 .7rem/1 var(--font-mono); letter-spacing: .1em; }
 .toc .d { grid-column: 1 / -1; margin-top: 4px; font: 400 .98rem/1.3 var(--font-body); color: var(--dim); }
-.toc a:hover .t { background: var(--signal); color: var(--signal-ink); }
+/* hovers flip the whole row to a solid block, instantly */
+.toc a:hover { background: var(--fg); color: var(--bg); }
+.toc a:hover .d, .toc a:hover .leader { color: inherit; border-color: transparent; }
 
 /* ---------- chapters: a pinned page per project ---------- */
 .chapter { position: relative; z-index: 2; }
 .frame { position: relative; padding-top: 80px; padding-bottom: 60px; }
-.folio { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0 8px; border-bottom: 1px solid var(--fg); color: var(--dim); }
+.folio { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0 8px; border-bottom: 2px solid var(--fg); color: var(--dim); }
 .folio span:first-child { color: var(--fg); }
 .steps { display: grid; gap: 64px; padding-top: 32px; }
 .step { max-width: 31rem; }
-.step h2 { margin-bottom: 18px; font-size: clamp(2.6rem, 5.2vw, 4.8rem); }
+.step h2 { margin-bottom: 18px; font-size: clamp(3rem, 7vw, 6.4rem); }
 .step h3 { margin-bottom: 14px; }
 .step p:not(.mono):not(.kicker) { font-size: 1.1rem; line-height: 1.6; text-wrap: pretty; }
 .step p + p { margin-top: 12px; }
 .step .meta { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--line-2); color: var(--dim); }
-.step .go { display: inline-flex; gap: .5em; margin-top: 20px; padding: 7px 10px; border: 1.5px solid var(--fg); text-decoration: none; font: 500 .62rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
+.step .go { display: inline-flex; gap: .5em; margin-top: 20px; padding: 8px 11px; border: 2px solid var(--fg); text-decoration: none; font: 500 .62rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
 .step .go:hover { background: var(--signal); color: var(--signal-ink); border-color: var(--signal); }
 .rail { display: none; }
 
@@ -256,7 +260,7 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
   display: grid; grid-template-rows: auto 1fr auto;
 }
 .js .steps { display: grid; align-items: center; gap: 0; padding-top: 0; }
-.js .step { grid-area: 1 / 1; opacity: 0; visibility: hidden; will-change: opacity, filter, transform; }
+.js .step { grid-area: 1 / 1; opacity: 0; visibility: hidden; will-change: opacity; }
 .js .step.live { visibility: visible; }
 .js .rail {
   display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); gap: 10px;
@@ -264,7 +268,7 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 }
 .rail button {
   appearance: none; background: none; border: 0; padding: 10px 0 0; margin: 0; cursor: pointer; text-align: left;
-  color: var(--faint); position: relative; transition: color .3s;
+  color: var(--faint); position: relative;
 }
 .rail button::before, .rail button::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--line); }
 .rail button::after { background: var(--fg); transform-origin: left; transform: scaleX(var(--fill, 0)); }
@@ -278,8 +282,8 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
     content: ""; position: absolute; left: calc(-1 * var(--gutter)); right: calc(-1 * var(--gutter)); bottom: -90px; height: 72%;
     background: linear-gradient(to top, var(--shade) 55%, transparent); z-index: -1; pointer-events: none;
   }
-  .step h2 { font-size: clamp(2.4rem, 11vw, 3.4rem); margin-bottom: 12px; }
-  .step h3 { font-size: 1.65rem; margin-bottom: 10px; }
+  .step h2 { font-size: clamp(2.8rem, 14vw, 4.2rem); margin-bottom: 12px; }
+  .step h3 { font-size: 1.9rem; margin-bottom: 10px; }
   .step p:not(.mono):not(.kicker) { font-size: 1rem; text-align: left; }
   .step .meta { margin-top: 12px; }
   .js .rail { gap: 6px; }
@@ -298,10 +302,10 @@ h3 { font-size: clamp(1.5rem, 2.3vw, 2.15rem); font-weight: 700; line-height: 1.
 .build.wide .thumb { aspect-ratio: 21 / 9; }
 .build.wide h3 { margin-top: 0; }
 .build.wide + .build { padding-left: 0; border-left: 0; }
-.thumb { aspect-ratio: 4 / 3; position: relative; border: 1px solid var(--fg); }
+.thumb { aspect-ratio: 4 / 3; position: relative; border: 2px solid var(--fg); }
 .thumb::after {
   content: attr(data-hint); position: absolute; left: 8px; bottom: 8px; padding: 4px 6px; background: var(--signal); color: var(--signal-ink);
-  font: 500 .54rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; opacity: 0; transition: opacity .3s;
+  font: 500 .54rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; opacity: 0;
 }
 .thumb:hover::after { opacity: 1; }
 html:not(.has-3d) .thumb { display: none; }
@@ -319,18 +323,18 @@ html:not(.has-3d) .thumb { display: none; }
 .oped { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 48px); }
 .oped .byline { margin-bottom: 18px; }
 .oped-body { columns: 2 19rem; column-gap: 32px; column-rule: 1px solid var(--line); font-size: 1.08rem; line-height: 1.6; }
-.oped-body h4 { margin: 0 0 4px; font: 700 1.15rem/1.15 var(--font-head); break-after: avoid; }
+.oped-body h4 { margin: 0 0 4px; font: 800 1.3rem/1.05 var(--font-head); font-stretch: var(--stretch); text-transform: uppercase; break-after: avoid; }
 .oped-body p { margin-bottom: 1.1em; }
-.pullquote { align-self: start; margin: 0; padding: 18px 0; border-top: 3px solid var(--fg); border-bottom: 1px solid var(--fg); font: 700 clamp(1.6rem, 2.5vw, 2.2rem)/1.15 var(--font-head); }
+.pullquote { align-self: start; margin: 0; padding: 18px 0; border-top: 3px solid var(--fg); border-bottom: 2px solid var(--fg); font: 900 clamp(2rem, 3.2vw, 3rem)/.95 var(--font-head); font-stretch: var(--stretch); text-transform: uppercase; }
 .pullquote cite { display: block; margin-top: 14px; font: 400 .6rem/1.4 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
 @media (max-width: 820px) { .oped { grid-template-columns: 1fr; } }
 
 .classifieds { columns: 3 17rem; column-gap: 18px; }
-.ad { display: block; break-inside: avoid; margin-bottom: 18px; padding: 14px 14px 16px; border: 1px solid var(--fg); text-decoration: none; color: inherit; transition: background .15s, color .15s; }
-.ad-head { margin-bottom: 4px; font: 900 1.3rem/1.02 var(--font-head); text-transform: uppercase; }
+.ad { display: block; break-inside: avoid; margin-bottom: 18px; padding: 14px 14px 16px; border: 2px solid var(--fg); text-decoration: none; color: inherit; }
+.ad-head { margin-bottom: 4px; font: 900 1.6rem/1 var(--font-head); font-stretch: var(--stretch); text-transform: uppercase; }
 .ad-when { display: block; margin-bottom: 10px; color: var(--dim); }
 .ad p { font-size: 1.02rem; line-height: 1.55; }
-a.ad:hover { background: var(--signal); color: var(--signal-ink); }
+a.ad:hover { background: var(--fg); color: var(--bg); }
 a.ad:hover .ad-when { color: inherit; }
 
 .agate { columns: 2 20rem; column-gap: 40px; column-rule: 1px solid var(--line); }
@@ -339,12 +343,13 @@ a.ad:hover .ad-when { color: inherit; }
 
 .contact { position: relative; z-index: 2; padding: 10vh 0 8vh; }
 .letters-intro { max-width: 46ch; margin-bottom: 22px; font: 400 1.15rem/1.4 var(--font-body); color: var(--dim); }
-.links { border-top: 1px solid var(--fg); }
-.link { display: grid; grid-template-columns: auto minmax(24px, 1fr) auto; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
-.link .leader { border-bottom: 2px dotted var(--line-2); transform: translateY(-5px); }
-.link .v { font: 700 clamp(1.05rem, 1.8vw, 1.45rem)/1.15 var(--font-head); word-break: break-word; text-align: right; }
-.link:hover .v { background: var(--signal); color: var(--signal-ink); }
-footer { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 14px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 36px); border-top: 3px solid var(--fg); color: var(--dim); }
+.links { border-top: 2px solid var(--fg); }
+.link { display: grid; grid-template-columns: auto minmax(24px, 1fr) auto; align-items: baseline; gap: 12px; padding: 14px 10px; border-bottom: 1px solid var(--line-2); text-decoration: none; }
+.link .leader { border-bottom: 1px solid var(--line-2); transform: translateY(-5px); }
+.link .v { font: 800 clamp(1.2rem, 2vw, 1.7rem)/1.1 var(--font-head); font-stretch: var(--stretch); word-break: break-word; text-align: right; }
+.link:hover { background: var(--fg); color: var(--bg); }
+.link:hover .k, .link:hover .leader { color: inherit; border-color: transparent; }
+footer { position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding-top: 14px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 36px); border-top: 6px solid var(--fg); color: var(--dim); }
 
 @media (prefers-reduced-motion: reduce) {
   .grain, .ticker-track, .ticker .live::before, .plate-status::after { animation: none; }
@@ -358,7 +363,6 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   <line class="ext" id="dxa"/><line class="ext" id="dxb"/><line id="dx"/><line id="dx1"/><line id="dx2"/><text id="dxt" text-anchor="middle"/>
   <line class="ext" id="dya"/><line class="ext" id="dyb"/><line id="dy"/><line id="dy1"/><line id="dy2"/><text id="dyt"/>
 </svg>
-<div class="age" aria-hidden="true"></div>
 <div class="scan" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 <div class="cursor-chip" id="chip" aria-hidden="true">Drag to turn</div>
@@ -419,7 +423,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
           <p class="dropcap">I am doing an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
           <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Most of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. It's slow work and I like it.</p>
           <p>Ordo went live on the App Store this August. I designed it and used AI tools to build it, got it through review myself, and still ship updates most weeks.</p>
-          <p class="jump mono"><a href="#aperture">Continued on A2: Aperture</a></p>
+          <p class="jump mono"><a href="#aperture">Continued: 02 Aperture</a></p>
         </div>
       </article>
       <figure class="photo">
@@ -434,15 +438,15 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="index" id="work" aria-labelledby="work-title">
     <div class="wrap">
-      <div class="flag"><h2 id="work-title">Work</h2><span class="mono">In this edition</span></div>
+      <div class="flag"><span class="no" aria-hidden="true">01</span><h2 id="work-title">Work</h2><span class="mono">In this edition</span></div>
       <ol class="toc">
-        <li><a href="#aperture"><span class="t">Aperture</span><span class="leader"></span><span class="pg">A2</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
-        <li><a href="#snack"><span class="t">Snack</span><span class="leader"></span><span class="pg">A3</span><span class="d">A physical timekeeper for your phone</span></a></li>
-        <li><a href="#ordo-desktop"><span class="t">Ordo Desktop</span><span class="leader"></span><span class="pg">A4</span><span class="d">A desk display for Ordo</span></a></li>
-        <li><a href="#builds"><span class="t">Smaller builds</span><span class="leader"></span><span class="pg">B1</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
-        <li><a href="#how"><span class="t">How I run projects</span><span class="leader"></span><span class="pg">B2</span><span class="d">Gates, one source of truth, parallel tracks, people</span></a></li>
-        <li><a href="#experience"><span class="t">Experience</span><span class="leader"></span><span class="pg">C1</span><span class="d">Celestica, Ordo, Ji Ma Lab, Setty &amp; Associates, and skills</span></a></li>
-        <li><a href="#contact"><span class="t">Contact</span><span class="leader"></span><span class="pg">C2</span><span class="d">Email, LinkedIn, GitHub and résumé</span></a></li>
+        <li><a href="#aperture"><span class="t">Aperture</span><span class="leader"></span><span class="pg">02</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
+        <li><a href="#snack"><span class="t">Snack</span><span class="leader"></span><span class="pg">03</span><span class="d">A physical timekeeper for your phone</span></a></li>
+        <li><a href="#ordo-desktop"><span class="t">Ordo Desktop</span><span class="leader"></span><span class="pg">04</span><span class="d">A desk display for Ordo</span></a></li>
+        <li><a href="#builds"><span class="t">Smaller builds</span><span class="leader"></span><span class="pg">05</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
+        <li><a href="#how"><span class="t">How I run projects</span><span class="leader"></span><span class="pg">06</span><span class="d">Gates, one source of truth, parallel tracks, people</span></a></li>
+        <li><a href="#experience"><span class="t">Experience</span><span class="leader"></span><span class="pg">07</span><span class="d">Celestica, Ordo, Ji Ma Lab, Setty &amp; Associates, and skills</span></a></li>
+        <li><a href="#contact"><span class="t">Contact</span><span class="leader"></span><span class="pg">09</span><span class="d">Email, LinkedIn, GitHub and résumé</span></a></li>
       </ol>
     </div>
   </section>
@@ -450,7 +454,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   <!-- Each step's data-* sets the model's pose: yaw and pitch in degrees, explode 0 to 1, zoom, and which axes to measure. -->
   <section class="chapter" id="aperture" data-chapter aria-label="Aperture">
     <div class="frame wrap">
-      <div class="folio mono"><span>A2</span><span>Hardware</span><span>Albert Sein</span></div>
+      <div class="folio mono"><span>02</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
         <div class="step" data-label="Shape" data-model="aperture" data-yaw="-28" data-pitch="10" data-zoom="1">
           <p class="kicker"><span>Hardware</span> Wearable</p>
@@ -490,7 +494,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="chapter" id="snack" data-chapter aria-label="Snack">
     <div class="frame wrap">
-      <div class="folio mono"><span>A3</span><span>Hardware</span><span>Albert Sein</span></div>
+      <div class="folio mono"><span>03</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
         <div class="step" data-label="Snack" data-model="snack" data-yaw="-30" data-pitch="12" data-zoom="1">
           <p class="kicker"><span>Hardware</span> Consumer device</p>
@@ -525,7 +529,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="chapter" id="ordo-desktop" data-chapter aria-label="Ordo Desktop">
     <div class="frame wrap">
-      <div class="folio mono"><span>A4</span><span>Hardware</span><span>Albert Sein</span></div>
+      <div class="folio mono"><span>04</span><span>Hardware</span><span>Albert Sein</span></div>
       <div class="steps">
         <div class="step" data-label="Desk" data-model="ordo" data-yaw="-30" data-pitch="16" data-zoom="1.05">
           <p class="kicker"><span>Hardware</span> Desk display</p>
@@ -549,7 +553,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="builds" id="builds" aria-labelledby="builds-title">
     <div class="wrap">
-      <div class="flag"><h2 id="builds-title">Smaller builds</h2><span class="mono">Briefs</span></div>
+      <div class="flag"><span class="no" aria-hidden="true">05</span><h2 id="builds-title">Smaller builds</h2><span class="mono">Briefs</span></div>
       <div class="briefs">
         <article class="build wide">
           <div class="thumb" data-model="skyfall" data-yaw="-14" data-pitch="14" data-axis="x" data-fit="box" data-explode data-hint="Hover to take it apart"></div>
@@ -578,7 +582,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="section" id="how" aria-labelledby="how-title">
     <div class="wrap">
-      <div class="flag"><h2 id="how-title">How I run projects</h2><span class="mono">Op-ed</span></div>
+      <div class="flag"><span class="no" aria-hidden="true">06</span><h2 id="how-title">How I run projects</h2><span class="mono">Op-ed</span></div>
       <div class="oped">
         <div>
           <p class="byline mono">By Albert Sein</p>
@@ -600,7 +604,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="section" id="experience" aria-labelledby="exp-title">
     <div class="wrap">
-      <div class="flag"><h2 id="exp-title">Experience</h2><span class="mono">Classifieds</span></div>
+      <div class="flag"><span class="no" aria-hidden="true">07</span><h2 id="exp-title">Experience</h2><span class="mono">Classifieds</span></div>
       <div class="classifieds">
         <div class="ad">
           <p class="ad-head">Celestica</p><span class="ad-when mono">Summer 2026 &nbsp; San Jose</span>
@@ -624,7 +628,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="section" aria-labelledby="tools-title">
     <div class="wrap">
-      <div class="flag"><h2 id="tools-title">Skills and tools</h2><span class="mono">Listings</span></div>
+      <div class="flag"><span class="no" aria-hidden="true">08</span><h2 id="tools-title">Skills and tools</h2><span class="mono">Listings</span></div>
       <div class="agate prose">
         <p><b>Design and simulation</b>Fusion 360, SolidWorks, CFD, Revit, AutoCAD, and 3D printing on a Prusa MK4S.</p>
         <p><b>Electronics</b>Electronics integration and packaging, KiCad, rigid-flex boards, Arduino and sensor integration.</p>
@@ -638,7 +642,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="contact" id="contact" aria-labelledby="contact-title">
     <div class="wrap">
-      <div class="flag"><h2 id="contact-title">Contact</h2><span class="mono">Letters to the editor</span></div>
+      <div class="flag"><span class="no" aria-hidden="true">09</span><h2 id="contact-title">Contact</h2><span class="mono">Letters to the editor</span></div>
       <p class="letters-intro">Hiring for a team that builds things? I'd like to hear about it.</p>
       <div class="links">
         <a class="link" href="mailto:kks7ys@virginia.edu"><span class="k mono">Email</span><span class="leader"></span><span class="v">kks7ys@virginia.edu</span></a>
@@ -654,7 +658,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
 <footer class="wrap mono">
   <span>&copy; 2026 Albert Sein &nbsp; Printed on the web</span>
-  <span>No cookies, no analytics &nbsp; Page C2</span>
+  <span>No cookies, no analytics</span>
 </footer>
 
 <script>
@@ -737,7 +741,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
   };
   const fbm = (x, y) => { let s = 0, a = 0.5, f = 1; for (let o = 0; o < 3; o++) { s += a * vnoise(x * f, y * f); f *= 2.03; a *= 0.5; } return s; };
-  const F = { w: 0, h: 0, s: 8, X: null, Y: null, fg: '#ebe4d2', light: false, last: -1, drawn: -1 };
+  const F = { w: 0, h: 0, s: 8, X: null, Y: null, fg: '#f5f5f5', light: false, last: -1, drawn: -1 };
   AS.plate = { visible: false, rw: 0, rh: 0, w: 0, h: 0, data: null, version: 0, caption: '' };
   const ptr = { x: -1e4, y: -1e4, k: 0, on: false };
   const GLYPHS = '01+x/<>#=*:';
@@ -751,7 +755,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     const xs = [], ys = [];
     for (let j = 0, y = 0; y < F.h + dy; j++, y = j * dy) for (let x = j & 1 ? dx / 2 : 0; x < F.w + dx; x += dx) { xs.push(x); ys.push(y); }
     F.X = Float32Array.from(xs); F.Y = Float32Array.from(ys);
-    F.fg = getComputedStyle(root).getPropertyValue('--fg').trim() || '#ebe4d2';
+    F.fg = getComputedStyle(root).getPropertyValue('--fg').trim() || '#f5f5f5';
     F.light = getComputedStyle(root).colorScheme === 'light';
     // about one rendered pixel per dot and a half
     AS.plate.rw = Math.max(32, Math.round((F.w / s) * 1.5)); AS.plate.rh = Math.max(32, Math.round((F.h / s) * 1.5));
@@ -883,11 +887,8 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   });
 
   const nameplate = document.querySelector('.nameplate');
-  const show = (el, v, lift = 18) => {
-    el.style.opacity = v.toFixed(3);
-    el.style.filter = v > 0.995 ? 'none' : `blur(${((1 - v) * 10).toFixed(1)}px)`;
-    el.style.transform = `translateY(${((1 - v) * lift).toFixed(1)}px)`;
-  };
+  // steps cut over hard at the midpoint: no blur, no drift
+  const show = (el, v) => { el.style.opacity = clamp((v - 0.44) / 0.12).toFixed(3); };
 
   AS.update = () => {
     const vh = innerHeight;
@@ -906,7 +907,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
       ch.steps.forEach((el, k) => {
         const w = k === ch.i ? 1 - t : k === ch.i + 1 ? t : 0;
         el.classList.toggle('live', w > 0.01);
-        if (w > 0.01 || el.style.opacity !== '0') show(el, w, k === ch.i ? -26 : 26);
+        if (w > 0.01 || el.style.opacity !== '0') show(el, w);
       });
       const cur = t > 0.5 ? ch.i + 1 : ch.i;
       ch.buttons.forEach((b, k) => {
@@ -1105,6 +1106,10 @@ function boxUV(P, N, n) {
 }
 const loading = new Map();
 const MODELS = {};
+// The CAD's hard edges, drawn as thin lines over the shading like a drawing: white at night, ink by day.
+// They stay out of the halftone plate.
+const EDGE_ALPHA = 0.5, EDGE_ANGLE = 32;
+const edgeColor = () => (getComputedStyle(root).colorScheme === 'light' ? 0x17140f : 0xffffff);
 function loadModel(id) {
   if (!loading.has(id)) loading.set(id, fetch(`models/${id}.bin`).then((r) => { if (!r.ok) throw new Error(id); return r.arrayBuffer(); }).then((buf) => {
     const hl = new DataView(buf).getUint32(0, true);
@@ -1120,11 +1125,16 @@ function loadModel(id) {
       g.setAttribute('uv', new THREE.BufferAttribute(boxUV(P, N, p.vertices), 2));
       g.setIndex(new THREE.BufferAttribute(p.idx32 ? new Uint32Array(buf, base + p.idx, p.indices) : new Uint16Array(buf, base + p.idx, p.indices), 1));
       const mat = (MATERIALS[p.mat] || MATERIALS.metal)();
-      mat.transparent = true;
+      // faces sit a hair back so the edge lines on them win the depth test
+      Object.assign(mat, { transparent: true, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
       const mesh = new THREE.Mesh(g, mat);
+      const edge = new THREE.LineSegments(new THREE.EdgesGeometry(g, EDGE_ANGLE),
+        new THREE.LineBasicMaterial({ color: edgeColor(), transparent: true, opacity: 0, toneMapped: false }));
+      edge.renderOrder = 1;
+      mesh.add(edge);
       spin.add(mesh);
       const hinge = p.hinge && { p: new THREE.Vector3(...p.hinge.p), a: new THREE.Vector3(...p.hinge.a).normalize(), deg: p.hinge.deg };
-      return { name: p.name, mesh, explode: new THREE.Vector3(...p.explode), detach: p.detach && new THREE.Vector3(...p.detach), hinge };
+      return { name: p.name, mesh, edge, explode: new THREE.Vector3(...p.explode), detach: p.detach && new THREE.Vector3(...p.detach), hinge };
     });
     const box = new THREE.Box3();
     for (const { mesh } of parts) { mesh.geometry.computeBoundingBox(); box.union(mesh.geometry.boundingBox); }
@@ -1141,7 +1151,7 @@ function loadModel(id) {
 function setOpacity(m, o) {
   if (Math.abs(m.opacity - o) < 0.002) return;
   m.opacity = o;
-  for (const { mesh } of m.parts) { mesh.material.opacity = o; mesh.material.depthWrite = o > 0.6; }
+  for (const { mesh, edge } of m.parts) { mesh.material.opacity = o; mesh.material.depthWrite = o > 0.6; edge.material.opacity = o * EDGE_ALPHA; }
 }
 
 /* main models load first, the small builds when you get near them */
@@ -1303,7 +1313,10 @@ function resize() {
 }
 resize();
 addEventListener('resize', resize);
-matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => { renderer.toneMappingExposure = lightMode() ? 1.05 : 0.9; });
+matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+  renderer.toneMappingExposure = lightMode() ? 1.05 : 0.9;
+  for (const m of Object.values(MODELS)) for (const { edge } of m.parts) edge.material.color.setHex(edgeColor());
+});
 const lightMode = () => getComputedStyle(root).colorScheme === 'light';
 renderer.toneMappingExposure = lightMode() ? 1.05 : 0.9;
 
@@ -1447,7 +1460,9 @@ function renderPlate(time) {
   renderer.setRenderTarget(plateRT);
   renderer.setClearColor(0x000000, 0);
   renderer.clear();
+  for (const { edge } of m.parts) edge.visible = false;
   renderer.render(scene, plateCam);
+  for (const { edge } of m.parts) edge.visible = true;
   renderer.setRenderTarget(null);
   renderer.readRenderTargetPixels(plateRT, 0, 0, w, h, plateBuf);
   m.pivot.visible = false;
