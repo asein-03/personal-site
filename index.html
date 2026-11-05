@@ -242,21 +242,63 @@ html:not(.js) .pager, body[data-page="home"] .pager { display: none; }
 .start a { text-decoration: none; border-bottom: 1px solid var(--line-2); }
 .start a:hover { background: var(--signal); color: var(--signal-ink); }
 /* The contents sit beside the summary, so the first screen says who and where to go. They're set like the contents
-   page of a book, plain and quiet, apart from the rest of the paper: the reading serif, names beside a line about each,
-   thin rules, and a pen-stroke underline on hover. */
-.contents { padding-left: clamp(18px, 2.5vw, 36px); }
+   page of a book, plain and quiet, apart from the rest of the paper: the reading serif, a name beside a line about
+   each, thin rules, and a small box by each name that fills in, with a glitch, under the pointer. The work folds into
+   one dropdown; its box carries a plus that turns to a minus when it's open. */
+.contents { --box: 11px; --gap: 14px; --name: 10.5rem; padding-left: clamp(18px, 2.5vw, 36px); }
 .contents .flag { display: block; padding: 0; border: 0; margin-bottom: 14px; }
 .contents .flag h2 { font: 400 clamp(1.7rem, 2.4vw, 2.4rem)/1.1 var(--font-body); font-stretch: normal; letter-spacing: -.01em; text-transform: none; }
 .contents .flag .mono { display: none; }
-.contents .toc { columns: 1; border-top: 1px solid var(--fg); }
-.contents .toc a { grid-template-columns: minmax(8.5rem, 34%) minmax(0, 1fr); column-gap: 20px; padding: 13px 0; border-bottom: 1px solid var(--line); }
-.contents .toc .t { font: 400 1.2rem/1.3 var(--font-body); font-stretch: normal; text-transform: none; }
-.contents .toc .d { grid-column: auto; margin: 0; font: 400 .98rem/1.45 var(--font-body); color: var(--dim); }
-.contents .toc .leader, .contents .toc .to { display: none; }
-.contents .toc a:hover { background: none; color: inherit; }
-.contents .toc a:hover .d { color: var(--dim); }
-.contents .toc a:hover .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
-@media (max-width: 560px) { .contents .toc a { grid-template-columns: 1fr; row-gap: 2px; } }
+.toc, .toc ol { list-style: none; margin: 0; padding: 0; }
+.toc { border-top: 1px solid var(--fg); }
+.toc a, .toc summary {
+  display: grid; grid-template-columns: var(--box) var(--name) minmax(0, 1fr); align-items: baseline; column-gap: var(--gap);
+  padding: 13px 0; border-bottom: 1px solid var(--line); text-decoration: none; cursor: pointer;
+}
+.toc summary { list-style: none; }
+.toc summary::-webkit-details-marker { display: none; }
+.toc .t { font: 400 1.2rem/1.3 var(--font-body); }
+.toc .d { font: 400 .98rem/1.45 var(--font-body); color: var(--dim); }
+/* the builds sit indented under the dropdown, their lines still lined up with the ones above */
+.toc .sub { padding-left: calc(var(--box) + var(--gap)); }
+.toc .sub a { grid-template-columns: var(--box) calc(var(--name) - var(--box) - var(--gap)) minmax(0, 1fr); padding: 10px 0; }
+.toc .sub .t { font-size: 1.08rem; }
+/* the box sits on the baseline like a ballot box */
+.toc .box { position: relative; width: var(--box); height: var(--box); border: 1px solid var(--fg); }
+.toc summary .box::before, .toc summary .box::after { content: ""; position: absolute; inset: 0; margin: auto; background: var(--fg); }
+.toc summary .box::before { width: 5px; height: 1px; }
+.toc summary .box::after { width: 1px; height: 5px; }
+.toc details[open] summary .box::after { display: none; }
+@media (hover: hover) {
+  .toc a:hover .box, .toc summary:hover .box { background: var(--signal); animation: box-glitch .38s steps(1) both; }
+  .toc summary:hover .box::before, .toc summary:hover .box::after { background: var(--signal-ink); }
+  .toc a:hover .t, .toc summary:hover .t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
+}
+.toc a:focus-visible .box, .toc summary:focus-visible .box { background: var(--signal); }
+/* the box tears sideways into red and cyan for a few frames, then settles yellow */
+@keyframes box-glitch {
+  0%   { background: var(--signal); translate: 3px 0; box-shadow: -3px 0 var(--red), 3px 0 var(--cyan); }
+  15%  { background: transparent; translate: -2px 1px; box-shadow: 2px 0 var(--cyan); }
+  30%  { background: var(--red); translate: 1px 0; box-shadow: none; clip-path: inset(0 0 50% 0); }
+  45%  { background: var(--signal); translate: -2px 0; box-shadow: -2px 0 var(--cyan), 2px 0 var(--red); clip-path: inset(40% 0 0 0); }
+  60%  { background: var(--cyan); translate: 0 -1px; box-shadow: none; clip-path: none; }
+  78%  { background: var(--signal); translate: 1px 0; box-shadow: 2px 0 var(--red); }
+  100% { background: var(--signal); translate: 0; box-shadow: none; }
+}
+/* opening the dropdown unrolls it, and the builds drop in one after another */
+.toc details { interpolate-size: allow-keywords; }
+.toc details::details-content { block-size: 0; overflow: clip; transition: block-size .5s var(--ease), content-visibility .5s allow-discrete; }
+.toc details[open]::details-content { block-size: auto; }
+.toc details[open] .sub li { animation: toc-in .5s var(--ease) both; }
+.toc details[open] .sub li:nth-child(2) { animation-delay: .05s; }
+.toc details[open] .sub li:nth-child(3) { animation-delay: .1s; }
+.toc details[open] .sub li:nth-child(4) { animation-delay: .15s; }
+.toc details[open] .sub li:nth-child(5) { animation-delay: .2s; }
+@keyframes toc-in { from { opacity: 0; translate: 0 -6px; } }
+@media (max-width: 560px) {
+  .toc a, .toc summary, .toc .sub a { grid-template-columns: var(--box) minmax(0, 1fr); row-gap: 2px; }
+  .toc .d { grid-column: 2; }
+}
 /* the plate runs wide beneath them */
 .photo { margin: 0; padding-bottom: clamp(40px, 8vh, 80px); }
 .plate { position: relative; aspect-ratio: 21 / 8; border: 1px solid var(--fg); overflow: hidden; cursor: crosshair; }
@@ -271,19 +313,6 @@ html:not(.js) .pager, body[data-page="home"] .pager { display: none; }
   .contents { padding-left: 0; margin-top: 32px; }
   .plate { aspect-ratio: 1 / 1; }
 }
-
-/* ---------- table of contents ---------- */
-.index { position: relative; z-index: 2; padding: 6vh 0 12vh; }
-.toc { list-style: none; margin: 0; padding: 0; columns: 3 22rem; column-gap: 48px; column-rule: 1px solid var(--line); }
-.toc li { break-inside: avoid; }
-.toc a { display: grid; grid-template-columns: auto minmax(24px, 1fr) auto; align-items: baseline; column-gap: 10px; padding: 14px 10px; border-bottom: 1px solid var(--line-2); text-decoration: none; }
-.toc .t { font: 700 clamp(1.15rem, 1.6vw, 1.5rem)/1 var(--font-head); font-stretch: var(--stretch); text-transform: uppercase; }
-.toc .leader { border-bottom: 1px solid var(--line-2); transform: translateY(-5px); }
-.toc .to { font: 500 .8rem/1 var(--font-mono); }
-.toc .d { grid-column: 1 / -1; margin-top: 4px; font: 400 .98rem/1.3 var(--font-body); color: var(--dim); }
-/* hovers flip the whole row to a solid block, instantly */
-.toc a:hover { background: var(--fg); color: var(--bg); }
-.toc a:hover .d, .toc a:hover .leader { color: inherit; border-color: transparent; }
 
 /* ---------- chapters: a pinned page per project ---------- */
 .chapter { position: relative; z-index: 2; }
@@ -390,7 +419,7 @@ a.ad:hover .ad-when { color: inherit; }
 .agate p { break-inside: avoid; margin-bottom: 14px; font-size: 1.04rem; line-height: 1.55; }
 .agate b { margin-right: 8px; font: 500 .64rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
 
-/* ---------- off the clock: a profile, a chart of what's on repeat, and favorite films ---------- */
+/* ---------- off the grid: a profile, a chart of what's on repeat, and favorite films ---------- */
 .culture { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr); }
 .culture > section { padding: 0 clamp(16px, 2vw, 32px); border-left: 1px solid var(--line-2); }
 .culture > section:first-child { padding-left: 0; border-left: 0; }
@@ -449,7 +478,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
 @media (prefers-reduced-motion: reduce) {
   .view-in { animation: none; }
-  .grain, .ticker-track, .ticker .live::before, .plate-status::after { animation: none; }
+  .grain, .ticker-track, .ticker .live::before, .plate-status::after, .toc .box, .toc .sub li { animation: none !important; }
 }
 </style>
 </head>
@@ -469,7 +498,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     <a class="nav-back" href="#contents">&larr; Contents</a>
     <a class="nav-home" href="#contents">Contents</a>
     <a href="#background">Background</a>
-    <a href="#life">Off the clock</a>
+    <a href="#life">Off the grid</a>
     <a href="#contact">Contact</a>
     <a class="pill" href="albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé</a>
   </div>
@@ -523,14 +552,21 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
       <nav class="contents" id="contents" aria-labelledby="contents-title">
         <div class="flag"><h2 id="contents-title">Contents</h2><span class="mono">Start here</span></div>
         <ol class="toc">
-          <li><a href="#aperture"><span class="t">Aperture</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
-          <li><a href="#snack"><span class="t">Snack</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">A physical timekeeper for your phone</span></a></li>
-          <li><a href="#ordo-desktop"><span class="t">Ordo Desktop</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">A desk display for Ordo</span></a></li>
-          <li><a href="#builds"><span class="t">Smaller builds</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
-          <li><a href="#background"><span class="t">Background</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">Studies at UVA, Celestica, Ordo, experience and skills</span></a></li>
-          <li><a href="#life"><span class="t">Off the clock</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">Yangon, coffee, golf, five songs on repeat and favorite films</span></a></li>
-          <li><a href="#contact"><span class="t">Contact</span><span class="leader"></span><span class="to" aria-hidden="true">&rarr;</span><span class="d">Email, LinkedIn, GitHub and résumé</span></a></li>
-          <li><a href="albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="t">Résumé</span><span class="leader"></span><span class="to" aria-hidden="true">&#8599;</span><span class="d">The PDF</span></a></li>
+          <li>
+            <details>
+              <summary><span class="box" aria-hidden="true"></span><span class="t">Some of my work</span><span class="d">Aperture, Snack, Ordo Desktop, smaller builds and my background</span></summary>
+              <ol class="sub">
+                <li><a href="#aperture"><span class="box" aria-hidden="true"></span><span class="t">Aperture</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
+                <li><a href="#snack"><span class="box" aria-hidden="true"></span><span class="t">Snack</span><span class="d">A physical timekeeper for your phone</span></a></li>
+                <li><a href="#ordo-desktop"><span class="box" aria-hidden="true"></span><span class="t">Ordo Desktop</span><span class="d">A desk display for Ordo</span></a></li>
+                <li><a href="#builds"><span class="box" aria-hidden="true"></span><span class="t">Smaller builds</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
+                <li><a href="#background"><span class="box" aria-hidden="true"></span><span class="t">Background</span><span class="d">Studies at UVA, Celestica, Ordo, experience and skills</span></a></li>
+              </ol>
+            </details>
+          </li>
+          <li><a href="#life"><span class="box" aria-hidden="true"></span><span class="t">Off the grid</span><span class="d">Yangon, coffee, golf, five songs on repeat and favorite films</span></a></li>
+          <li><a href="#contact"><span class="box" aria-hidden="true"></span><span class="t">Contact</span><span class="d">Email, LinkedIn, GitHub and résumé</span></a></li>
+          <li><a href="albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="box" aria-hidden="true"></span><span class="t">Résumé</span><span class="d">The PDF</span></a></li>
         </ol>
       </nav>
     </div>
@@ -726,10 +762,10 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     </div>
   </section>
 
-  <!-- Off the clock: who I am outside work. The songs and films are plain lists, quick to update. -->
+  <!-- Off the grid: who I am outside work. The songs and films are plain lists, quick to update. -->
   <section class="section" id="life" data-view="life" aria-labelledby="life-title">
     <div class="wrap">
-      <div class="flag"><h2 id="life-title">Off the clock</h2><span class="mono">Op-ed</span></div>
+      <div class="flag"><h2 id="life-title">Off the grid</h2><span class="mono">Op-ed</span></div>
       <div class="culture">
         <section class="profile" aria-labelledby="profile-title">
           <p class="kicker"><span>Profile</span> Outside work</p>
@@ -1188,7 +1224,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
      switches the view and starts it at the top (or at the part asked for, like #skills), the browser's back button
      returns, and Esc goes back to the contents. Every view has its own address, so a link can open straight to it. */
   const ORDER = ['aperture', 'snack', 'ordo-desktop', 'builds', 'background', 'life', 'contact'];
-  const NAMES = { aperture: 'Aperture', snack: 'Snack', 'ordo-desktop': 'Ordo Desktop', builds: 'Smaller builds', background: 'Background', life: 'Off the clock', contact: 'Contact' };
+  const NAMES = { aperture: 'Aperture', snack: 'Snack', 'ordo-desktop': 'Ordo Desktop', builds: 'Smaller builds', background: 'Background', life: 'Off the grid', contact: 'Contact' };
   const pagerNext = document.querySelector('#pager .next');
   let view = null;
   function route(hash, gently) {
