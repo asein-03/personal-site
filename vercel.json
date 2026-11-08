@@ -1,0 +1,11 @@
+{
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/:page(aperture|snack|ordo|ordo-desktop|builds|background|off-the-grid|contact)", "destination": "/index.html" }
+  ],
+  "headers": [
+    { "source": "/models/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }] },
+    { "source": "/media/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }] },
+    { "source": "/og.png", "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }] }
+  ]
+}

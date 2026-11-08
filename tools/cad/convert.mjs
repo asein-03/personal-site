@@ -17,6 +17,7 @@ import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { mergeVertices, toCreasedNormals } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { MeshoptSimplifier } from 'meshoptimizer';
+import { packModel } from './meshpack.mjs';
 
 const HOME = '/Users/asein';
 const DL = `${HOME}/Downloads`;
@@ -292,9 +293,7 @@ for (const proj of PROJECTS.filter((p) => !only.length || only.includes(p.id))) 
     : Math.max(size.x, size.y, size.z) / 2;
   const toDisplay = (pt) => turn(new THREE.Vector3(...pt)).sub(center).divideScalar(half).toArray().map((v) => +v.toFixed(5));
 
-  const chunks = [], header = { id: proj.id, sizeMM: size.toArray().map((v) => +(v * (proj.unit || 1)).toFixed(1)), parts: [] };
-  let offset = 0;
-  const push = (typed) => { const o = offset; chunks.push(typed); offset += typed.byteLength; const pad = (4 - (offset % 4)) % 4; if (pad) { chunks.push(new Uint8Array(pad)); offset += pad; } return o; };
+  const header = { id: proj.id, sizeMM: size.toArray().map((v) => +(v * (proj.unit || 1)).toFixed(1)) }, packed = [];
   for (const { p, g } of parts) {
     g.translate(-center.x, -center.y, -center.z);
     const P = g.attributes.position.array, N = g.attributes.normal.array, n = P.length / 3;
@@ -304,13 +303,11 @@ for (const proj of PROJECTS.filter((p) => !only.length || only.includes(p.id))) 
       const x = N[i * 3], y = N[i * 3 + 1], z = N[i * 3 + 2], l = Math.hypot(x, y, z) || 1;
       qn[i * 3] = Math.round((x / l) * 127); qn[i * 3 + 1] = Math.round((y / l) * 127); qn[i * 3 + 2] = Math.round((z / l) * 127);
     }
-    const idx32 = n > 65535, I = idx32 ? new Uint32Array(g.index.array) : new Uint16Array(g.index.array);
-    header.parts.push({
+    packed.push({ P: q, N: qn, I: g.index.array, meta: {
       name: p.name, mat: p.mat, explode: p.explodeMM ? p.explodeMM.map((v) => +(v / half).toFixed(5)) : p.explode || [0, 0, 0],
-      ...(p.detach && { detach: p.detach }), ...(p.ride && { ride: true }), ...(p.leave && { leave: true }), vertices: n, indices: I.length, idx32,
-      pos: push(q), nrm: push(qn), idx: push(I),
+      ...(p.detach && { detach: p.detach }), ...(p.ride && { ride: true }), ...(p.leave && { leave: true }),
       ...(p.hinge && { hinge: { p: toDisplay(p.hinge.pivot), a: turn(new THREE.Vector3(...p.hinge.axis)).normalize().toArray().map((v) => +v.toFixed(5)), deg: p.hinge.deg } }),
-    });
+    } });
   }
   // the LED field as a rectangle in display units (up 'y' projects only: x and y are not turned)
   if (proj.leds) {
@@ -331,11 +328,8 @@ for (const proj of PROJECTS.filter((p) => !only.length || only.includes(p.id))) 
     const D = proj.dock, unit = (v) => turn(new THREE.Vector3(...v)).divideScalar(half).toArray().map((x) => +x.toFixed(5));
     header.dock = { from: unit(D.from), lift: +(D.lift / half).toFixed(5), arc: +(D.arc / half).toFixed(5), pivot: toDisplay(D.pivot) };
   }
-  const json = Buffer.from(JSON.stringify(header));
-  const hpad = (4 - ((4 + json.length) % 4)) % 4;
-  const head = Buffer.alloc(4); head.writeUInt32LE(json.length + hpad);
   const file = path.join(outDir, `${proj.id}.bin`);
-  fs.writeFileSync(file, Buffer.concat([head, json, Buffer.alloc(hpad, 0x20), ...chunks.map((c) => Buffer.from(c.buffer, c.byteOffset, c.byteLength))]));
+  fs.writeFileSync(file, packModel(header, packed));
   const tris = header.parts.reduce((s, x) => s + x.indices / 3, 0);
   console.log(`${proj.id.padEnd(12)} ${(fs.statSync(file).size / 1024).toFixed(0).padStart(5)} KB  ${tris} tris  ${header.sizeMM.join(' x ')} mm`);
 }

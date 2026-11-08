@@ -14,12 +14,18 @@
 <meta property="og:description" content="A product person who loves building things, and loves working with people even more.">
 <meta property="og:url" content="https://albertsein.com/">
 <link rel="canonical" href="https://albertsein.com/">
-<meta name="twitter:card" content="summary">
+<meta property="og:site_name" content="Albert Sein">
+<meta property="og:image" content="https://albertsein.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Albert Sein: the nameplate over a halftone print of the Aperture charging case">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://albertsein.com/og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cstyle%3Erect%7Bfill:%23000%7Dtext%7Bfill:%23f5f5f5%7D%40media (prefers-color-scheme:light)%7Brect%7Bfill:%23fff%7Dtext%7Bfill:%23000%7D%7D%3C/style%3E%3Crect width='32' height='32' /%3E%3Ctext x='16' y='24' font-family='Arial Narrow,Helvetica,Arial,sans-serif' font-weight='900' font-size='24' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,300..500&family=Newsreader:opsz,wght@6..72,300..600&family=Archivo:wdth,wght@62..125,500..900&display=swap">
-<link rel="preload" href="models/aperture.bin" as="fetch" crossorigin>
+<link rel="preload" href="/models/aperture-case.bin" as="fetch" crossorigin>
 <script>document.documentElement.classList.add('js');</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <style>
@@ -355,6 +361,8 @@ html:not(.js) .pager, body[data-page="home"] .pager { display: none; }
 .step .meta { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--line-2); color: var(--dim); }
 .step .go { display: inline-flex; gap: .5em; margin-top: 20px; padding: 8px 11px; border: 1px solid var(--fg); text-decoration: none; font: 500 .62rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
 .step .go:hover { background: var(--signal); color: var(--signal-ink); border-color: var(--signal); }
+.app .go { display: inline-flex; gap: .5em; padding: 8px 11px; border: 1px solid var(--fg); text-decoration: none; font: 500 .62rem/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
+.app .go:hover { background: var(--signal); color: var(--signal-ink); border-color: var(--signal); }
 .rail { display: none; }
 
 .js .chapter { height: calc(var(--n, 4) * 100vh + 100vh); height: calc(var(--n, 4) * 100svh + 100svh); }
@@ -429,6 +437,30 @@ html:not(.has-3d) .thumb { display: none; }
   .build, .build:first-child, .build:last-child { padding: 0 0 28px; border-left: 0; }
   .build.wide { grid-template-columns: 1fr; }
   .build.wide .thumb { aspect-ratio: 16 / 9; }
+}
+
+/* ---------- Ordo: the story, the facts, and the screens printed in black and white ---------- */
+.app { position: relative; z-index: 2; padding: 14vh 0 10vh; }
+.app-grid { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: clamp(20px, 4vw, 64px); align-items: start; }
+.app-story h3 { margin-bottom: 14px; }
+.app-story .prose { max-width: 40em; font-size: 1.12rem; line-height: 1.6; }
+.app-story .prose + .prose { margin-top: .7em; }
+.app-go { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.app-facts { margin: 0; border-top: 1px solid var(--fg); }
+.app-facts div { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); align-items: baseline; column-gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.app-facts dt { color: var(--dim); }
+.app-facts dd { margin: 0; font-size: 1rem; line-height: 1.45; }
+.shots { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(10px, 1.4vw, 20px); margin: clamp(28px, 6vh, 56px) 0 0; padding: 0; list-style: none; }
+.shots figure { margin: 0; }
+.shots img { display: block; width: 100%; height: auto; border: 1px solid var(--fg); filter: grayscale(1) contrast(1.06); transition: filter .5s var(--ease); }
+@media (hover: hover) { .shots figure:hover img { filter: none; } }
+.shots figcaption { margin-top: 8px; color: var(--dim); }
+.app-note { margin-top: 14px; color: var(--dim); }
+@media (max-width: 900px) {
+  .app-grid { grid-template-columns: minmax(0, 1fr); }
+  /* the screens become a strip you swipe through */
+  .shots { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 44%; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+  .shots li { scroll-snap-align: start; }
 }
 
 /* ---------- op-ed, classifieds, agate, letters ---------- */
@@ -520,14 +552,14 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 <div class="cursor-chip" id="chip" aria-hidden="true">Drag to turn</div>
 
 <nav class="nav" aria-label="Main">
-  <a class="brand" href="#top">Albert Sein</a>
+  <a class="brand" href="/">Albert Sein</a>
   <div class="nav-links mono">
-    <a class="nav-back" href="#contents">&larr; Contents</a>
-    <a class="nav-home" href="#contents">Contents</a>
-    <a href="#background">Background</a>
-    <a href="#life">Off the grid</a>
-    <a href="#contact">Contact</a>
-    <a class="pill" href="albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé</a>
+    <a class="nav-back" href="/#contents">&larr; Contents</a>
+    <a class="nav-home" href="/#contents">Contents</a>
+    <a href="/background">Background</a>
+    <a href="/off-the-grid">Off the grid</a>
+    <a href="/contact">Contact</a>
+    <a class="pill" href="/albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé</a>
   </div>
 </nav>
 
@@ -552,15 +584,15 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <div class="ticker-track">
           <span>Aperture charging case designed around the shell</span>
           <span>Snack R07 packaged for manufacturing</span>
-          <span>Ordo on the App Store since August, with a big update in September</span>
-          <span>Celestica internship wraps: liquid metal TIMs tested on the TIMA5</span>
+          <span>Ordo 2.0.1 out on the App Store, now on its own page</span>
+          <span>From the summer at Celestica: liquid metal TIMs tested on the TIMA5</span>
           <span>Ordo Desktop printed in two parts on a Prusa MK4S</span>
           <span>Open to Summer 2027 internships and new-grad roles</span>
           <span>Now playing: Eyelar (shutters), Fred again..</span>
           <span aria-hidden="true">Aperture charging case designed around the shell</span>
           <span aria-hidden="true">Snack R07 packaged for manufacturing</span>
-          <span aria-hidden="true">Ordo on the App Store since August, with a big update in September</span>
-          <span aria-hidden="true">Celestica internship wraps: liquid metal TIMs tested on the TIMA5</span>
+          <span aria-hidden="true">Ordo 2.0.1 out on the App Store, now on its own page</span>
+          <span aria-hidden="true">From the summer at Celestica: liquid metal TIMs tested on the TIMA5</span>
           <span aria-hidden="true">Ordo Desktop printed in two parts on a Prusa MK4S</span>
           <span aria-hidden="true">Open to Summer 2027 internships and new-grad roles</span>
           <span aria-hidden="true">Now playing: Eyelar (shutters), Fred again..</span>
@@ -573,7 +605,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <p class="kicker"><span>Front page</span> Profile</p>
         <h2 class="headline">A product person who loves building things, and loves working with people even more</h2>
         <p class="deck">I study materials and systems engineering at UVA. So far I've shipped an app, designed a wearable and its charging case, packaged a phone-mounted timekeeper for a manufacturer's review, and printed a desk display.</p>
-        <p class="seeking"><span class="kicker"><span>Looking for</span></span>Summer 2027 internships and new-grad roles in technical project management, product and hardware engineering. I do my best work on high-agency, fast-moving teams. <a href="mailto:kks7ys@virginia.edu">Email me</a> or <a href="albert-sein-resume.pdf" target="_blank" rel="noopener">read my résumé</a>.</p>
+        <p class="seeking"><span class="kicker"><span>Looking for</span></span>Summer 2027 internships and new-grad roles in technical project management, product and hardware engineering. I do my best work on high-agency, fast-moving teams. <a href="mailto:kks7ys@virginia.edu">Email me</a> or <a href="/albert-sein-resume.pdf" target="_blank" rel="noopener">read my résumé</a>.</p>
         <p class="byline mono">By Albert Sein &nbsp; | &nbsp; Charlottesville, Va.</p>
       </article>
       <div class="side">
@@ -582,19 +614,20 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <ol class="toc">
           <li>
             <details>
-              <summary><span class="box" aria-hidden="true"></span><span class="t">Some of my work</span><span class="d">Aperture, Snack, Ordo Desktop and more</span><span class="more" aria-hidden="true"><span class="open">Open</span><span class="shut">Close</span><i></i></span></summary>
+              <summary><span class="box" aria-hidden="true"></span><span class="t">Some of my work</span><span class="d">Aperture, Snack, Ordo and more</span><span class="more" aria-hidden="true"><span class="open">Open</span><span class="shut">Close</span><i></i></span></summary>
               <ol class="sub">
-                <li><a href="#aperture"><span class="box" aria-hidden="true"></span><span class="t">Aperture</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
-                <li><a href="#snack"><span class="box" aria-hidden="true"></span><span class="t">Snack</span><span class="d">A physical timekeeper for your phone</span></a></li>
-                <li><a href="#ordo-desktop"><span class="box" aria-hidden="true"></span><span class="t">Ordo Desktop</span><span class="d">A desk display for Ordo</span></a></li>
-                <li><a href="#builds"><span class="box" aria-hidden="true"></span><span class="t">Smaller builds</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
-                <li><a href="#background"><span class="box" aria-hidden="true"></span><span class="t">Background</span><span class="d">Studies at UVA, Celestica, Ordo, experience and skills</span></a></li>
+                <li><a href="/aperture"><span class="box" aria-hidden="true"></span><span class="t">Aperture</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
+                <li><a href="/snack"><span class="box" aria-hidden="true"></span><span class="t">Snack</span><span class="d">A physical timekeeper for your phone</span></a></li>
+                <li><a href="/ordo"><span class="box" aria-hidden="true"></span><span class="t">Ordo</span><span class="d">My calendar app, on the App Store since August</span></a></li>
+                <li><a href="/ordo-desktop"><span class="box" aria-hidden="true"></span><span class="t">Ordo Desktop</span><span class="d">A desk display for Ordo</span></a></li>
+                <li><a href="/builds"><span class="box" aria-hidden="true"></span><span class="t">Smaller builds</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
+                <li><a href="/background"><span class="box" aria-hidden="true"></span><span class="t">Background</span><span class="d">Studies at UVA, Celestica, Ordo, experience and skills</span></a></li>
               </ol>
             </details>
           </li>
-          <li><a href="#life"><span class="box" aria-hidden="true"></span><span class="t">Off the grid</span><span class="d">Yangon, coffee, golf, five songs on repeat and favorite films</span></a></li>
-          <li><a href="#contact"><span class="box" aria-hidden="true"></span><span class="t">Contact</span><span class="d">Email, LinkedIn, GitHub and résumé</span></a></li>
-          <li><a href="albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="box" aria-hidden="true"></span><span class="t">Résumé</span><span class="d">The PDF</span></a></li>
+          <li><a href="/off-the-grid"><span class="box" aria-hidden="true"></span><span class="t">Off the grid</span><span class="d">Yangon, coffee, golf, five songs on repeat and favorite films</span></a></li>
+          <li><a href="/contact"><span class="box" aria-hidden="true"></span><span class="t">Contact</span><span class="d">Email, LinkedIn, GitHub and résumé</span></a></li>
+          <li><a href="/albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="box" aria-hidden="true"></span><span class="t">Résumé</span><span class="d">The PDF</span></a></li>
         </ol>
       </nav>
       <section class="glance" aria-labelledby="glance-title">
@@ -603,7 +636,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
           <div><dt>Degrees</dt><dd>BS Materials Science ’27, MEng Systems ’28</dd></div>
           <div><dt>Last summer</dt><dd>Thermal and project management, Celestica</dd></div>
           <div><dt>Research</dt><dd>Additive manufacturing in the Ji Ma Lab at UVA</dd></div>
-          <div><dt>Shipped</dt><dd>Ordo, on the App Store since August 2026</dd></div>
+          <div><dt>Shipped</dt><dd><a href="/ordo">Ordo</a>, on the App Store since August 2026</dd></div>
         </dl>
       </section>
       </div>
@@ -625,9 +658,9 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <div class="step" data-label="Shape" data-model="aperture" data-yaw="-28" data-pitch="10" data-zoom="1">
           <p class="kicker"><span>Hardware</span> Wearable</p>
           <h2>Aperture</h2>
-          <p>A wearable for your mind. It rests in the groove behind your ear: a crescent of dark brushed aluminium on a soft silicone base. I worked on the mechanical design, the electronics integration and the charging case.</p>
+          <p>A wearable for your mind. It rests in the groove behind your ear: a crescent of dark brushed aluminum on a soft silicone base. I worked on the mechanical design, the electronics integration and the charging case.</p>
           <p class="meta mono">2026 &nbsp; Wearable &nbsp; Fusion 360 &nbsp; KiCad</p>
-          <a class="go" href="https://aperture-kappa-three.vercel.app" target="_blank" rel="noopener">Visit Aperture <span aria-hidden="true">&#8599;</span></a>
+          <a class="go" href="https://aperture.albertsein.com" target="_blank" rel="noopener">Visit Aperture <span aria-hidden="true">&#8599;</span></a>
         </div>
         <div class="step" data-label="Profile" data-model="aperture" data-yaw="86" data-pitch="4" data-zoom="1.05">
           <h3>Shaped to the head</h3>
@@ -656,7 +689,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <div class="step" data-label="Closed" data-model="aperture-dock" data-yaw="-132" data-pitch="26" data-close="1" data-zoom="1.08" data-travel="1">
           <h3>Drop it in, close the lid</h3>
           <p>The shell settles into its cups, the lid swings shut on its pin hinge, and a magnet in the lid's front edge holds it closed while it charges.</p>
-          <a class="go" href="https://aperture-kappa-three.vercel.app" target="_blank" rel="noopener">Visit Aperture <span aria-hidden="true">&#8599;</span></a>
+          <a class="go" href="https://aperture.albertsein.com" target="_blank" rel="noopener">Visit Aperture <span aria-hidden="true">&#8599;</span></a>
         </div>
       </div>
       <div class="rail mono" aria-label="Aperture steps"></div>
@@ -687,7 +720,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         </div>
         <div class="step" data-label="Snap" data-model="snack-phone" data-yaw="-22" data-pitch="8" data-zoom="1.2">
           <h3>Snaps on, then lights up</h3>
-          <p>The magnets take it the last few millimetres. The face is dead front: 512 warm-white LEDs in a 32 by 16 grid sit behind the glass, invisible until they light. Here they confirm the snap, then run a break timer.</p>
+          <p>The magnets take it the last few millimeters. The face is dead front: 512 warm-white LEDs in a 32 by 16 grid sit behind the glass, invisible until they light. Here they confirm the snap, then run a break timer.</p>
         </div>
         <div class="step" data-label="Release" data-model="snack-phone" data-yaw="-58" data-pitch="16" data-explode=".85" data-zoom=".92">
           <h3>Ready for a manufacturer's review</h3>
@@ -698,6 +731,40 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     </div>
   </section>
 
+  <!-- Ordo: the app. The screens are from its App Store listing, in black and white until you point at one. -->
+  <section class="app" id="ordo" data-view="ordo" aria-labelledby="ordo-title">
+    <div class="wrap">
+      <div class="flag"><h2 id="ordo-title">Ordo</h2><span class="mono">Software</span></div>
+      <div class="app-grid">
+        <div class="app-story">
+          <p class="kicker"><span>Software</span> iOS and web</p>
+          <h3>A calendar that plans your day for you</h3>
+          <p class="prose">Ordo reads your calendars, knows your classes and what's due, and places your tasks and practices into the time you actually have. While you focus, it pauses the apps that pull you away. Nothing keeps score: no points, no streaks, no percentages.</p>
+          <p class="prose">I designed it, built it with AI tools, and launched it on the App Store on August 12, 2026. I've shipped updates almost every week since; version 2.0.1 went out on October 30.</p>
+          <div class="app-go">
+            <a class="go" href="https://apps.apple.com/us/app/ordo-calendar-tasks-planner/id6777010454" target="_blank" rel="noopener">Download on the App Store <span aria-hidden="true">&#8599;</span></a>
+            <a class="go" href="https://useordoapp.com" target="_blank" rel="noopener">useordoapp.com <span aria-hidden="true">&#8599;</span></a>
+          </div>
+        </div>
+        <dl class="app-facts">
+          <div><dt class="mono">Launched</dt><dd>August 12, 2026</dd></div>
+          <div><dt class="mono">Latest</dt><dd>Version 2.0.1, October 30</dd></div>
+          <div><dt class="mono">Runs on</dt><dd>iPhone (iOS 17 and up) and the web</dd></div>
+          <div><dt class="mono">Works with</dt><dd>Google and Outlook calendars, Apple Health, WHOOP and Apple Maps</dd></div>
+          <div><dt class="mono">Price</dt><dd>Free</dd></div>
+        </dl>
+      </div>
+      <ol class="shots" aria-label="Screens from Ordo">
+        <li><figure><img src="/media/ordo/today.jpg" width="420" height="912" loading="lazy" decoding="async" alt="Ordo's Today screen: what's next, what's due and where the free time is"><figcaption class="mono">Fig. 1 &nbsp; Today</figcaption></figure></li>
+        <li><figure><img src="/media/ordo/planned.jpg" width="420" height="912" loading="lazy" decoding="async" alt="Ordo placing study time for a midterm into an open slot between classes and a shift"><figcaption class="mono">Fig. 2 &nbsp; Planned for you</figcaption></figure></li>
+        <li><figure><img src="/media/ordo/focus.jpg" width="420" height="912" loading="lazy" decoding="async" alt="A focus session: the chosen apps stay paused until the break"><figcaption class="mono">Fig. 3 &nbsp; Focus</figcaption></figure></li>
+        <li><figure><img src="/media/ordo/chat.jpg" width="420" height="912" loading="lazy" decoding="async" alt="Ordo's chat finding two free hours to study before Friday"><figcaption class="mono">Fig. 4 &nbsp; Chat</figcaption></figure></li>
+        <li><figure><img src="/media/ordo/classes.jpg" width="420" height="912" loading="lazy" decoding="async" alt="The Classes screen: when each class meets and what's due"><figcaption class="mono">Fig. 5 &nbsp; Classes</figcaption></figure></li>
+      </ol>
+      <p class="app-note mono">Screens from the App Store listing</p>
+    </div>
+  </section>
+
   <section class="chapter" id="ordo-desktop" data-view="ordo-desktop" data-chapter aria-label="Ordo Desktop">
     <div class="frame wrap">
       <div class="folio mono"><span>Ordo Desktop</span><span>Hardware</span><span>Albert Sein</span></div>
@@ -705,7 +772,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <div class="step" data-label="Desk" data-model="ordo" data-yaw="-30" data-pitch="16" data-zoom="1.05">
           <p class="kicker"><span>Hardware</span> Desk display</p>
           <h2>Ordo Desktop</h2>
-          <p>A desk display for Ordo, my calendar app. A hull, a base plate, and a screen set into the face.</p>
+          <p>A desk display for <a href="/ordo">Ordo</a>, my calendar app. A hull, a base plate, and a screen set into the face.</p>
           <p class="meta mono">Spring 2026 &nbsp; Fusion 360 &nbsp; PLA</p>
         </div>
         <div class="step" data-label="Parts" data-model="ordo" data-yaw="-42" data-pitch="20" data-explode="1" data-zoom=".95">
@@ -757,7 +824,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
       <div class="cols prose">
         <p>I am studying for an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
         <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Half of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. The other half was supply chain: using AI tools to automate work that would otherwise take dozens of hours, including competitor and market intelligence and Clear-to-Build models for executive presentations.</p>
-        <p>Ordo went live on the App Store this August. I designed it, built it with AI tools, and still ship updates almost every week.</p>
+        <p><a href="/ordo">Ordo</a> went live on the App Store this August. I designed it, built it with AI tools, and still ship updates almost every week.</p>
       </div>
     </div>
   </section>
@@ -795,22 +862,22 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <p><b>Project management</b>Release checklists and gates, BOMs and source ledgers, build and test plans, DFM reviews, leading small teams.</p>
         <p><b>Characterization</b>SEM, EDS, XRD, light microscopy, hardness and tensile testing, selective laser melting, composite layup.</p>
         <p><b>Data</b>DoE, ANOVA, Minitab, process modeling.</p>
-        <p><b>Software</b>I use AI tools to write code, and to bring design ideas or app ideas I have to life. Have worked with TypeScript, React Native, and Swift.</p>
+        <p><b>Software</b>I shipped Ordo to the App Store and the web, writing the code with AI tools. I've worked in TypeScript, React Native and Swift.</p>
       </div>
     </div>
   </section>
 
   <!-- Off the grid: who I am outside work. The songs and films are plain lists, quick to update. -->
-  <section class="section" id="life" data-view="life" aria-labelledby="life-title">
+  <section class="section" id="off-the-grid" data-view="off-the-grid" aria-labelledby="life-title">
     <div class="wrap">
       <div class="flag"><h2 id="life-title">Off the grid</h2><span class="mono">Op-ed</span></div>
       <div class="culture">
         <section class="profile" aria-labelledby="profile-title">
           <p class="kicker"><span>Profile</span> Outside work</p>
           <h3 id="profile-title">From Yangon, Myanmar</h3>
-          <p class="prose">I'm from Yangon, Myanmar, and grew up there. For as long as I can remember I've loved fixing things and building tools, and the best gift I got in middle school was my first 3D printer, a Creality. I printed little parts to fix things around the house, like our faucet and refrigerator. Growing up somewhere technology was slow to arrive, then suddenly being in San Francisco and New York, opened my eyes to what was possible and how I could be part of it. I've always been into cars, rockets and planes; the rocket I built in high school is <a href="#builds">Project Skyfall</a>.</p>
+          <p class="prose">I'm from Yangon, Myanmar, and grew up there. For as long as I can remember I've loved fixing things and building tools, and the best gift I got in middle school was my first 3D printer, a Creality. I printed little parts to fix things around the house, like our faucet and refrigerator. Growing up somewhere technology was slow to arrive, then suddenly being in San Francisco and New York, opened my eyes to what was possible and how I could be part of it. I've always been into cars, rockets and planes; the rocket I built in high school is <a href="/builds">Project Skyfall</a>.</p>
           <dl class="facts">
-            <div><dt class="mono">Coffee</dt><dd>A coffee fanatic, and I'll tell you honestly if your favorite cafe's coffee is bad. The portafilter in <a href="#builds">Smaller builds</a> is a replica I modeled.</dd></div>
+            <div><dt class="mono">Coffee</dt><dd>A coffee fanatic, and I'll tell you honestly if your favorite cafe's coffee is bad. The portafilter in <a href="/builds">Smaller builds</a> is a replica I modeled.</dd></div>
             <div><dt class="mono">Sports</dt><dd>Golf, basketball and volleyball.</dd></div>
             <div><dt class="mono">Outdoors</dt><dd>Traveling and hiking.</dd></div>
           </dl>
@@ -830,23 +897,23 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
           <h3 id="playing-title">Five on repeat</h3>
           <ol class="chart">
             <li><a href="https://open.spotify.com/search/Eyelar%20(shutters)%20Fred%20again.." target="_blank" rel="noopener">
-              <canvas class="cover" data-src="media/covers/eyelar.jpg" aria-hidden="true"></canvas>
+              <canvas class="cover" data-src="/media/covers/eyelar.jpg" aria-hidden="true"></canvas>
               <span><b>Eyelar (shutters)</b><span class="by">Fred again..</span><span class="alb mono">Actual Life 3 &middot; 2022</span></span><span class="go mono" aria-hidden="true">&#8599;</span>
             </a></li>
             <li><a href="https://open.spotify.com/search/Born%20to%20Die%20Lana%20Del%20Rey" target="_blank" rel="noopener">
-              <canvas class="cover" data-src="media/covers/born-to-die.jpg" aria-hidden="true"></canvas>
+              <canvas class="cover" data-src="/media/covers/born-to-die.jpg" aria-hidden="true"></canvas>
               <span><b>Born to Die</b><span class="by">Lana Del Rey</span><span class="alb mono">Born to Die &middot; 2012</span></span><span class="go mono" aria-hidden="true">&#8599;</span>
             </a></li>
             <li><a href="https://open.spotify.com/search/Best%20Part%20Daniel%20Caesar" target="_blank" rel="noopener">
-              <canvas class="cover" data-src="media/covers/freudian.jpg" aria-hidden="true"></canvas>
+              <canvas class="cover" data-src="/media/covers/freudian.jpg" aria-hidden="true"></canvas>
               <span><b>Best Part</b><span class="by">Daniel Caesar feat. H.E.R.</span><span class="alb mono">Freudian &middot; 2017</span></span><span class="go mono" aria-hidden="true">&#8599;</span>
             </a></li>
             <li><a href="https://open.spotify.com/search/Japanese%20Denim%20Daniel%20Caesar" target="_blank" rel="noopener">
-              <canvas class="cover" data-src="media/covers/get-you.jpg" aria-hidden="true"></canvas>
+              <canvas class="cover" data-src="/media/covers/get-you.jpg" aria-hidden="true"></canvas>
               <span><b>Japanese Denim</b><span class="by">Daniel Caesar</span><span class="alb mono">Single &middot; 2016</span></span><span class="go mono" aria-hidden="true">&#8599;</span>
             </a></li>
             <li><a href="https://open.spotify.com/search/Sign%20of%20the%20Times%20Harry%20Styles" target="_blank" rel="noopener">
-              <canvas class="cover" data-src="media/covers/harry-styles.jpg" aria-hidden="true"></canvas>
+              <canvas class="cover" data-src="/media/covers/harry-styles.jpg" aria-hidden="true"></canvas>
               <span><b>Sign of the Times</b><span class="by">Harry Styles</span><span class="alb mono">Harry Styles &middot; 2017</span></span><span class="go mono" aria-hidden="true">&#8599;</span>
             </a></li>
           </ol>
@@ -856,15 +923,15 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
           <h3 id="films-title">Favorite films</h3>
           <p class="list-head mono">All-time</p>
           <ol class="films">
-            <li><canvas class="cover" data-src="media/posters/project-hail-mary.jpg" aria-hidden="true"></canvas><span><b>Project Hail Mary</b><span class="mono">2026 &middot; Phil Lord and Christopher Miller</span></span></li>
-            <li><canvas class="cover" data-src="media/posters/interstellar.jpg" aria-hidden="true"></canvas><span><b>Interstellar</b><span class="mono">2014 &middot; Christopher Nolan</span></span></li>
-            <li><canvas class="cover" data-src="media/posters/the-martian.jpg" aria-hidden="true"></canvas><span><b>The Martian</b><span class="mono">2015 &middot; Ridley Scott</span></span></li>
+            <li><canvas class="cover" data-src="/media/posters/project-hail-mary.jpg" aria-hidden="true"></canvas><span><b>Project Hail Mary</b><span class="mono">2026 &middot; Phil Lord and Christopher Miller</span></span></li>
+            <li><canvas class="cover" data-src="/media/posters/interstellar.jpg" aria-hidden="true"></canvas><span><b>Interstellar</b><span class="mono">2014 &middot; Christopher Nolan</span></span></li>
+            <li><canvas class="cover" data-src="/media/posters/the-martian.jpg" aria-hidden="true"></canvas><span><b>The Martian</b><span class="mono">2015 &middot; Ridley Scott</span></span></li>
           </ol>
           <p class="list-head mono">Since I was a kid, to this day</p>
           <ol class="films">
-            <li><canvas class="cover" data-src="media/posters/attack-of-the-clones.jpg" aria-hidden="true"></canvas><span><b>Star Wars: Attack of the Clones</b><span class="mono">2002 &middot; George Lucas</span></span></li>
-            <li><canvas class="cover" data-src="media/posters/how-to-train-your-dragon.jpg" aria-hidden="true"></canvas><span><b>How to Train Your Dragon</b><span class="mono">2010 &middot; Dean DeBlois and Chris Sanders</span></span></li>
-            <li><canvas class="cover" data-src="media/posters/cars.jpg" aria-hidden="true"></canvas><span><b>Cars</b><span class="mono">2006 &middot; John Lasseter</span></span></li>
+            <li><canvas class="cover" data-src="/media/posters/attack-of-the-clones.jpg" aria-hidden="true"></canvas><span><b>Star Wars: Attack of the Clones</b><span class="mono">2002 &middot; George Lucas</span></span></li>
+            <li><canvas class="cover" data-src="/media/posters/how-to-train-your-dragon.jpg" aria-hidden="true"></canvas><span><b>How to Train Your Dragon</b><span class="mono">2010 &middot; Dean DeBlois and Chris Sanders</span></span></li>
+            <li><canvas class="cover" data-src="/media/posters/cars.jpg" aria-hidden="true"></canvas><span><b>Cars</b><span class="mono">2006 &middot; John Lasseter</span></span></li>
           </ol>
         </section>
       </div>
@@ -880,7 +947,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <a class="link" href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener"><span class="k mono">LinkedIn</span><span class="leader"></span><span class="v">in/albert-sein03</span></a>
         <a class="link" href="https://github.com/asein-03" target="_blank" rel="noopener"><span class="k mono">GitHub</span><span class="leader"></span><span class="v">asein-03</span></a>
         <a class="link" href="https://instagram.com/itsalbertsein" target="_blank" rel="noopener"><span class="k mono">Instagram</span><span class="leader"></span><span class="v">@itsalbertsein</span></a>
-        <a class="link" href="albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="k mono">Résumé</span><span class="leader"></span><span class="v">Albert_Sein_Resume_2027.pdf</span></a>
+        <a class="link" href="/albert-sein-resume.pdf" target="_blank" rel="noopener"><span class="k mono">Résumé</span><span class="leader"></span><span class="v">Albert_Sein_Resume_2027.pdf</span></a>
       </div>
     </div>
   </section>
@@ -888,8 +955,8 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 </main>
 
 <nav class="pager wrap" id="pager" aria-label="Sections">
-  <a class="back" href="#contents">&larr; Contents</a>
-  <a class="next" href="#snack">Next: Snack &rarr;</a>
+  <a class="back" href="/#contents">&larr; Contents</a>
+  <a class="next" href="/snack">Next: Snack &rarr;</a>
 </nav>
 
 <footer class="wrap mono">
@@ -1258,17 +1325,43 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   AS.update();
 
   /* ---------- views ----------
-     The front page is a contents page; each section opens on its own. A link to #aperture, #background and so on
-     switches the view and starts it at the top (or at the part asked for, like #skills), the browser's back button
-     returns, and Esc goes back to the contents. Every view has its own address, so a link can open straight to it. */
-  const ORDER = ['aperture', 'snack', 'ordo-desktop', 'builds', 'background', 'life', 'contact'];
-  const NAMES = { aperture: 'Aperture', snack: 'Snack', 'ordo-desktop': 'Ordo Desktop', builds: 'Smaller builds', background: 'Background', life: 'Off the grid', contact: 'Contact' };
+     The front page is a contents page; each section opens on a page of its own with a real address: /aperture,
+     /background and so on (vercel.json serves this file for each). A part of a page is a hash on its address, like
+     /background#skills. Back returns, Esc goes back to the contents, and old #aperture links still land. */
+  const ORDER = ['aperture', 'snack', 'ordo', 'ordo-desktop', 'builds', 'background', 'off-the-grid', 'contact'];
+  const NAMES = { aperture: 'Aperture', snack: 'Snack', ordo: 'Ordo', 'ordo-desktop': 'Ordo Desktop', builds: 'Smaller builds', background: 'Background', 'off-the-grid': 'Off the grid', contact: 'Contact' };
   const pagerNext = document.querySelector('#pager .next');
+  const canonical = document.querySelector('link[rel="canonical"]');
+  const viewOf = (id) => (id && document.getElementById(id)?.closest('[data-view]')?.dataset.view) || null;
+  const segOf = (path) => path.replace(/^\/+|\/+$/g, '');
+  // the element an address asks for: a part of a page, a page, or the top of the front page
+  const RENAMED = { life: 'off-the-grid' };
+  const targetOf = (path, hash) => {
+    let h = decodeURIComponent(hash.replace(/^#/, ''));
+    h = RENAMED[h] || h;
+    if (viewOf(h)) return h;
+    const seg = segOf(path);
+    return ORDER.includes(seg) ? seg : 'top';
+  };
+  // and the address for an element: its page, plus a hash when it is further down that page
+  const urlFor = (id) => {
+    const view = viewOf(id) || 'home', page = view === 'home' ? '/' : `/${view}`;
+    return id === 'top' || id === view ? page : `${page}#${id}`;
+  };
+  // links that change the view rather than leave the page
+  const isRoute = (a) => {
+    if (a.target || a.hasAttribute('download')) return false;
+    const u = new URL(a.href, location.href);
+    return u.origin === location.origin && (segOf(u.pathname) === '' || ORDER.includes(segOf(u.pathname)));
+  };
+  AS.linkView = (a) => { if (!isRoute(a)) return null; const u = new URL(a.href, location.href); return viewOf(targetOf(u.pathname, u.hash)); };
   let view = null;
-  function route(hash, gently) {
-    const id = (hash || '').replace(/^#/, '') || 'top';
+  function route(gently) {
+    const id = targetOf(location.pathname, location.hash);
+    const url = urlFor(id);
+    if (url !== location.pathname + location.hash) history.replaceState(null, '', url + location.search);
     const target = document.getElementById(id);
-    const next = (target && target.closest('[data-view]')?.dataset.view) || 'home';
+    const next = viewOf(id) || 'home';
     const changed = next !== view;
     if (changed) {
       view = next;
@@ -1279,12 +1372,17 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         el.classList.remove('view-in');
         if (on && !reduce.matches) { void el.offsetWidth; el.classList.add('view-in'); }
       });
-      document.querySelectorAll('.nav-links a[href^="#"]').forEach((a) => a.classList.toggle('on', a.getAttribute('href') === `#${view}`));
+      document.querySelectorAll('.nav-links a').forEach((a) => a.classList.toggle('on', a.getAttribute('href') === `/${view}`));
       const after = ORDER[ORDER.indexOf(view) + 1];
-      pagerNext.setAttribute('href', after ? `#${after}` : '#contents');
-      pagerNext.textContent = after ? `Next: ${NAMES[after]} \u2192` : 'Back to contents \u2192';
+      pagerNext.setAttribute('href', after ? `/${after}` : '/#contents');
+      pagerNext.textContent = after ? `Next: ${NAMES[after]} →` : 'Back to contents →';
+      document.title = view === 'home' ? 'Albert Sein' : `${NAMES[view]} — Albert Sein`;
+      canonical.href = `https://albertsein.com${view === 'home' ? '/' : `/${view}`}`;
       // every chapter starts from its first step, not wherever it was left
       for (const ch of AS.chapters) { ch.s = null; ch.v = 0; }
+      // the 3D module loads this page's models (and the next page's) when it hears
+      AS.view = view; AS.after = after;
+      AS.onView?.(view);
     }
     const first = document.querySelector(`[data-view="${view}"]`);
     const y = target && target !== first && id !== 'top' ? Math.max(0, target.getBoundingClientRect().top + scrollY - 64) : 0;
@@ -1292,20 +1390,21 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     else AS.scrollTo(y, 1);
     AS.update();
   }
-  const go = (hash) => {
-    if (hash !== location.hash) history.pushState(null, '', hash === '#top' ? location.pathname + location.search : hash);
-    route(hash, true);
+  const go = (href) => {
+    const u = new URL(href, location.href);
+    if (u.pathname + u.hash !== location.pathname + location.hash) history.pushState(null, '', u.pathname + u.search + u.hash);
+    route(true);
   };
   document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href^="#"]');
-    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest('a[href]');
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !isRoute(a)) return;
     e.preventDefault();
-    go(a.getAttribute('href'));
+    go(a.href);
   });
-  addEventListener('popstate', () => route(location.hash));
-  addEventListener('keydown', (e) => { if (e.key === 'Escape' && view !== 'home') go('#contents'); });
+  addEventListener('popstate', () => route());
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && view !== 'home') go('/#contents'); });
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-  route(location.hash);
+  route();
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer onload="AS.startLenis()"></script>
@@ -1321,6 +1420,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
    the chapter model full screen and the small builds into their own boxes with scissor tests. */
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 const AS = window.AS, { clamp, smooth, reduce } = AS;
 const root = document.documentElement;
@@ -1506,19 +1606,34 @@ function holoMaterial(strength) {
     polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1,
   });
 }
+// a part packed by tools/cad/meshpack.mjs: positions int16 and normals int8, each vertex padded to four values
+function unpack(buf, base, p) {
+  const src = (o, n) => new Uint8Array(buf, base + o, n), n = p.vertices;
+  const P4 = new Int16Array(n * 4), N4 = new Int8Array(n * 4), I = p.idx32 ? new Uint32Array(p.indices) : new Uint16Array(p.indices);
+  MeshoptDecoder.decodeVertexBuffer(new Uint8Array(P4.buffer), n, 8, src(p.pos, p.posBytes));
+  MeshoptDecoder.decodeVertexBuffer(new Uint8Array(N4.buffer), n, 4, src(p.nrm, p.nrmBytes));
+  MeshoptDecoder.decodeIndexBuffer(new Uint8Array(I.buffer), p.indices, p.idx32 ? 4 : 2, src(p.idx, p.idxBytes));
+  const P = new Int16Array(n * 3), N = new Int8Array(n * 3);
+  for (let i = 0; i < n; i++) for (let k = 0; k < 3; k++) { P[i * 3 + k] = P4[i * 4 + k]; N[i * 3 + k] = N4[i * 4 + k]; }
+  return { P, N, I };
+}
 function loadModel(id) {
-  if (!loading.has(id)) loading.set(id, fetch(`models/${id}.bin`).then((r) => { if (!r.ok) throw new Error(id); return r.arrayBuffer(); }).then((buf) => {
+  if (!loading.has(id)) loading.set(id, fetch(`/models/${id}.bin`).then((r) => { if (!r.ok) throw new Error(id); return r.arrayBuffer(); }).then(async (buf) => {
     const hl = new DataView(buf).getUint32(0, true);
     const head = JSON.parse(new TextDecoder().decode(new Uint8Array(buf, 4, hl)));
     const base = 4 + hl;
+    if (head.codec === 'meshopt') await MeshoptDecoder.ready;
     const pivot = new THREE.Group(), spin = new THREE.Group();
     pivot.add(spin);
     const parts = head.parts.map((p) => {
-      const P = new Int16Array(buf, base + p.pos, p.vertices * 3), N = new Int8Array(buf, base + p.nrm, p.vertices * 3);
+      const { P, N, I } = head.codec === 'meshopt' ? unpack(buf, base, p) : {
+        P: new Int16Array(buf, base + p.pos, p.vertices * 3), N: new Int8Array(buf, base + p.nrm, p.vertices * 3),
+        I: p.idx32 ? new Uint32Array(buf, base + p.idx, p.indices) : new Uint16Array(buf, base + p.idx, p.indices),
+      };
       const g = new THREE.BufferGeometry();
       g.setAttribute('position', new THREE.BufferAttribute(P, 3, true));
       g.setAttribute('normal', new THREE.BufferAttribute(N, 3, true));
-      g.setIndex(new THREE.BufferAttribute(p.idx32 ? new Uint32Array(buf, base + p.idx, p.indices) : new Uint16Array(buf, base + p.idx, p.indices), 1));
+      g.setIndex(new THREE.BufferAttribute(I, 1));
       // the solid part, a glow drawn over it, and its edges
       const solid = (MATERIALS[p.mat] || MATERIALS.metal)();
       solid.transparent = true;
@@ -1560,9 +1675,18 @@ function setOpacity(m, o) {
   }
 }
 
-/* main models load first, the small builds when you get near them */
-const mainIds = [...new Set(AS.chapters.flatMap((c) => c.pose.map((p) => p.model)))];
-mainIds.reduce((chain, id) => chain.then(() => loadModel(id)).catch(() => {}), Promise.resolve());
+/* Models load when they are wanted, not all at once: a page's own as it opens, then the next page's so Next is
+   ready; any page's as soon as a link to it is pointed at, touched or focused; the front-page plate's one ahead
+   of its turn; and the small builds when you get near them. */
+const viewModels = (view) => [...new Set(AS.chapters.filter((c) => c.el.dataset.view === view).flatMap((c) => c.pose.map((p) => p.model)))];
+const loadView = (view) => viewModels(view).reduce((chain, id) => chain.then(() => loadModel(id)).catch(() => {}), Promise.resolve());
+AS.onView = (view) => loadView(view).then(() => { if (view !== 'home' && AS.after) loadView(AS.after); });
+AS.onView(AS.view);
+const intent = (e) => { const a = e.target.closest?.('a[href]'), v = a && AS.linkView(a); if (v) loadView(v); };
+addEventListener('pointerover', intent, { passive: true });
+addEventListener('touchstart', intent, { passive: true });
+addEventListener('focusin', intent);
+document.querySelector('.toc details')?.addEventListener('toggle', (e) => { if (e.target.open) loadView('aperture'); });
 const thumbs = [...document.querySelectorAll('.thumb[data-model]')].map((el) => ({
   el, id: el.dataset.model, yaw: +(el.dataset.yaw || 0), pitch: +(el.dataset.pitch || 0), spin: 0, speed: 0, hover: false,
   axis: el.dataset.axis || 'y', fit: el.dataset.fit || 'sphere', explodes: 'explode' in el.dataset, ex: 0,
@@ -1860,7 +1984,8 @@ function frame() {
     const dist = Math.max(m.radius / (vt * fracV), m.radius / (ht * fracH)) / pose.zoom;
     camera.position.set(0, 0, dist);
     camera.lookAt(0, 0, 0);
-    applyPose(m, pose, w.w, time, -0.35);
+    m.shown ??= time;
+    applyPose(m, pose, w.w * smooth(0, 0.5, time - m.shown), time, -0.35);
     m.pivot.rotation.x += sway.lean;
     m.pivot.position.y += sway.drop;
     if (best && best.id === id) measured = { m, w };
@@ -1943,6 +2068,7 @@ function renderPlate(time) {
   if (!reduce.matches && time - plateSince > 8) { AS.nextPlate(); AS.glitch?.(); }
   const spec = PLATE[plateIdx], m = MODELS[spec.id];
   if (!m) { loadModel(spec.id).catch(() => {}); return; }
+  loadModel(PLATE[(plateIdx + 1) % PLATE.length].id).catch(() => {});
   const w = P.rw, h = P.rh;
   if (plateRT.width !== w || plateRT.height !== h) { plateRT.setSize(w, h); plateBuf = new Uint8Array(w * h * 4); }
   for (const mm of Object.values(MODELS)) mm.pivot.visible = false;
