@@ -556,7 +556,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   <div class="nav-links mono">
     <a class="nav-back" href="/#contents">&larr; Contents</a>
     <a class="nav-home" href="/#contents">Contents</a>
-    <a href="/background">Background</a>
+    <a href="/background">Professional Experience</a>
     <a href="/off-the-grid">Off the grid</a>
     <a href="/contact">Contact</a>
     <a class="pill" href="/albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé</a>
@@ -621,7 +621,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
                 <li><a href="/ordo"><span class="box" aria-hidden="true"></span><span class="t">Ordo</span><span class="d">My calendar app, on the App Store since August</span></a></li>
                 <li><a href="/ordo-desktop"><span class="box" aria-hidden="true"></span><span class="t">Ordo Desktop</span><span class="d">A desk display for Ordo</span></a></li>
                 <li><a href="/builds"><span class="box" aria-hidden="true"></span><span class="t">Smaller builds</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
-                <li><a href="/background"><span class="box" aria-hidden="true"></span><span class="t">Background</span><span class="d">Studies at UVA, Celestica, Ordo, experience and skills</span></a></li>
+                <li><a href="/background"><span class="box" aria-hidden="true"></span><span class="t">Professional Experience</span><span class="d">Celestica, lab research, Ordo, studies at UVA and skills</span></a></li>
               </ol>
             </details>
           </li>
@@ -820,7 +820,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
 
   <section class="section" id="background" data-view="background" aria-labelledby="bg-title">
     <div class="wrap">
-      <div class="flag"><h2 id="bg-title">Background</h2><span class="mono">Profile</span></div>
+      <div class="flag"><h2 id="bg-title">Professional Experience</h2><span class="mono">Profile</span></div>
       <div class="cols prose">
         <p>I am studying for an accelerated BS in Materials Science and an MEng in Systems Engineering, finishing in 2027 and 2028.</p>
         <p>This summer I was a project management and thermal engineering intern at Celestica, working on next generation data center infrastructure for AI. Half of it was on the TIMA5, running conductivity tests on liquid metal thermal interface materials: thermal impedance, warpage, heat maps of where a package actually stays hot. The other half was supply chain: using AI tools to automate work that would otherwise take dozens of hours, including competitor and market intelligence and Clear-to-Build models for executive presentations.</p>
@@ -1002,14 +1002,22 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
   /* ---------- album covers and film posters, printed in halftone like the front-page plate ----------
      They are small greyscale files; each is sampled under a 45 degree screen and every dot is sized by the
      tone under it: light shows as ink by day, as light at night. */
+  // A cover prints once its file is in and its page is open. Off the grid is hidden (display: none) on every
+  // other page, so a canvas measures 0 until that page opens: the ResizeObserver hears when it gets a size and
+  // prints it then, and again whenever its size changes.
   const covers = [...document.querySelectorAll('canvas.cover[data-src]')].map((cv) => {
     const c = { cv, img: new Image() };
     c.img.decoding = 'async';
+    c.img.fetchPriority = 'low'; // after the page's own models and images
     c.img.onload = () => printCover(c);
     c.img.src = cv.dataset.src;
     return c;
   });
-  function printCover({ cv, img }) {
+  const coverOf = new Map(covers.map((c) => [c.cv, c]));
+  const sized = new ResizeObserver((entries) => entries.forEach((e) => printCover(coverOf.get(e.target))));
+  covers.forEach((c) => sized.observe(c.cv));
+  function printCover(c) {
+    const { cv, img } = c;
     const w = cv.clientWidth, h = cv.clientHeight;
     if (!img.naturalWidth || !w) return;
     const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -1034,10 +1042,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
     }
     g.fill();
   }
-  const reprintCovers = () => covers.forEach(printCover);
-  matchMedia('(prefers-color-scheme: light)').addEventListener('change', reprintCovers);
-  let coverW = innerWidth;
-  addEventListener('resize', () => { if (innerWidth !== coverW) { coverW = innerWidth; reprintCovers(); } });
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => covers.forEach(printCover));
 
   /* ---------- front-page glitches: the nameplate tears into red and cyan strips and the lead headline splits.
      Only when someone hovers or clicks the nameplate, so a first-time visitor never mistakes it for a rendering bug. ---------- */
@@ -1329,7 +1334,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
      /background and so on (vercel.json serves this file for each). A part of a page is a hash on its address, like
      /background#skills. Back returns, Esc goes back to the contents, and old #aperture links still land. */
   const ORDER = ['aperture', 'snack', 'ordo', 'ordo-desktop', 'builds', 'background', 'off-the-grid', 'contact'];
-  const NAMES = { aperture: 'Aperture', snack: 'Snack', ordo: 'Ordo', 'ordo-desktop': 'Ordo Desktop', builds: 'Smaller builds', background: 'Background', 'off-the-grid': 'Off the grid', contact: 'Contact' };
+  const NAMES = { aperture: 'Aperture', snack: 'Snack', ordo: 'Ordo', 'ordo-desktop': 'Ordo Desktop', builds: 'Smaller builds', background: 'Professional Experience', 'off-the-grid': 'Off the grid', contact: 'Contact' };
   const pagerNext = document.querySelector('#pager .next');
   const canonical = document.querySelector('link[rel="canonical"]');
   const viewOf = (id) => (id && document.getElementById(id)?.closest('[data-view]')?.dataset.view) || null;
