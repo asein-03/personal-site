@@ -614,14 +614,14 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
         <ol class="toc">
           <li>
             <details>
-              <summary><span class="box" aria-hidden="true"></span><span class="t">Some of my work</span><span class="d">Aperture, Snack, Ordo and more</span><span class="more" aria-hidden="true"><span class="open">Open</span><span class="shut">Close</span><i></i></span></summary>
+              <summary><span class="box" aria-hidden="true"></span><span class="t">Professional Work and Projects</span><span class="d">Celestica, Aperture, Snack, Ordo and more</span><span class="more" aria-hidden="true"><span class="open">Open</span><span class="shut">Close</span><i></i></span></summary>
               <ol class="sub">
+                <li><a href="/background"><span class="box" aria-hidden="true"></span><span class="t">Professional Experience</span><span class="d">Celestica, lab research, Ordo, studies at UVA and skills</span></a></li>
                 <li><a href="/aperture"><span class="box" aria-hidden="true"></span><span class="t">Aperture</span><span class="d">A wearable for your mind, and its charging case</span></a></li>
                 <li><a href="/snack"><span class="box" aria-hidden="true"></span><span class="t">Snack</span><span class="d">A physical timekeeper for your phone</span></a></li>
                 <li><a href="/ordo"><span class="box" aria-hidden="true"></span><span class="t">Ordo</span><span class="d">My calendar app, on the App Store since August</span></a></li>
                 <li><a href="/ordo-desktop"><span class="box" aria-hidden="true"></span><span class="t">Ordo Desktop</span><span class="d">A desk display for Ordo</span></a></li>
                 <li><a href="/builds"><span class="box" aria-hidden="true"></span><span class="t">Smaller builds</span><span class="d">A thrust-vectoring rocket from high school, a portafilter and a topology study</span></a></li>
-                <li><a href="/background"><span class="box" aria-hidden="true"></span><span class="t">Professional Experience</span><span class="d">Celestica, lab research, Ordo, studies at UVA and skills</span></a></li>
               </ol>
             </details>
           </li>
@@ -1333,7 +1333,7 @@ footer { position: relative; z-index: 2; display: flex; justify-content: space-b
      The front page is a contents page; each section opens on a page of its own with a real address: /aperture,
      /background and so on (vercel.json serves this file for each). A part of a page is a hash on its address, like
      /background#skills. Back returns, Esc goes back to the contents, and old #aperture links still land. */
-  const ORDER = ['aperture', 'snack', 'ordo', 'ordo-desktop', 'builds', 'background', 'off-the-grid', 'contact'];
+  const ORDER = ['background', 'aperture', 'snack', 'ordo', 'ordo-desktop', 'builds', 'off-the-grid', 'contact'];
   const NAMES = { aperture: 'Aperture', snack: 'Snack', ordo: 'Ordo', 'ordo-desktop': 'Ordo Desktop', builds: 'Smaller builds', background: 'Professional Experience', 'off-the-grid': 'Off the grid', contact: 'Contact' };
   const pagerNext = document.querySelector('#pager .next');
   const canonical = document.querySelector('link[rel="canonical"]');
