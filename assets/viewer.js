@@ -131,7 +131,8 @@ class Viewer {
     const canvas = renderer.domElement;
     canvas.className = 'live';
     canvas.setAttribute('aria-hidden', 'true');
-    this.el.querySelector('.stage').append(canvas);
+    const stage = this.el.querySelector('.stage');
+    stage.insertBefore(canvas, stage.querySelector('.ui')); // under the buttons, over the poster
 
     const scene = this.scene = new THREE.Scene();
     scene.environment = studio(renderer);
@@ -173,7 +174,8 @@ class Viewer {
     const stage = el.querySelector('.stage');
     let drag = null;
     stage.addEventListener('pointerdown', (e) => {
-      if (e.button !== 0) return;
+      // a press on a button is a click, not a drag: capturing the pointer would send the click to the stage
+      if (e.button !== 0 || e.target.closest('button')) return;
       drag = { x: e.clientX, y: e.clientY, id: e.pointerId };
       stage.setPointerCapture(e.pointerId);
       el.classList.add('is-dragging');

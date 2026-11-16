@@ -112,7 +112,7 @@ section.block { padding: clamp(64px, 10vw, 120px) 0 0; }
 .viewer canvas.live { opacity: 0; transition: opacity .5s var(--ease); }
 .viewer.is-live canvas.live { opacity: 1; }
 .viewer.is-live .poster { opacity: 0; transition: opacity .5s var(--ease) .1s; }
-.viewer .ui { position: absolute; left: 12px; right: 12px; bottom: 12px; display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; pointer-events: none; }
+.viewer .ui { position: absolute; z-index: 2; left: 12px; right: 12px; bottom: 12px; display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; pointer-events: none; }
 .viewer .ui > * { pointer-events: auto; }
 .viewer .hint { padding: 4px 8px; border-radius: 6px; background: rgba(255, 255, 255, .8); color: var(--muted); opacity: 0; transition: opacity .3s; }
 .viewer.is-live:not(.was-turned) .hint { opacity: 1; }
