@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aperture — Albert Sein</title>
+<meta name="description" content="Aperture is a brain-computer interface you wear behind your ear. Albert Sein co-founded it and leads the product: neural networks trained on public brain recordings from 917 people, and the wearable designed in Fusion 360 and KiCad.">
+<link rel="canonical" href="https://albertsein.com/aperture">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Albert Sein">
+<meta property="og:title" content="Aperture — Albert Sein">
+<meta property="og:description" content="Aperture is a brain-computer interface you wear behind your ear. Albert Sein co-founded it and leads the product: neural networks trained on public brain recordings from 917 people, and the wearable designed in Fusion 360 and KiCad.">
+<meta property="og:url" content="https://albertsein.com/aperture">
+<meta property="og:image" content="https://albertsein.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://albertsein.com/og.png">
+<meta name="theme-color" content="#fbfbfa">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23fbfbfa'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="preload" href="/models/aperture.bin" as="fetch" crossorigin>
+<script>document.documentElement.classList.add('js')</script>
+<script defer src="/assets/site.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module" src="/assets/viewer.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/">Albert Sein</a>
+    <nav class="menu" aria-label="Main">
+      <a href="/#work">Work</a>
+      <a href="/#experience">Experience</a>
+      <a class="opt" href="/#skills">Skills</a>
+      <a class="opt" href="/#outside">Outside of work</a>
+      <a class="opt" href="/#contact">Contact</a>
+      <a class="btn small" href="/albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+  <section class="p-hero">
+    <div class="wrap">
+      <a class="crumb" href="/#work"><span aria-hidden="true">&larr;</span> All work</a>
+      <ul class="tags"><li class="tag blue">BCI wearable</li><li class="tag">In development</li></ul>
+      <h1>Aperture</h1>
+      <p class="lead">A brain-computer interface you wear behind your ear. I co-founded it and lead the product. We train the neural networks that read its signal, and I design the device and its charging case.</p>
+      
+      <dl class="spec"><div><dt class="label">Role</dt><dd>Co-founder and product lead; mechanical design, electronics integration, charging case</dd></div><div><dt class="label">When</dt><dd>June 2026 to now</dd></div><div><dt class="label">Tools</dt><dd>PyTorch, Fusion 360, KiCad</dd></div><div><dt class="label">Site</dt><dd><a href="https://wearaperture.com" target="_blank" rel="noopener">wearaperture.com &#8599;</a></dd></div></dl>
+      <div class="p-figure">
+    <figure class="viewer" data-model="aperture" data-yaw="-28" data-pitch="10" data-zoom="1.15">
+      <div class="stage">
+        <img class="poster" src="/media/renders/aperture-169.webp" width="1600" height="900" alt="Aperture, a crescent-shaped wearable on a soft silicone base" fetchpriority="high">
+        <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="explode" hidden>Take apart</button></span></div>
+      </div>
+      <figcaption>The wearable, from my Fusion 360 model. Drag to turn it, or take it apart to see the boards.</figcaption>
+    </figure>
+      </div>
+      <div class="summary reveal"><p class="label">What I did</p><ul><li>Trained compact neural networks in PyTorch on 20 public EEG datasets (917 people, 5,232 hours) to learn what two behind-ear channels can predict.</li><li>Designed the learning architecture: a 14-channel EPOC+ headset teaches a smaller model that sees only the device&rsquo;s two channels, evaluated on people and days the model never saw.</li><li>Built Aperture Lab, a Mac app that records the behind-ear sites and the EPOC+ in sync, runs guided sessions with timed cues, and trains and scores models on the recordings.</li><li>Designed the wearable and its charging case in Fusion 360 from one parameters file, with both boards laid out in KiCad and their part positions fed back into the CAD.</li><li>Wrote the R&amp;D plan to design freeze in May 2027, the first study&rsquo;s protocol and consent form, and a research paper on near-ear sensing.</li></ul></div>
+      <section class="chapter" id="models">
+    <figure class="stats reveal">
+          <div><b>917</b><span>people and 5,232 hours of recordings, from 20 public EEG datasets</span></div>
+          <div><b>&kappa; 0.77</b><span>sleep stages from one channel behind the ear, equal to a clinical scalp channel</span></div>
+          <div><b>0.82</b><span>AUC for drowsiness over 90 seconds</span></div>
+          <div><b>86%</b><span>of 19,283 unlabelled clips put in the right category of state, in a blind test</span></div>
+          <figcaption>All on public recordings, in people the networks never saw. None of it is from our own device yet.</figcaption>
+        </figure>
+        <div class="notes reveal" style="--i:1"><h2>The models</h2><div><h3>What we asked</h3><p>Before our own device records anything, we used recordings other labs have published to learn which states two short channels behind one ear can predict, in people a network has never seen.</p></div><div><h3>What came through</h3><p>Sleep, drowsiness, eyes-closed rest and physical activity. A channel behind the ear scored sleep as well as a clinical one, and gating the electrodes by head movement cut false readings during exercise from 23&ndash;48% to 1&ndash;11%.</p></div><div><h3>What didn&rsquo;t</h3><p>Mind wandering, mental effort and stress were at chance once elapsed time and session were controlled for, even with a 14-sensor headset. So we don&rsquo;t build the product on them.</p></div><div><h3>Teacher and student</h3><p>For our own data, a 14-channel EPOC+ headset recorded at the same time teaches a smaller model that sees only the device&rsquo;s two channels. Aperture Lab, the Mac app I built for it, records both in sync and scores each model on people and days held out.</p></div><ul class="tags" style="margin-top:22px"><li class="tag">PyTorch</li><li class="tag">scikit-learn</li><li class="tag">BrainFlow</li></ul></div>
+      </section>
+      <section class="chapter flip">
+    <figure class="viewer" data-model="aperture" data-yaw="68" data-pitch="12" data-zoom="1.35" data-explode="1">
+      <div class="stage">
+        <img class="poster" src="/media/renders/aperture-electronics.webp" width="1200" height="900" alt="Aperture taken apart: cover, rigid-flex boards, battery, steel rings and silicone base" loading="lazy">
+        <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="explode" hidden>Take apart</button></span></div>
+      </div>
+    </figure>
+        <div class="notes reveal" style="--i:1"><h2>The wearable</h2><div><h3>Shaped to the head</h3><p>The shell&rsquo;s face follows the curve of the head along its length, so on the head it&rsquo;s made for the whole stack is 7.1 mm thick from tip to tip, instead of lifting off at the ends. It sits on a soft silicone base with dry electrodes.</p></div><div><h3>Electronics, folded to the curve</h3><p>The board is rigid-flex in three sections, each sitting tangent to the shell&rsquo;s curve and joined by short flex hinges. Steel rings soldered to it pass through the floor to meet the magnets in the base. Part positions come back from the KiCad layouts into the CAD, and every rebuild reruns the interference check.</p></div><div><h3>One file, three test tracks</h3><p>Every dimension lives in one parameters file that rebuilds the drawings, the fit checks, the Fusion 360 model and both board outlines. The build and test plan runs three tracks side by side: build the first units, scan heads, and run bench and wear tests, with results feeding back into that file before anything is tooled.</p></div></div>
+      </section>
+      <section class="chapter">
+    <figure class="viewer" data-model="aperture-case" data-yaw="-128" data-pitch="30" data-zoom="1.05">
+      <div class="stage">
+        <img class="poster" src="/media/renders/aperture-case.webp" width="1200" height="900" alt="Aperture&rsquo;s charging case, open, with the wearable seated in it" loading="lazy">
+        <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="lid" hidden>Close the lid</button><button type="button" data-act="explode" hidden>Take apart</button></span></div>
+      </div>
+    </figure>
+        <div class="notes reveal" style="--i:1"><h2>The charging case</h2><div><h3>Off the base</h3><p>To charge it, the shell comes off its silicone base. The steel rings hold on to the base&rsquo;s magnets for a moment, then let go, and the base stays where it is.</p></div><div><h3>Designed around the shell</h3><p>A crescent base and a lid on a pin hinge. Magnets pull the shell into its cups, and it charges through the same steel rings that hold it to the base, much like earbuds in their case.</p></div><div><h3>Its own board</h3><p>Under the pocket sits the case&rsquo;s own board, laid out in KiCad, with its USB-C port set just inside the curved back wall so only the port shows from outside.</p></div><div><h3>Drop it in, close the lid</h3><p>The shell settles into its cups and the lid swings shut on its pin hinge. Power reaches the wearable&rsquo;s board straight through its steel rings, so there are no spring contacts.</p></div></div>
+      </section>
+      <a class="next" href="/snack"><span><span class="label">Next project</span><b>Snack</b></span><span class="arrow" aria-hidden="true">&rarr;</span></a>
+    </div>
+  </section>
+</main>
+<footer class="foot">
+  <div class="wrap"><span>&copy; 2026 Albert Sein &middot; <a href="mailto:kks7ys@virginia.edu">kks7ys@virginia.edu</a></span><span><a href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener">LinkedIn</a> &middot; <a href="/albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé</a></span></div>
+</footer>
+</body>
+</html>
