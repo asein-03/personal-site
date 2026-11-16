@@ -22,8 +22,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=c1e85ef6e8">
-<link rel="preload" href="/models/aperture.bin" as="fetch" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=e7bfd9e6d2">
+<link rel="preload" href="/models/aperture.bin?v=31ecc888c1" as="fetch" crossorigin>
 <script>document.documentElement.classList.add('js')</script>
 <script defer src="/assets/site.js?v=85bdf317aa"></script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -33,7 +33,7 @@
   "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
 } }
 </script>
-<script type="module" src="/assets/viewer.js?v=d41b277100"></script>
+<script type="module" src="/assets/viewer.js?v=e0e25b5cce"></script>
 <script type="application/ld+json">
 { "@context": "https://schema.org", "@type": "Person", "name": "Albert Sein", "url": "https://albertsein.com/",
   "email": "mailto:kks7ys@virginia.edu",
@@ -64,18 +64,18 @@
       <div>
         <p class="label who">Materials Science ’27 &middot; Systems Engineering MEng ’28 &middot; UVA</p>
         <h1>Albert Sein</h1>
-        <p class="lead">I co-founded <a href="/aperture">Aperture</a>, a brain-computer interface you wear behind your ear, and I lead its product. We train neural networks that predict sleep and alertness from two channels of brain signal, and I design the hardware that records it.</p>
+        <p class="lead">I co-founded <a href="/aperture">Aperture</a>, a brain-computer interface you wear behind your ear, and I lead its product. We train neural networks that predict sleep and alertness from brain signal recorded behind the ear, and I design the hardware that records it.</p>
         <p class="lead">I came to it with no background in neurotech. I learn fast, I take ownership of problems before anyone assigns them, and I've already shipped an app and packaged a device for a manufacturer's review.</p>
         <p class="open"><span class="tag green">Open to work</span><span>Summer 2027 internships and new-grad roles in technical project management, product and hardware engineering.</span></p>
         <div class="actions">
           <a class="btn" href="mailto:kks7ys@virginia.edu">Email me</a>
-          <a class="btn ghost" href="/albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé (PDF) <span class="arrow" aria-hidden="true">&#8599;</span></a>
-          <a class="btn ghost" href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener">LinkedIn <span class="arrow" aria-hidden="true">&#8599;</span></a>
+          <a class="btn ghost" href="/albert-sein-resume.pdf" target="_blank" rel="noopener">Résumé (PDF) <span class="arrow out" aria-hidden="true"></span></a>
+          <a class="btn ghost" href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener">LinkedIn <span class="arrow out" aria-hidden="true"></span></a>
         </div>
       </div>
-      <figure class="viewer tall" data-model="aperture" data-yaw="-28" data-pitch="10" data-zoom="1.08">
+      <figure class="viewer tall" data-model="aperture" data-v="31ecc888c1" data-yaw="-34" data-pitch="12" data-zoom="1.08" data-explode="0.2">
         <div class="stage">
-          <img class="poster" src="/media/renders/aperture-hero.webp" width="1000" height="1100" alt="Aperture, a crescent-shaped wearable on a silicone base, rendered from its CAD model" fetchpriority="high">
+          <img class="poster" src="/media/renders/aperture-hero.webp?v=1dc5cfb0a1" width="1100" height="1210" alt="Aperture&rsquo;s sensor pod on its skin frame, its layers drawn slightly apart, rendered from the CAD model" fetchpriority="high">
           <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="explode" hidden>Take apart</button></span></div>
         </div>
         <figcaption>Aperture, from my Fusion 360 model. Drag to turn it, or take it apart.</figcaption>
@@ -99,26 +99,26 @@
         <p>What we've built and learned on Aperture so far.</p>
       </div>
       <div class="now">
-        <figure class="viewer reveal" data-model="aperture-case" data-yaw="-128" data-pitch="30" data-zoom="1.05">
+        <figure class="viewer reveal" data-model="aperture-case" data-v="48270a2822" data-yaw="-128" data-pitch="30" data-zoom="1.3" data-ground>
           <div class="stage">
-            <img class="poster" src="/media/renders/aperture-case.webp" width="1200" height="900" alt="Aperture's charging case, open, with the wearable seated in it" loading="lazy">
+            <img class="poster" src="/media/renders/aperture-case.webp?v=7a90be4bc2" width="1280" height="960" alt="Aperture&rsquo;s charging case, open, with the sensor pod docked in it" loading="lazy">
             <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="lid" hidden>Close the lid</button><button type="button" data-act="explode" hidden>Take apart</button></span></div>
           </div>
-          <figcaption>The charging case I designed around the shell.</figcaption>
+          <figcaption>The charging case I designed around the sensor pod.</figcaption>
         </figure>
         <div class="text reveal" style="--i:1">
-          <p>Aperture is a brain-computer interface that rests behind the right ear and reads two channels of brain signal through four dry contacts. A model in the phone app turns that signal into readings of sleep and alertness. I co-founded it and lead the product.</p>
+          <p>Aperture is a brain-computer interface that rests behind the right ear and reads brain signal through three dry electrodes. A model in the phone app turns that signal into readings of sleep and alertness. I co-founded it and lead the product.</p>
           <p>I came to it with no neurotech background. Before our own device records anything, we used public brain recordings to learn what the ear position can and can't predict, and designed the hardware around the answer.</p>
           <ul class="did">
             <li><b>Neural networks</b><span>Trained compact convolutional networks in PyTorch on 20 public EEG datasets: 917 people and 5,232 hours. One channel behind the ear scored sleep stages as well as a clinical scalp channel (&kappa; = 0.77).</span></li>
             <li><b>What the ear can read</b><span>Drowsiness at an AUC of 0.82 over 90 seconds, and eyes-closed rest at 81%. Gating by head movement cut false readings during exercise from 23&ndash;48% to 1&ndash;11%. Mind wandering and mental effort stayed at chance, so we don't claim them.</span></li>
-            <li><b>Learning architecture</b><span>A 14-channel EPOC+ headset teaches a smaller model that sees only the device's two channels, scored on people and days it has never seen.</span></li>
+            <li><b>Learning architecture</b><span>A 14-channel EPOC+ headset teaches a smaller model that sees only the behind-ear sites, scored on people and days it has never seen.</span></li>
             <li><b>Aperture Lab</b><span>A Mac app for our first experiment: it records the behind-ear sites and the EPOC+ in sync, runs guided sessions with timed cues, and trains and scores models on what it records.</span></li>
-            <li><b>Hardware</b><span>The wearable in Fusion 360, driven by one parameters file: a curved shell 7.1 mm thick on the head, a soft dry-electrode base, a three-section rigid-flex board laid out in KiCad, and a crescent charging case.</span></li>
+            <li><b>Hardware</b><span>The wearable in Fusion 360: a sealed pod 4.45&nbsp;mm thick and 3.77&nbsp;g on a skin frame changed weekly, a curved four-layer flex board with 77 parts laid out in KiCad, and a pebble-shaped charging case with its own board.</span></li>
           </ul>
           <div class="actions">
-            <a class="btn" href="/aperture">Read the Aperture case study <span class="arrow" aria-hidden="true">&rarr;</span></a>
-            <a class="btn ghost" href="https://wearaperture.com" target="_blank" rel="noopener">wearaperture.com <span class="arrow" aria-hidden="true">&#8599;</span></a>
+            <a class="btn" href="/aperture">Read the Aperture case study <span class="arrow" aria-hidden="true"></span></a>
+            <a class="btn ghost" href="https://wearaperture.com" target="_blank" rel="noopener">wearaperture.com <span class="arrow out" aria-hidden="true"></span></a>
           </div>
         </div>
       </div>
@@ -134,21 +134,21 @@
       </div>
       <ul class="work">
         <li class="big reveal"><a class="card" href="/aperture">
-          <div class="pic"><img src="/media/renders/aperture-apart.webp" width="1600" height="900" alt="Aperture taken apart: shell, rigid-flex boards, battery and silicone base" loading="lazy"></div>
+          <div class="pic"><img src="/media/renders/aperture-apart.webp?v=6cf41c144a" width="1600" height="900" alt="Aperture&rsquo;s sensor pod taken apart: cover, cell, flexible board, face plate, magnets and skin frame" loading="lazy"></div>
           <div class="body">
             <ul class="tags"><li class="tag blue">BCI wearable</li><li class="tag">Neural networks</li><li class="tag">Fusion 360</li></ul>
             <h3>Aperture</h3>
-            <p>A brain-computer interface worn behind the ear. I co-founded it and lead the product: we train neural networks that read sleep and alertness from two channels, and I design the device and its charging case.</p>
-            <span class="more">Case study <span class="arrow" aria-hidden="true">&rarr;</span></span>
+            <p>A brain-computer interface worn behind the ear. I co-founded it and lead the product: we train neural networks that read sleep and alertness from behind the ear, and I design the device and its charging case.</p>
+            <span class="more">Case study <span class="arrow" aria-hidden="true"></span></span>
           </div>
         </a></li>
         <li class="reveal" style="--i:1"><a class="card" href="/snack">
-          <div class="pic"><img src="/media/renders/snack-apart.webp" width="1200" height="900" alt="Snack taken apart: glass, LED display board, main board, battery and frame" loading="lazy"></div>
+          <div class="pic"><img src="/media/renders/snack-apart.webp?v=f63e4d361e" width="1280" height="960" alt="Snack taken apart: glass, LED display board, main board, battery and frame" loading="lazy"></div>
           <div class="body">
             <ul class="tags"><li class="tag yellow">Consumer device</li><li class="tag">DFM</li></ul>
             <h3>Snack</h3>
-            <p>A timekeeper for the back of your phone, 7.6 mm thick. 83 critical fits checked by script, packaged for a manufacturer's review.</p>
-            <span class="more">Case study <span class="arrow" aria-hidden="true">&rarr;</span></span>
+            <p>A timekeeper for the back of your phone, 7.6&nbsp;mm thick. 83 critical fits checked by script, packaged for a manufacturer's review.</p>
+            <span class="more">Case study <span class="arrow" aria-hidden="true"></span></span>
           </div>
         </a></li>
         <li class="half reveal"><a class="card" href="/ordo">
@@ -157,16 +157,16 @@
             <ul class="tags"><li class="tag green">Shipped</li><li class="tag">iOS and web</li></ul>
             <h3>Ordo</h3>
             <p>A calendar app that plans your day. I designed it, built it with AI coding tools, and launched it on the App Store in August 2026.</p>
-            <span class="more">See the app <span class="arrow" aria-hidden="true">&rarr;</span></span>
+            <span class="more">See the app <span class="arrow" aria-hidden="true"></span></span>
           </div>
         </a></li>
         <li class="half reveal" style="--i:1"><a class="card" href="/builds">
-          <div class="pic"><img src="/media/renders/ordo.webp" width="1200" height="900" alt="Ordo Desktop, a printed desk display" loading="lazy"></div>
+          <div class="pic"><img src="/media/renders/ordo.webp?v=4065f6adad" width="1280" height="960" alt="Ordo Desktop, a printed desk display" loading="lazy"></div>
           <div class="body">
             <ul class="tags"><li class="tag">Fusion 360</li><li class="tag">3D printing</li></ul>
             <h3>More builds</h3>
             <p>Ordo Desktop, a printed desk display; a thrust-vectoring rocket from high school; a portafilter; and a topology-optimized strut.</p>
-            <span class="more">See the builds <span class="arrow" aria-hidden="true">&rarr;</span></span>
+            <span class="more">See the builds <span class="arrow" aria-hidden="true"></span></span>
           </div>
         </a></li>
       </ul>
@@ -181,7 +181,7 @@
         <p>I'm early in my career, so most problems I take on are new to me. This is how I handle that, with the evidence.</p>
       </div>
       <ol class="how">
-        <li class="reveal"><span class="n mono">01</span><h3>I learn by building</h3><p>I'm a materials science student. For Aperture I learned to train neural networks on brain recordings in PyTorch, and to lay out a rigid-flex board in KiCad.</p></li>
+        <li class="reveal"><span class="n mono">01</span><h3>I learn by building</h3><p>I'm a materials science student. For Aperture I learned to train neural networks on brain recordings in PyTorch, and to lay out flexible circuit boards in KiCad.</p></li>
         <li class="reveal" style="--i:1"><span class="n mono">02</span><h3>I ship</h3><p>I designed and built Ordo with AI coding tools, launched it on the App Store in August 2026, and have shipped updates almost every week since.</p></li>
         <li class="reveal"><span class="n mono">03</span><h3>I take ownership</h3><p>At Celestica I led four interns across a 12-site global initiative, and built the Clear-to-Build model that tracked component readiness from EVT through PVT for engineering and executive reviews.</p></li>
         <li class="reveal" style="--i:1"><span class="n mono">04</span><h3>I check my work</h3><p>Snack's design is audited by a script that checks 83 critical fits. At Celestica I validated an AI-assisted data pipeline across 150+ thermal test runs against the raw logs.</p></li>
@@ -204,9 +204,9 @@
             <p class="org"><a href="/aperture">Aperture</a>, a brain-computer interface wearable</p>
             <ul>
               <li>Trained compact neural networks in PyTorch on 20 public EEG datasets (917 people, 5,232 hours) to learn what two behind-ear channels can predict: sleep stages as well as a clinical scalp channel (&kappa; = 0.77), and drowsiness at an AUC of 0.82.</li>
-              <li>Designed the learning architecture: a 14-channel EPOC+ headset teaches a smaller model that sees only the device's two channels, evaluated on people and days the model never saw.</li>
+              <li>Designed the learning architecture: a 14-channel EPOC+ headset teaches a smaller model that sees only the behind-ear sites, evaluated on people and days the model never saw.</li>
               <li>Built Aperture Lab, a Mac app that records the behind-ear sites and the EPOC+ in sync, runs guided sessions with timed cues, and trains and scores models on the recordings.</li>
-              <li>Designed the wearable and its charging case in Fusion 360 from one parameters file, with both boards laid out in KiCad and their part positions fed back into the CAD.</li>
+              <li>Designed the wearable, a 4.45&nbsp;mm sealed pod on a weekly skin frame, and its charging case in Fusion 360, with both boards laid out and routed in KiCad.</li>
               <li>Wrote the R&amp;D plan to design freeze in May 2027, the first study's protocol and consent form, and a research paper on near-ear sensing.</li>
             </ul>
             <ul class="tags"><li class="tag">PyTorch</li><li class="tag">Neural networks</li><li class="tag">EEG</li><li class="tag">Fusion 360</li><li class="tag">KiCad</li></ul>
@@ -274,7 +274,7 @@
         <li class="reveal"><h3>CAD and mechanical design</h3><p>Enclosures, mechanisms and packaging, from sketch to printed part.</p>
           <ul class="chips"><li>Fusion 360</li><li>SolidWorks</li><li>AutoCAD</li><li>Revit</li><li>Parametric modeling</li><li>Tolerances and fits</li><li>Topology optimization</li><li>3D printing</li></ul></li>
         <li class="reveal" style="--i:1"><h3>Electronics</h3><p>Boards and wiring that have to fit somewhere tight.</p>
-          <ul class="chips"><li>KiCad</li><li>Rigid-flex PCBs</li><li>Electronics packaging</li><li>Arduino</li><li>BLE</li><li>Sensor integration</li><li>Breadboarding</li></ul></li>
+          <ul class="chips"><li>KiCad</li><li>Flex and rigid-flex PCBs</li><li>Electronics packaging</li><li>Arduino</li><li>BLE</li><li>Sensor integration</li><li>Breadboarding</li></ul></li>
         <li class="reveal" style="--i:2"><h3>Testing and characterization</h3><p>Thermal, mechanical and materials testing in industry and the lab.</p>
           <ul class="chips"><li>TIMA5</li><li>Corintis Therminator</li><li>Thermal impedance</li><li>SEM</li><li>EDS</li><li>XRD</li><li>Light microscopy</li><li>Hardness and tensile</li><li>Selective laser melting</li></ul></li>
         <li class="reveal"><h3>Data and analysis</h3><p>Designing experiments and reading what they say.</p>
@@ -353,10 +353,10 @@
     </div>
     <ul class="links reveal" style="--i:1">
       <li><a href="mailto:kks7ys@virginia.edu"><span>Email</span><span>kks7ys@virginia.edu</span></a></li>
-      <li><a href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener"><span>LinkedIn</span><span>in/albert-sein03 &#8599;</span></a></li>
-      <li><a href="https://github.com/asein-03" target="_blank" rel="noopener"><span>GitHub</span><span>asein-03 &#8599;</span></a></li>
-      <li><a href="https://instagram.com/itsalbertsein" target="_blank" rel="noopener"><span>Instagram</span><span>@itsalbertsein &#8599;</span></a></li>
-      <li><a href="/albert-sein-resume.pdf" target="_blank" rel="noopener"><span>Résumé</span><span>PDF &#8599;</span></a></li>
+      <li><a href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener"><span>LinkedIn</span><span>in/albert-sein03 <span class="arrow out" aria-hidden="true"></span></span></a></li>
+      <li><a href="https://github.com/asein-03" target="_blank" rel="noopener"><span>GitHub</span><span>asein-03 <span class="arrow out" aria-hidden="true"></span></span></a></li>
+      <li><a href="https://instagram.com/itsalbertsein" target="_blank" rel="noopener"><span>Instagram</span><span>@itsalbertsein <span class="arrow out" aria-hidden="true"></span></span></a></li>
+      <li><a href="/albert-sein-resume.pdf" target="_blank" rel="noopener"><span>Résumé</span><span>PDF <span class="arrow out" aria-hidden="true"></span></span></a></li>
     </ul>
   </div>
 </section>

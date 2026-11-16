@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Render stage</title>
-<!-- render.mjs opens this page once per poster: ?model=&yaw=&pitch=&zoom=&explode=&fit=&axis=&w=&h= builds one
+<!-- render.mjs opens this page once per poster: ?model=&yaw=&pitch=&zoom=&explode=&fit=&axis=&ground=&w=&h= builds one
      viewer at exactly that size, and the script copies its first frame. -->
 <style>html, body { margin: 0; background: transparent; } .stage { position: relative; } canvas { display: block; }</style>
 <script type="importmap">
@@ -19,7 +19,7 @@
   const fig = document.createElement('figure');
   fig.className = 'viewer';
   fig.style.margin = '0';
-  for (const k of ['model', 'yaw', 'pitch', 'zoom', 'explode', 'fit', 'axis']) if (q.get(k)) fig.dataset[k] = q.get(k);
+  for (const k of ['model', 'yaw', 'pitch', 'zoom', 'explode', 'fit', 'axis', 'ground']) if (q.get(k)) fig.dataset[k] = q.get(k);
   fig.dataset.still = '';
   fig.innerHTML = `<div class="stage" style="width:${q.get('w')}px;height:${q.get('h')}px"></div>`;
   document.body.append(fig);

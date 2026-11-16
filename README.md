@@ -17,19 +17,25 @@ where that content lives now; see `vercel.json`.
 
 - `assets/site.css`: every page's styles.
 - `assets/site.js`: the header hairline and fade-in on scroll.
-- `assets/viewer.js`: the 3D CAD viewer. Any `<figure class="viewer" data-model="…">` gets a live, drag-to-turn
-  model from `/models`, with "Take apart" and "Close the lid" buttons where the model supports them. The figure's
-  poster image shows first, and stays if WebGL is missing.
+- `assets/viewer.js`: the 3D CAD viewer. Any `<figure class="viewer" data-model="…">` gets a drag-to-turn model
+  from `/models`, with "Take apart" and "Close the lid" buttons where the model supports them. The figure's poster
+  still shows until someone drags the model or presses a button; then the live model, drawn underneath in the same
+  pose, takes over. The poster stays if WebGL is missing.
 
-Every page links these with a `?v=` version taken from their contents, so an edit reaches visitors at once instead of
-after their browser's cached copy expires. **After editing anything in `assets/`, run `node tools/stamp.mjs`.**
+Every page links these, the models and the posters with a `?v=` version taken from their contents, so an edit
+reaches visitors at once instead of after their browser's cached copy expires. **After changing anything in
+`assets/`, `models/` or `media/renders/`, run `node tools/stamp.mjs`.**
 
 ## Assets
 
 - `models/*.bin`: CAD exports, packed with meshopt by `tools/cad/` (`convert.mjs` from the CAD, `repack.mjs` to
-  repack).
+  repack). Aperture's two models come from the Experiment 3 exports in the BrainWave repository
+  (`prototype/cad-x3-pod/exports/portfolio`).
 - `media/renders/*.webp`: poster stills of each model, rendered by `node tools/renders/render.mjs`. Each matches the
-  opening view of a viewer on the site, so change both together.
+  opening view of a viewer on the site, so change both together. Each still averages many frames (soft shadows,
+  shade between parts, clean edges) at about twice the size it's shown at. `GPU=1` renders on the Mac's GPU in a
+  few seconds; without it, Chrome's software renderer is much slower. `SAMPLES` sets the frames per still (160 by
+  default).
 - `og.png`: the link-preview card, rendered from `tools/og/card.html` by `node tools/og/render.mjs`.
 - `media/ordo`, `media/covers`, `media/posters`: app screenshots, album covers and film posters.
 

@@ -25,6 +25,19 @@ const AP = `${HOME}/Documents/ChatGPT/BrainWave Technology/prototype/cad-v4/expo
 // Snack's hardware is the Otto R07 build. The rights-clean export is the one cleared for outside review.
 const R07 = `${HOME}/Documents/Stealth/hardware/supplier-cad/exports/r07/OTTO_R07_THIN_PHYSICAL_DFM_RIGHTS_CLEAN_R00.step`;
 const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+// Aperture's current design, Experiment 3: the sensor pod on its weekly skin frame, and its charging case, exported
+// from Fusion one group per material (see the README beside them). Millimetres, one frame for both: x from the ear
+// edge to the back edge, y along the crescent, z up away from the skin. The case is drawn with its lid shut.
+const X3 = `${HOME}/Documents/ChatGPT/BrainWave Technology/prototype/cad-x3-pod/exports/portfolio`;
+const POD = `${X3}/fullmock`, CASE = `${X3}/case`;
+// Those STEP files don't name their bodies, so a few groups are split by shape: copper pads are the paper-thin
+// bodies, and bodies(fn) picks the meshes whose bounding box (and index, and count) pass fn.
+const bodies = (fn) => (boxes) => boxes.flatMap((b, i) => (fn(b, i, boxes.length) ? [i] : []));
+const thin = (b) => b.max.z - b.min.z < 0.07;
+// the case lid's hinge: along +y through x -1.15, z 1.00. Fusion has it shut; the page shows it open (turned -105
+// degrees, so its front rises and swings back over the hinge) and closes it by turning it back.
+const LID = { pivot: [-1.15, 0, 1.0], axis: [0, 1, 0] };
+const lidOpen = { ...LID, deg: -105 }, lidShut = { ...LID, deg: 105 };
 
 // Project Skyfall, a TVC model rocket from high school. These STLs were exported from the Fusion document
 // "Project Skyfall Prototype 2 Assembly" into sources/skyfall (kept out of git). Each top-level part comes out in its
@@ -107,32 +120,54 @@ const PHONE_PARTS = [
 // up: which CAD axis points up. explode: offset per part, in display units (the model spans about 2).
 // Electronics are plain blocks at their KiCad positions, as in Fusion; no copper or part markings.
 const PROJECTS = [
-  // the shell's face toward the camera, its length upright (CAD x across, y along, z out of the face)
+  // The sensor pod on its skin frame, standing as it's worn behind the ear: the cover toward the camera, the crescent
+  // upright (CAD x across, y up, z toward the camera). Take apart lifts each layer off the one below along z, by just
+  // enough to clear it plus 5.5 mm (worked out from the meshes): cover, cell, board, face plate, the two pairs of
+  // magnets, the frame. Glue lines are left out.
   { id: 'aperture', up: 'y', parts: [
-    { name: 'base', step: `${AP}/BrainWave v4 - Base.step`, bodies: [0, 6, 7, 8, 9], mat: 'silicone', explode: [0, 0, -0.42] },
-    { name: 'tub', step: `${AP}/BrainWave v4 - Shell.step`, bodies: [1], mat: 'plastic', explode: [0, 0, 0.04] },
-    { name: 'boards', step: `${AP}/BrainWave v4 - Electronics.step`, bodies: [0, 1, 2], mat: 'pcb', explode: [0, 0, 0.36] },
-    { name: 'cell', step: `${AP}/BrainWave v4 - Electronics.step`, bodies: [3], mat: 'cell', explode: [0, 0, 0.36] },
-    { name: 'rings', step: `${AP}/BrainWave v4 - Electronics.step`, bodies: [4, 5, 6, 7], mat: 'bright', explode: [0, 0, 0.36] },
-    { name: 'parts', step: `${AP}/BrainWave v4 - Electronics.step`, bodies: range(8, 54), mat: 'chip', explode: [0, 0, 0.36] },
-    { name: 'cover', step: `${AP}/BrainWave v4 - Shell.step`, bodies: [0], mat: 'metal', explode: [0, 0, 0.72] },
+    { name: 'cover', stl: `${POD}/pod-cover.stl`, mat: 'gloss', explodeMM: [0, 0, 19.2] },
+    { name: 'cell', stl: `${POD}/pod-cell.stl`, mat: 'cell', explodeMM: [0, 0, 10.8] },
+    // the flex board itself and its five stiffeners are the first and last bodies; the rest is copper and vias
+    { name: 'board', step: `${POD}/pod-board.step`, bodies: bodies((b, i, n) => i === 0 || i >= n - 5), mat: 'polyimide', explodeMM: [0, 0, 5.24] },
+    { name: 'copper', step: `${POD}/pod-board.step`, bodies: bodies((b, i, n) => i > 0 && i < n - 5), mat: 'copper', explodeMM: [0, 0, 5.24], simplify: 8000 },
+    { name: 'parts', step: `${POD}/pod-parts.step`, bodies: bodies((b) => !thin(b)), mat: 'chip', explodeMM: [0, 0, 5.24], simplify: 10000 },
+    { name: 'pads', step: `${POD}/pod-parts.step`, bodies: bodies(thin), mat: 'gold', explodeMM: [0, 0, 5.24], simplify: 3000 },
+    { name: 'face', stl: `${POD}/pod-face.stl`, mat: 'matte', explodeMM: [0, 0, -0.83], simplify: 7000 },
+    { name: 'studs', stl: `${POD}/pod-studs.stl`, mat: 'gold', explodeMM: [0, 0, -0.83], simplify: 2500 },
+    { name: 'caps', stl: `${POD}/pod-caps.stl`, mat: 'silver', explodeMM: [0, 0, -0.83], simplify: 4000 },
+    { name: 'window', stl: `${POD}/pod-window.stl`, mat: 'glass', explodeMM: [0, 0, -0.83] },
+    { name: 'pod-magnets', stl: `${POD}/pod-magnets.stl`, mat: 'bright', explodeMM: [0, 0, -8.31] },
+    { name: 'frame-magnets', stl: `${POD}/frame-magnets.stl`, mat: 'bright', explodeMM: [0, 0, -13.65] },
+    { name: 'frame', stl: `${POD}/frame.stl`, mat: 'film', explodeMM: [0, 0, -19.2] },
   ] },
-  // the charging case lying flat with its lid open, as built in Fusion; the shell seats in its cups
+  // The charging case lying flat with its lid open and the pod docked, in the same frame (so the pod sits in the
+  // pocket exactly as it sits on the frame). Matte black outside, grey inside: the shell's faces that look into the
+  // case are split off by facing. Take apart lifts the lid and the pod out of the top and drops the board, the cell
+  // and the bottom plate out of the bottom, each clear of the last by 3 mm; display y is CAD z.
   { id: 'aperture-case', up: 'z', parts: [
-    { name: 'case', step: `${AP}/BrainWave v4 - Case.step`, bodies: [0, 62, 65], mat: 'metal', explode: [0, 0, 0] },
-    // The lid is modelled open, 105 degrees back on its pin hinge (the pin sits at x -22.3, on the seam at z 1.38, along y).
-    // The page closes it by turning it the same 105 degrees forward about that line.
-    { name: 'lid', step: `${AP}/BrainWave v4 - Case.step`, bodies: [63, 64], mat: 'metal', explode: [0, 0.12, 0],
-      hinge: { pivot: [-22.3, 0, 1.3804647], axis: [0, 1, 0], deg: 105 } },
-    { name: 'cups', step: `${AP}/BrainWave v4 - Case.step`, bodies: range(1, 7), mat: 'bright', explode: [0, 0, 0] },
-    { name: 'board', step: `${AP}/BrainWave v4 - Case.step`, bodies: [9], mat: 'pcb', explode: [0, -0.42, 0] },
-    { name: 'cell', step: `${AP}/BrainWave v4 - Case.step`, bodies: [8], mat: 'cell', explode: [0, -0.62, 0] },
-    { name: 'usb', step: `${AP}/BrainWave v4 - Case.step`, bodies: [10], mat: 'bright', explode: [0, -0.42, 0] },
-    { name: 'parts', step: `${AP}/BrainWave v4 - Case.step`, bodies: range(11, 61), mat: 'chip', explode: [0, -0.42, 0] },
-    { name: 'shell-tub', step: `${AP}/BrainWave v4 - Shell.step`, bodies: [1], mat: 'plastic', explode: [0, 0.5, 0] },
-    { name: 'shell-rings', step: `${AP}/BrainWave v4 - Shell.step`, bodies: [2, 3, 4, 5], mat: 'bright', explode: [0, 0.5, 0] },
-    { name: 'shell-cover', step: `${AP}/BrainWave v4 - Shell.step`, bodies: [0], mat: 'metal', explode: [0, 0.5, 0] },
+    { name: 'base', stl: `${CASE}/case-base.stl`, mat: 'matte', faces: { away: [13.75, 0, 8] }, simplify: 5000 },
+    { name: 'base-inside', stl: `${CASE}/case-base.stl`, mat: 'grey', faces: { toward: [13.75, 0, 8] }, simplify: 5000 },
+    { name: 'lid', stl: `${CASE}/case-lid.stl`, mat: 'matte', faces: { away: [13.75, 0, -4] }, pose: lidOpen, hinge: lidShut, explodeMM: [0, 8, 0] },
+    { name: 'lid-inside', stl: `${CASE}/case-lid.stl`, mat: 'grey', faces: { toward: [13.75, 0, -4] }, pose: lidOpen, hinge: lidShut, explodeMM: [0, 8, 0] },
+    { name: 'lid-magnets', stl: `${CASE}/case-lid-parts.stl`, mat: 'bright', pose: lidOpen, hinge: lidShut, explodeMM: [0, 8, 0] },
+    { name: 'hinge-pin', stl: `${CASE}/case-hinge-pin.stl`, mat: 'bright' },
+    { name: 'magnets', stl: `${CASE}/case-magnets.stl`, mat: 'bright' },
+    { name: 'pins', stl: `${CASE}/case-pins.stl`, mat: 'gold' },
+    { name: 'light-pipe', stl: `${CASE}/case-light-pipe.stl`, mat: 'frost' },
+    { name: 'pod-cover', stl: `${POD}/pod-cover.stl`, mat: 'gloss', explodeMM: [0, 9, 0] },
+    { name: 'pod-face', stl: `${POD}/pod-face.stl`, mat: 'matte', explodeMM: [0, 9, 0], simplify: 7000 },
+    { name: 'pod-studs', stl: `${POD}/pod-studs.stl`, mat: 'gold', explodeMM: [0, 9, 0], simplify: 2500 },
+    { name: 'pod-caps', stl: `${POD}/pod-caps.stl`, mat: 'silver', explodeMM: [0, 9, 0], simplify: 4000 },
+    { name: 'pod-window', stl: `${POD}/pod-window.stl`, mat: 'glass', explodeMM: [0, 9, 0] },
+    { name: 'board', stl: `${CASE}/case-board.stl`, mat: 'pcb', explodeMM: [0, -9.7, 0] },
+    // the USB-C receptacle's shell is four bodies hanging under the front of the board
+    { name: 'usb', step: `${CASE}/case-board-parts.step`, bodies: [67, 76, 85, 94], mat: 'bright', explodeMM: [0, -9.7, 0], simplify: 3000 },
+    { name: 'parts', step: `${CASE}/case-board-parts.step`, bodies: bodies((b, i) => !thin(b) && ![67, 76, 85, 94].includes(i)), mat: 'chip', explodeMM: [0, -9.7, 0], simplify: 9000 },
+    { name: 'pads', step: `${CASE}/case-board-parts.step`, bodies: bodies(thin), mat: 'gold', explodeMM: [0, -9.7, 0], simplify: 1500 },
+    { name: 'cell', stl: `${CASE}/case-cell.stl`, mat: 'cell', explodeMM: [0, -16, 0] },
+    { name: 'plate', stl: `${CASE}/case-plate.stl`, mat: 'anodised', explodeMM: [0, -18.7, 0] },
   ] },
+  // Version 4 (before Experiment 3), no longer on the site; kept so its model can still be rebuilt.
   // The shell going from its silicone base into the charging case, in one file so the page can fly it between them.
   // The base (leave) fades once the shell has left it.
   // The case sits where it was modelled (the shell's own frame, so the shell seats in its cups untouched), and the base
@@ -205,7 +240,8 @@ function readStep(file) {
 function loadPart(p) {
   if (p.step) {
     const meshes = readStep(p.step);
-    const geos = p.bodies.map((i) => {
+    const ids = typeof p.bodies === 'function' ? p.bodies(meshes.map((m) => new THREE.Box3().setFromArray(m.attributes.position.array))) : p.bodies;
+    const geos = ids.map((i) => {
       const m = meshes[i], g = new THREE.BufferGeometry();
       g.setAttribute('position', new THREE.Float32BufferAttribute(m.attributes.position.array, 3));
       if (m.attributes.normal) g.setAttribute('normal', new THREE.Float32BufferAttribute(m.attributes.normal.array, 3));
@@ -213,7 +249,8 @@ function loadPart(p) {
       if (!m.attributes.normal) g.computeVertexNormals();
       return g;
     });
-    return merge(geos);
+    // STEP meshes keep their own smooth normals unless the part needs reshaping
+    return p.simplify || p.faces || p.pose ? finish(merge(geos), p) : merge(geos);
   }
   let g = p.gen ? p.gen() : null;
   const readSTL = (file) => { const buf = fs.readFileSync(file); return new STLLoader().parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)); };
@@ -231,8 +268,33 @@ function loadPart(p) {
     if (!meshes.length) throw new Error(`no group ${p.group} in ${p.obj}`);
     g = merge(meshes.map((m) => m.geometry.index ? m.geometry.toNonIndexed() : m.geometry));
   }
-  // weld by position, simplify while the mesh is still welded, then split it again along hard edges
-  g.deleteAttribute('uv'); g.deleteAttribute('normal');
+  return finish(g, p);
+}
+
+// keep only the faces that look toward (or away from) a point, then turn the part to its pose; then weld by position,
+// simplify while the mesh is still welded, and split it again along hard edges
+function finish(g, p) {
+  if (p.faces) {
+    g = g.index ? g.toNonIndexed() : g;
+    const P = g.attributes.position.array, c = new THREE.Vector3(...(p.faces.toward || p.faces.away)), sign = p.faces.toward ? 1 : -1;
+    const a = new THREE.Vector3(), b = new THREE.Vector3(), d = new THREE.Vector3(), n = new THREE.Vector3(), keep = [];
+    for (let t = 0; t < P.length; t += 9) {
+      a.fromArray(P, t); b.fromArray(P, t + 3); d.fromArray(P, t + 6);
+      n.subVectors(b, a).cross(d.clone().sub(a));
+      const mid = a.clone().add(b).add(d).divideScalar(3);
+      if (sign * n.dot(c.clone().sub(mid)) > 0) for (let k = 0; k < 9; k++) keep.push(P[t + k]);
+    }
+    g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(keep, 3));
+  }
+  if (p.pose) {
+    const piv = new THREE.Vector3(...p.pose.pivot);
+    g.translate(-piv.x, -piv.y, -piv.z);
+    g.applyMatrix4(new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(...p.pose.axis).normalize(), THREE.MathUtils.degToRad(p.pose.deg)));
+    g.translate(piv.x, piv.y, piv.z);
+  }
+  if (g.attributes.uv) g.deleteAttribute('uv');
+  if (g.attributes.normal) g.deleteAttribute('normal');
   g = simplify(mergeVertices(g, 1e-4), p.simplify);
   g = toCreasedNormals(g.toNonIndexed(), THREE.MathUtils.degToRad(32));
   return mergeVertices(g, 1e-4);

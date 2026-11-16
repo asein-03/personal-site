@@ -9,24 +9,30 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const OUT = path.join(ROOT, 'media/renders');
+const OUT = process.env.OUT || path.join(ROOT, 'media/renders');
+// frames averaged per poster (see snapshot in assets/viewer.js): more is smoother and slower
+const SAMPLES = +(process.env.SAMPLES || 160);
 const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
 // name: model, yaw, pitch, zoom, explode, size, and fit/axis for long models
 export const POSTERS = {
-  'aperture-hero': { model: 'aperture', yaw: -28, pitch: 10, zoom: 1.08, w: 1000, h: 1100 },
-  'aperture-169': { model: 'aperture', yaw: -28, pitch: 10, zoom: 1.15, w: 1600, h: 900 },
-  'aperture-apart': { model: 'aperture', yaw: 68, pitch: 12, zoom: 1.3, explode: 1, w: 1600, h: 900 },
-  'aperture-electronics': { model: 'aperture', yaw: 68, pitch: 12, zoom: 1.35, explode: 1, w: 1200, h: 900 },
-  'aperture-case': { model: 'aperture-case', yaw: -128, pitch: 30, zoom: 1.05, w: 1200, h: 900 },
-  'snack-169': { model: 'snack', yaw: -30, pitch: 12, zoom: 1.1, w: 1600, h: 900 },
-  'snack-apart': { model: 'snack', yaw: -64, pitch: 14, zoom: 1.1, explode: 1, w: 1200, h: 900 },
-  'snack-phone': { model: 'snack-phone', yaw: -52, pitch: 12, zoom: 1, w: 1200, h: 900 },
-  ordo: { model: 'ordo', yaw: -30, pitch: 16, zoom: 1, w: 1200, h: 900 },
-  skyfall: { model: 'skyfall', yaw: -14, pitch: 14, zoom: 1, fit: 'box', axis: 'x', w: 1600, h: 800 },
-  portafilter: { model: 'portafilter', yaw: -68, pitch: 26, zoom: 1, w: 1200, h: 900 },
-  topology: { model: 'topology', yaw: -30, pitch: 22, zoom: 1, w: 1200, h: 900 },
+  // about twice the size each is shown at, for sharp stills on high-density screens
+  'aperture-hero': { model: 'aperture', yaw: -34, pitch: 12, zoom: 1.08, explode: 0.2, w: 1100, h: 1210 },
+  'aperture-169': { model: 'aperture', yaw: -42, pitch: 12, zoom: 1.12, w: 2240, h: 1260 },
+  'aperture-apart': { model: 'aperture', yaw: -128, pitch: 16, zoom: 1.2, explode: 1, w: 1600, h: 900 },
+  'aperture-electronics': { model: 'aperture', yaw: -128, pitch: 16, zoom: 1.2, explode: 1, w: 1280, h: 960 },
+  'aperture-case': { model: 'aperture-case', yaw: -128, pitch: 30, zoom: 1.3, ground: 1, w: 1280, h: 960 },
+  'snack-169': { model: 'snack', yaw: -30, pitch: 12, zoom: 1.1, w: 2240, h: 1260 },
+  'snack-apart': { model: 'snack', yaw: -64, pitch: 14, zoom: 1.1, explode: 1, w: 1280, h: 960 },
+  'snack-phone': { model: 'snack-phone', yaw: -52, pitch: 12, zoom: 1, w: 1280, h: 960 },
+  ordo: { model: 'ordo', yaw: -30, pitch: 16, zoom: 1, w: 1280, h: 960 },
+  skyfall: { model: 'skyfall', yaw: -14, pitch: 14, zoom: 1, fit: 'box', axis: 'x', w: 2240, h: 1120 },
+  portafilter: { model: 'portafilter', yaw: -68, pitch: 26, zoom: 1, w: 1280, h: 960 },
+  topology: { model: 'topology', yaw: -30, pitch: 22, zoom: 1, w: 1280, h: 960 },
 };
+
+// extra posters for trying views, as JSON: EXTRA='{"try-1": {"model": "aperture", "yaw": -40, ...}}'
+Object.assign(POSTERS, JSON.parse(process.env.EXTRA || '{}'));
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.bin': 'application/octet-stream' };
 const server = http.createServer((req, res) => {
@@ -41,7 +47,7 @@ const site = `http://127.0.0.1:${server.address().port}`;
 const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'render-chrome-'));
 const port = 9300 + Math.floor(Math.random() * 600);
 const chrome = spawn(CHROME, ['--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, '--hide-scrollbars',
-  '--no-first-run', '--no-default-browser-check', '--enable-unsafe-swiftshader', '--use-angle=swiftshader', 'about:blank'], { stdio: 'ignore' });
+  '--no-first-run', '--no-default-browser-check', ...(process.env.GPU ? ['--use-angle=metal', '--enable-gpu'] : ['--enable-unsafe-swiftshader', '--use-angle=swiftshader']), 'about:blank'], { stdio: 'ignore' });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 try {
   let pages;
@@ -62,6 +68,7 @@ try {
   fs.mkdirSync(OUT, { recursive: true });
   for (const [name, p] of Object.entries(POSTERS)) {
     if (want.length && !want.includes(name)) continue;
+    const t0 = Date.now();
     const q = new URLSearchParams(Object.entries(p).map(([k, v]) => [k, String(v)]));
     await send('Page.navigate', { url: `${site}/tools/renders/stage.html?${q}` });
     const url = await run(`(async () => {
@@ -70,11 +77,11 @@ try {
         if (Date.now() - t0 > 30000) throw new Error('the model never loaded (no WebGL?)');
         await new Promise((r) => setTimeout(r, 100));
       }
-      return viewers[0].snapshot('image/webp', 0.88);
+      return viewers[0].snapshot('image/webp', 0.9, ${SAMPLES});
     })()`);
     const file = path.join(OUT, `${name}.webp`);
     fs.writeFileSync(file, Buffer.from(url.split(',')[1], 'base64'));
-    console.log(`${name}.webp  ${p.w}x${p.h}  ${(fs.statSync(file).size / 1024).toFixed(0)} KB`);
+    console.log(`${name}.webp  ${p.w}x${p.h}  ${(fs.statSync(file).size / 1024).toFixed(0)} KB  ${((Date.now() - t0) / 1000).toFixed(1)} s`);
   }
   ws.close();
 } finally {

@@ -21,8 +21,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=c1e85ef6e8">
-<link rel="preload" href="/models/snack.bin" as="fetch" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=e7bfd9e6d2">
+<link rel="preload" href="/models/snack.bin?v=436512cc72" as="fetch" crossorigin>
 <script>document.documentElement.classList.add('js')</script>
 <script defer src="/assets/site.js?v=85bdf317aa"></script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -32,7 +32,7 @@
   "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
 } }
 </script>
-<script type="module" src="/assets/viewer.js?v=d41b277100"></script>
+<script type="module" src="/assets/viewer.js?v=e0e25b5cce"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -52,16 +52,16 @@
 <main id="main">
   <section class="p-hero">
     <div class="wrap">
-      <a class="crumb" href="/#work"><span aria-hidden="true">&larr;</span> All work</a>
+      <a class="crumb" href="/#work"><span class="arrow back" aria-hidden="true"></span> All work</a>
       <ul class="tags"><li class="tag yellow">Consumer device</li><li class="tag">Packaged for DFM</li></ul>
       <h1>Snack</h1>
       <p class="lead">A physical timekeeper that sits on the back of your phone. One click starts a Snack Break and blocks the apps you chose; a second click ends it, and the app keeps an honest record of where your time went.</p>
       
       <dl class="spec"><div><dt class="label">Work</dt><dd>Mechanical design, packaging, DFM package</dd></div><div><dt class="label">When</dt><dd>2026</dd></div><div><dt class="label">Tools</dt><dd>Fusion 360, scripted fit audit</dd></div><div><dt class="label">Size</dt><dd>64 &times; 78 &times; 7.6 mm</dd></div></dl>
       <div class="p-figure">
-    <figure class="viewer" data-model="snack" data-yaw="-30" data-pitch="12" data-zoom="1.1">
+    <figure class="viewer" data-model="snack" data-v="436512cc72" data-yaw="-30" data-pitch="12" data-zoom="1.1">
       <div class="stage">
-        <img class="poster" src="/media/renders/snack-169.webp" width="1600" height="900" alt="Snack, a thin rounded rectangle with a dark glass face" fetchpriority="high">
+        <img class="poster" src="/media/renders/snack-169.webp?v=b6325722e3" width="2240" height="1260" alt="Snack, a thin rounded rectangle with a dark glass face" fetchpriority="high">
         <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="explode" hidden>Take apart</button></span></div>
       </div>
       <figcaption>Snack, from my Fusion 360 model. Take it apart to see how two boards fit in 7.6 mm.</figcaption>
@@ -69,24 +69,24 @@
       </div>
       <div class="summary reveal"><p class="label">What I did</p><ul><li>Restarted the design at revision R03, cutting the stack from 9.8 mm to 7.6 mm, with 7.8 mm as a hard limit.</li><li>Fit two boards, a flex, a battery, a MagSafe-aligned ring and a dead-front glass into the frame, each in a named volume.</li><li>Wrote a scripted audit of 83 critical fits, down to 0.15 mm between the USB-C connector and its cage.</li><li>Placed the ring on the MagSafe axis from Apple&rsquo;s accessory drawing, clear of the camera plateau and the zone Apple asks accessories to leave free.</li><li>Packaged revision R07 for a manufacturer&rsquo;s DFM review: a BOM, a source ledger, an interface net table and a release checklist.</li></ul></div>
       <section class="chapter">
-    <figure class="viewer" data-model="snack" data-yaw="-64" data-pitch="14" data-zoom="1.1" data-explode="1">
+    <figure class="viewer" data-model="snack" data-v="436512cc72" data-yaw="-64" data-pitch="14" data-zoom="1.1" data-explode="1">
       <div class="stage">
-        <img class="poster" src="/media/renders/snack-apart.webp" width="1200" height="900" alt="Snack taken apart: glass, LED display board, main board, battery, ring and frame" loading="lazy">
+        <img class="poster" src="/media/renders/snack-apart.webp?v=f63e4d361e" width="1280" height="960" alt="Snack taken apart: glass, LED display board, main board, battery, ring and frame" loading="lazy">
         <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="explode" hidden>Take apart</button></span></div>
       </div>
     </figure>
         <div class="notes reveal" style="--i:1"><h2>Under 8 mm</h2><div><h3>A clean start</h3><p>Revision R03 threw out the 9.8 mm stack and started clean at 64 by 78 by 7.6 mm. Every part had to fit a named volume after walls, corner radii, adhesive and battery swell, with 7.8 mm as a hard limit.</p></div><div><h3>Two boards in 7.6 mm</h3><p>A main board with the USB-C port, a display board joined to it by a flex, the cell, the attachment ring and a dead-front glass, stacked inside the frame. A scripted audit checks 83 critical fits, down to 0.15 mm between the USB-C connector and its cage.</p></div><div><h3>Lights up through the glass</h3><p>The face is dead front: 512 warm-white LEDs in a 32 by 16 grid sit behind the glass, invisible until they light. They confirm the snap, then run a break timer.</p></div></div>
       </section>
       <section class="chapter flip">
-    <figure class="viewer" data-model="snack-phone" data-yaw="-52" data-pitch="12" data-zoom="1">
+    <figure class="viewer" data-model="snack-phone" data-v="c9f8447344" data-yaw="-52" data-pitch="12" data-zoom="1">
       <div class="stage">
-        <img class="poster" src="/media/renders/snack-phone.webp" width="1200" height="900" alt="Snack attached to the back of an iPhone" loading="lazy">
+        <img class="poster" src="/media/renders/snack-phone.webp?v=5a0594f52c" width="1280" height="960" alt="Snack attached to the back of an iPhone" loading="lazy">
         <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="explode" hidden>Take apart</button></span></div>
       </div>
     </figure>
         <div class="notes reveal" style="--i:1"><h2>Made for the back of an iPhone</h2><div><h3>On the MagSafe axis</h3><p>The attachment ring sits on the MagSafe axis from Apple&rsquo;s accessory drawing, so Snack lands in the same place on every iPhone 17 Pro. Its top edge stops about 4 mm short of the camera plateau, and the top 10 mm is a nonconductive cap that keeps the metal frame out of the zone Apple asks accessories to leave clear.</p></div><div><h3>Ready for a manufacturer&rsquo;s review</h3><p>R07 is packaged for an OEM design-for-manufacture review: a BOM, a source ledger for every part, an interface net table, and a release checklist where nothing closes without an owner, an artifact, a date and an approver.</p></div></div>
       </section>
-      <a class="next" href="/ordo"><span><span class="label">Next project</span><b>Ordo</b></span><span class="arrow" aria-hidden="true">&rarr;</span></a>
+      <a class="next" href="/ordo"><span><span class="label">Next project</span><b>Ordo</b></span><span class="arrow" aria-hidden="true"></span></a>
     </div>
   </section>
 </main>
