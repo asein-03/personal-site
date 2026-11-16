@@ -21,6 +21,9 @@ where that content lives now; see `vercel.json`.
   model from `/models`, with "Take apart" and "Close the lid" buttons where the model supports them. The figure's
   poster image shows first, and stays if WebGL is missing.
 
+Every page links these with a `?v=` version taken from their contents, so an edit reaches visitors at once instead of
+after their browser's cached copy expires. **After editing anything in `assets/`, run `node tools/stamp.mjs`.**
+
 ## Assets
 
 - `models/*.bin`: CAD exports, packed with meshopt by `tools/cad/` (`convert.mjs` from the CAD, `repack.mjs` to
