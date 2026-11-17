@@ -1,6 +1,7 @@
 /* albertsein.com: one stylesheet for every page.
    Warm white page, near-black type, hairline borders, a serif for headlines (Newsreader), Geist for everything
-   else and Geist Mono for labels. Colour is kept for the small tags. */
+   else and Geist Mono for labels. One accent, copper, for the drawing details: section numbers, figure labels, the
+   centre mark by the name. Colour otherwise is kept for the small tags. */
 :root {
   color-scheme: light;
   --bg: #fbfbfa;
@@ -15,6 +16,8 @@
   --green-bg: #edf3ec; --green: #346538;
   --yellow-bg: #fbf3db; --yellow: #956400;
   --red-bg: #fdebec; --red: #9f2f2d;
+  --accent: #a65a26; --accent-bg: #f6e6da; /* copper, from the Aperture flex board */
+  --grid: rgba(17, 17, 17, .05);
   --sans: "Geist", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
   --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -30,7 +33,7 @@ body { margin: 0; background: var(--bg); color: var(--ink-2); font: 400 1rem/1.6
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration-color: var(--line-2); text-underline-offset: .2em; text-decoration-thickness: 1px; }
 a:hover { text-decoration-color: currentColor; }
-::selection { background: var(--yellow-bg); color: var(--ink); }
+::selection { background: var(--accent-bg); color: var(--ink); }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
 h1, h2, h3, h4 { margin: 0; color: var(--ink); font-weight: 500; }
 p { margin: 0; }
@@ -159,14 +162,6 @@ section.block { padding: clamp(64px, 10vw, 120px) 0 0; }
 @media (max-width: 900px) { .work > li, .work > li.big, .work > li.half { grid-column: span 3; } .work > li.big { grid-column: span 6; } }
 @media (max-width: 620px) { .work { grid-template-columns: 1fr; } .work > li, .work > li.big, .work > li.half { grid-column: auto; } }
 
-/* ---------- how I work ---------- */
-.how { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; list-style: none; }
-.how li { padding: 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
-.how .n { display: block; margin-bottom: 14px; color: var(--muted); }
-.how h3 { margin-bottom: 8px; font: 500 1.15rem/1.3 var(--sans); }
-.how p { color: var(--ink-2); font-size: .97rem; }
-@media (max-width: 720px) { .how { grid-template-columns: 1fr; } }
-
 /* ---------- experience ---------- */
 .jobs { list-style: none; border-top: 1px solid var(--line); }
 .job { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 24px; padding: 26px 0; border-bottom: 1px solid var(--line); }
@@ -286,3 +281,49 @@ section.block { padding: clamp(64px, 10vw, 120px) 0 0; }
 .stats b { display: block; font: 400 clamp(2.1rem, 3.6vw, 3rem)/1 var(--serif); letter-spacing: -.02em; color: var(--ink); }
 .stats span { display: block; margin-top: 10px; color: var(--muted); font-size: .92rem; line-height: 1.45; }
 .stats figcaption { grid-column: 1 / -1; padding: 12px 22px; background: var(--panel); color: var(--muted); font-size: .85rem; }
+
+/* ---------- drafting details ----------
+   The page borrows a few marks from an engineering drawing: a centre mark by the name, numbered sections, a faint
+   grid behind the hero, crop marks round each model with a figure label and its size, and a title block as footer. */
+.brand { display: inline-flex; align-items: center; gap: 9px; }
+.brand::before { content: ""; flex: none; width: 15px; height: 15px; background: var(--accent);
+  -webkit-mask: var(--centre) center / contain no-repeat; mask: var(--centre) center / contain no-repeat;
+  --centre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.3'%3E%3Ccircle cx='8' cy='8' r='5'/%3E%3Cpath d='M8 0v5.2M8 10.8V16M0 8h5.2M10.8 8H16'/%3E%3C/svg%3E"); }
+
+main { counter-reset: sheet; }
+.block .head > .label, .contact .label { display: flex; align-items: center; }
+.block .head > .label::before, .contact .label::before { counter-increment: sheet; content: counter(sheet, decimal-leading-zero);
+  padding-right: 38px; color: var(--accent); background: linear-gradient(var(--accent), var(--accent)) right 10px center / 20px 1px no-repeat; }
+
+.hero, .p-hero { position: relative; isolation: isolate; }
+.hero::before, .p-hero::before { content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px; background-position: center -1px;
+  -webkit-mask-image: radial-gradient(48% 62% at 74% 40%, #000 0%, rgba(0, 0, 0, .35) 55%, transparent 80%);
+  mask-image: radial-gradient(48% 62% at 74% 40%, #000 0%, rgba(0, 0, 0, .35) 55%, transparent 80%); }
+.p-hero::before { -webkit-mask-image: radial-gradient(70% 70% at 50% 10%, #000, transparent 75%); mask-image: radial-gradient(70% 70% at 50% 10%, #000, transparent 75%); }
+@media (max-width: 900px) { .hero::before { -webkit-mask-image: radial-gradient(90% 40% at 50% 62%, #000, transparent 80%); mask-image: radial-gradient(90% 40% at 50% 62%, #000, transparent 80%); } }
+
+/* crop marks sit just outside each model's frame, so the frame no longer clips; the picture rounds its own corners */
+.viewer .stage { overflow: visible; }
+.viewer .poster, .viewer canvas.live { border-radius: calc(var(--radius) - 1px); }
+.viewer .stage::before { content: ""; position: absolute; inset: -7px; z-index: 3; pointer-events: none; --m: var(--line-2);
+  background:
+    linear-gradient(var(--m), var(--m)) left top / 11px 1px no-repeat, linear-gradient(var(--m), var(--m)) left top / 1px 11px no-repeat,
+    linear-gradient(var(--m), var(--m)) right top / 11px 1px no-repeat, linear-gradient(var(--m), var(--m)) right top / 1px 11px no-repeat,
+    linear-gradient(var(--m), var(--m)) left bottom / 11px 1px no-repeat, linear-gradient(var(--m), var(--m)) left bottom / 1px 11px no-repeat,
+    linear-gradient(var(--m), var(--m)) right bottom / 11px 1px no-repeat, linear-gradient(var(--m), var(--m)) right bottom / 1px 11px no-repeat; }
+.viewer .fig { position: absolute; z-index: 2; top: 12px; left: 14px; right: 14px; display: flex; justify-content: space-between; gap: 12px;
+  color: var(--muted); font: 500 .66rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; pointer-events: none; }
+.viewer .fig b { margin-right: 8px; color: var(--accent); font-weight: 500; }
+@media (max-width: 420px) { .viewer .fig .what { display: none; } }
+
+/* the footer as a drawing's title block */
+.foot { padding-top: 28px; border-top: 0; }
+.titleblock { display: grid; grid-template-columns: 1.15fr 1.5fr 1.25fr 1.25fr .7fr; gap: 1px; width: 100%; margin: 0; background: var(--line-2); border: 1px solid var(--line-2); }
+.titleblock > div { padding: 10px 14px 12px; background: var(--bg); }
+.titleblock dt { margin-bottom: 3px; font: 500 .62rem/1.3 var(--mono); letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.titleblock dd { margin: 0; color: var(--ink); font-size: .88rem; line-height: 1.4; overflow-wrap: anywhere; }
+.titleblock dd a { text-decoration-color: var(--line-2); }
+.titleblock .sheet dd { color: var(--accent); font-family: var(--mono); font-size: .82rem; }
+@media (max-width: 760px) { .titleblock { grid-template-columns: 1fr 1fr; } .titleblock > div:first-child { grid-column: 1 / -1; } }

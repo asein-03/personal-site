@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=e7bfd9e6d2">
+<link rel="stylesheet" href="/assets/site.css?v=1dd06f06ff">
 <link rel="preload" href="/models/aperture.bin?v=31ecc888c1" as="fetch" crossorigin>
 <script>document.documentElement.classList.add('js')</script>
 <script defer src="/assets/site.js?v=85bdf317aa"></script>
@@ -64,8 +64,8 @@
       <div>
         <p class="label who">Materials Science ’27 &middot; Systems Engineering MEng ’28 &middot; UVA</p>
         <h1>Albert Sein</h1>
-        <p class="lead">I co-founded <a href="/aperture">Aperture</a>, a brain-computer interface you wear behind your ear, and I lead its product. We train neural networks that predict sleep and alertness from brain signal recorded behind the ear, and I design the hardware that records it.</p>
-        <p class="lead">I came to it with no background in neurotech. I learn fast, I take ownership of problems before anyone assigns them, and I've already shipped an app and packaged a device for a manufacturer's review.</p>
+        <p class="lead">I grew up in Yangon, Myanmar, and for as long as I can remember I've loved fixing things and building tools. Growing up somewhere technology was slow to arrive, then suddenly being in San Francisco and New York, opened my eyes to what was possible and how I could be part of it.</p>
+        <p class="lead">These days that means <a href="/aperture">Aperture</a>, a brain-computer interface you wear behind your ear, which I co-founded.</p>
         <p class="open"><span class="tag green">Open to work</span><span>Summer 2027 internships and new-grad roles in technical project management, product and hardware engineering.</span></p>
         <div class="actions">
           <a class="btn" href="mailto:kks7ys@virginia.edu">Email me</a>
@@ -76,6 +76,7 @@
       <figure class="viewer tall" data-model="aperture" data-v="31ecc888c1" data-yaw="-34" data-pitch="12" data-zoom="1.08" data-explode="0.2">
         <div class="stage">
           <img class="poster" src="/media/renders/aperture-hero.webp?v=1dc5cfb0a1" width="1100" height="1210" alt="Aperture&rsquo;s sensor pod on its skin frame, its layers drawn slightly apart, rendered from the CAD model" fetchpriority="high">
+          <div class="fig" aria-hidden="true"><span><b>Fig. 01</b><span class="what">Sensor pod</span></span><span>46 &times; 19 &times; 4.45&nbsp;mm &middot; 3.77&nbsp;g</span></div>
           <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="explode" hidden>Take apart</button></span></div>
         </div>
         <figcaption>Aperture, from my Fusion 360 model. Drag to turn it, or take it apart.</figcaption>
@@ -102,6 +103,7 @@
         <figure class="viewer reveal" data-model="aperture-case" data-v="4c7afe7cad" data-yaw="-128" data-pitch="30" data-zoom="1.3" data-ground>
           <div class="stage">
             <img class="poster" src="/media/renders/aperture-case.webp?v=7a90be4bc2" width="1280" height="960" alt="Aperture&rsquo;s charging case, open, with the sensor pod docked in it" loading="lazy">
+            <div class="fig" aria-hidden="true"><span><b>Fig. 02</b><span class="what">Charging case</span></span><span>54 &times; 31 &times; 13&nbsp;mm &middot; ~13&nbsp;g</span></div>
             <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="lid" hidden>Close the lid</button><button type="button" data-act="explode" hidden>Take apart</button></span></div>
           </div>
           <figcaption>The charging case I designed around the sensor pod.</figcaption>
@@ -170,22 +172,6 @@
           </div>
         </a></li>
       </ul>
-    </div>
-  </section>
-
-  <section class="block" id="how" aria-labelledby="how-title">
-    <div class="wrap">
-      <div class="head reveal">
-        <p class="label">How I work</p>
-        <h2 id="how-title">A product person who loves building things, and loves working with people even more.</h2>
-        <p>I'm early in my career, so most problems I take on are new to me. This is how I handle that, with the evidence.</p>
-      </div>
-      <ol class="how">
-        <li class="reveal"><span class="n mono">01</span><h3>I learn by building</h3><p>I'm a materials science student. For Aperture I learned to train neural networks on brain recordings in PyTorch, and to lay out flexible circuit boards in KiCad.</p></li>
-        <li class="reveal" style="--i:1"><span class="n mono">02</span><h3>I ship</h3><p>I designed and built Ordo with AI coding tools, launched it on the App Store in August 2026, and have shipped updates almost every week since.</p></li>
-        <li class="reveal"><span class="n mono">03</span><h3>I take ownership</h3><p>At Celestica I led four interns across a 12-site global initiative, and built the Clear-to-Build model that tracked component readiness from EVT through PVT for engineering and executive reviews.</p></li>
-        <li class="reveal" style="--i:1"><span class="n mono">04</span><h3>I check my work</h3><p>Snack's design is audited by a script that checks 83 critical fits. At Celestica I validated an AI-assisted data pipeline across 150+ thermal test runs against the raw logs.</p></li>
-      </ol>
     </div>
   </section>
 
@@ -296,7 +282,7 @@
       <div class="outside">
         <div class="reveal">
           <h3>From Yangon, Myanmar</h3>
-          <p class="story">I grew up in Yangon. For as long as I can remember I've loved fixing things and building tools, and the best gift I got in middle school was my first 3D printer, a Creality. I printed little parts to fix things around the house, like our faucet and refrigerator. Growing up somewhere technology was slow to arrive, then suddenly being in San Francisco and New York, opened my eyes to what was possible and how I could be part of it. I've always been into cars, rockets and planes; the rocket I built in high school is <a href="/builds#skyfall">Project Skyfall</a>.</p>
+          <p class="story">The best gift I got in middle school was my first 3D printer, a Creality. I printed little parts to fix things around the house, like our faucet and refrigerator. I've always been into cars, rockets and planes; the rocket I built in high school is <a href="/builds#skyfall">Project Skyfall</a>.</p>
           <dl class="interests">
             <div><dt>Coffee</dt><dd>A coffee fanatic, and I'll tell you honestly if your favorite cafe's coffee is bad. The <a href="/builds#portafilter">portafilter</a> in my builds is a replica I modeled.</dd></div>
             <div><dt>Sports</dt><dd>Golf, basketball and volleyball.</dd></div>
@@ -361,7 +347,15 @@
   </div>
 </section>
 <footer class="foot">
-  <div class="wrap"><span>&copy; 2026 Albert Sein</span><span>Charlottesville, Virginia</span></div>
+  <div class="wrap">
+    <dl class="titleblock">
+      <div><dt>Drawn by</dt><dd>Albert Sein, &copy; 2026</dd></div>
+      <div><dt>Contact</dt><dd><a href="mailto:kks7ys@virginia.edu">kks7ys@virginia.edu</a></dd></div>
+      <div><dt>Elsewhere</dt><dd><a href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener">LinkedIn</a> &middot; <a href="/albert-sein-resume.pdf" target="_blank" rel="noopener">R&eacute;sum&eacute;</a></dd></div>
+      <div><dt>Based in</dt><dd>Charlottesville, Virginia</dd></div>
+      <div class="sheet"><dt>Sheet</dt><dd>1 of 5</dd></div>
+    </dl>
+  </div>
 </footer>
 </body>
 </html>

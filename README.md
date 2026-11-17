@@ -4,7 +4,7 @@ Albert Sein's portfolio: a plain static site on Vercel, with no build step.
 
 ## Pages
 
-- `index.html`: the front page. Intro, the Aperture (BCI) work, projects, how I work, experience, skills, outside of
+- `index.html`: the front page. Intro, the Aperture (BCI) work, projects, experience, skills, outside of
   work, contact.
 - `aperture.html`, `snack.html`, `ordo.html`, `builds.html`: one page per project, served at `/aperture` and so on
   (`cleanUrls` in `vercel.json`).
