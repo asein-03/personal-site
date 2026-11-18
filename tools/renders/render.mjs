@@ -17,7 +17,7 @@ const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/M
 // name: model, yaw, pitch, zoom, explode, size, and fit/axis for long models
 export const POSTERS = {
   // about twice the size each is shown at, for sharp stills on high-density screens
-  'aperture-hero': { model: 'aperture', yaw: -34, pitch: 12, zoom: 1.08, explode: 0.2, w: 1100, h: 1210 },
+  'aperture-hero': { model: 'aperture', yaw: -112, pitch: 24, zoom: 1.18, explode: 1, w: 1200, h: 1200 },
   'aperture-169': { model: 'aperture', yaw: -42, pitch: 12, zoom: 1.12, w: 2240, h: 1260 },
   'aperture-apart': { model: 'aperture', yaw: -128, pitch: 16, zoom: 1.2, explode: 1, w: 1600, h: 900 },
   'aperture-electronics': { model: 'aperture', yaw: -128, pitch: 16, zoom: 1.2, explode: 1, w: 1280, h: 960 },

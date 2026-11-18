@@ -15,8 +15,11 @@ where that content lives now; see `vercel.json`.
 
 ## Shared files
 
-- `assets/site.css`: every page's styles.
-- `assets/site.js`: the header hairline and fade-in on scroll.
+- `assets/site.css`: every page's styles. The look is industrial print: white stock, black ink and one hazard red,
+  Archivo in heavy capitals for headlines and plain for text, JetBrains Mono for labels and captions, square corners,
+  and zones boxed by 1px black rules.
+- `assets/site.js`: the rule under the header, the header name once the front page's nameplate scrolls away, today's
+  date in the masthead, and fade-in on scroll.
 - `assets/viewer.js`: the 3D CAD viewer. Any `<figure class="viewer" data-model="…">` gets a drag-to-turn model
   from `/models`, with "Take apart" and "Close the lid" buttons where the model supports them. The figure's poster
   still shows until someone drags the model or presses a button; then the live model, drawn underneath in the same

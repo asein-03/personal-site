@@ -17,15 +17,15 @@
 <meta property="og:image:alt" content="Albert Sein, co-founder of Aperture, with a render of the Aperture wearable">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://albertsein.com/og.png">
-<meta name="theme-color" content="#fbfbfa">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%23fbfbfa'%3EA%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0b0b'/%3E%3Ctext x='16' y='23' font-family='Arial,Helvetica,sans-serif' font-weight='900' font-size='21' text-anchor='middle' fill='%23ffffff'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=1dd06f06ff">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=5ce318b3ca">
 <link rel="preload" href="/models/aperture.bin?v=31ecc888c1" as="fetch" crossorigin>
 <script>document.documentElement.classList.add('js')</script>
-<script defer src="/assets/site.js?v=85bdf317aa"></script>
+<script defer src="/assets/site.js?v=ba826ca2f1"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 <script type="importmap">
 { "imports": {
@@ -42,7 +42,7 @@
   "sameAs": ["https://linkedin.com/in/albert-sein03", "https://github.com/asein-03", "https://instagram.com/itsalbertsein"] }
 </script>
 </head>
-<body>
+<body class="home">
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="wrap">
@@ -59,13 +59,17 @@
 </header>
 
 <main id="main">
-  <section class="hero">
+  <header class="masthead">
     <div class="wrap">
-      <div>
-        <p class="label who">Materials Science ’27 &middot; Systems Engineering MEng ’28 &middot; UVA</p>
-        <h1>Albert Sein</h1>
+      <h1 class="nameplate">Albert Sein</h1>
+      <p class="dateline"><span>Charlottesville, Virginia</span><span>Materials Science ’27 &middot; Systems Engineering MEng ’28 &middot; University of Virginia</span><span><time data-today>November 2026</time></span></p>
+    </div>
+  </header>
+  <section class="hero" aria-label="About Albert">
+    <div class="wrap">
+      <div class="story">
         <p class="lead">I grew up in Yangon, Myanmar, and for as long as I can remember I've loved fixing things and building tools. Growing up somewhere technology was slow to arrive, then suddenly being in San Francisco and New York, opened my eyes to what was possible and how I could be part of it.</p>
-        <p class="lead">These days that means <a href="/aperture">Aperture</a>, a brain-computer interface you wear behind your ear, which I co-founded.</p>
+        <p class="lead">I study Materials Science and Engineering at the University of Virginia. My bachelor's finishes in May 2027, and I'm staying on for an accelerated master's in Systems Engineering through May 2028.</p>
         <p class="open"><span class="tag green">Open to work</span><span>Summer 2027 internships and new-grad roles in technical project management, product and hardware engineering.</span></p>
         <div class="actions">
           <a class="btn" href="mailto:kks7ys@virginia.edu">Email me</a>
@@ -73,17 +77,16 @@
           <a class="btn ghost" href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener">LinkedIn <span class="arrow out" aria-hidden="true"></span></a>
         </div>
       </div>
-      <figure class="viewer tall" data-model="aperture" data-v="31ecc888c1" data-yaw="-34" data-pitch="12" data-zoom="1.08" data-explode="0.2">
+      <figure class="viewer tall" data-model="aperture" data-v="31ecc888c1" data-yaw="-112" data-pitch="24" data-zoom="1.18" data-explode="1">
         <div class="stage">
-          <img class="poster" src="/media/renders/aperture-hero.webp?v=1dc5cfb0a1" width="1100" height="1210" alt="Aperture&rsquo;s sensor pod on its skin frame, its layers drawn slightly apart, rendered from the CAD model" fetchpriority="high">
-          <div class="fig" aria-hidden="true"><span><b>Fig. 01</b><span class="what">Sensor pod</span></span><span>46 &times; 19 &times; 4.45&nbsp;mm &middot; 3.77&nbsp;g</span></div>
+          <img class="poster" src="/media/renders/aperture-hero.webp?v=14060b2867" width="1200" height="1200" alt="Aperture&rsquo;s sensor pod taken apart: cover, cell, flexible board, face plate, magnets and skin frame, rendered from the CAD model" fetchpriority="high">
           <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="explode" hidden>Take apart</button></span></div>
         </div>
-        <figcaption>Aperture, from my Fusion 360 model. Drag to turn it, or take it apart.</figcaption>
+        <figcaption><span>Aperture&rsquo;s sensor pod, taken apart. Together it&rsquo;s 46 &times; 19 &times; 4.45&nbsp;mm and 3.77&nbsp;g. Drag to turn it, or put it together.</span><span class="credit">Fusion 360 model by Albert Sein</span></figcaption>
       </figure>
     </div>
     <div class="wrap">
-      <div class="facts reveal">
+      <div class="facts ruled reveal">
         <div><span class="label">Now</span><p>Aperture<span>Co-founder and product lead, brain-computer interface wearable</span></p></div>
         <div><span class="label">Last summer</span><p>Celestica<span>Thermal engineering and project management intern</span></p></div>
         <div><span class="label">Shipped</span><p>Ordo<span>iOS app, on the App Store since August 2026</span></p></div>
@@ -95,7 +98,6 @@
   <section class="block" id="bci" aria-labelledby="bci-title">
     <div class="wrap">
       <div class="head reveal">
-        <p class="label">Now</p>
         <h2 id="bci-title">Building a brain-computer interface</h2>
         <p>What we've built and learned on Aperture so far.</p>
       </div>
@@ -103,10 +105,9 @@
         <figure class="viewer reveal" data-model="aperture-case" data-v="4c7afe7cad" data-yaw="-128" data-pitch="30" data-zoom="1.3" data-ground>
           <div class="stage">
             <img class="poster" src="/media/renders/aperture-case.webp?v=7a90be4bc2" width="1280" height="960" alt="Aperture&rsquo;s charging case, open, with the sensor pod docked in it" loading="lazy">
-            <div class="fig" aria-hidden="true"><span><b>Fig. 02</b><span class="what">Charging case</span></span><span>54 &times; 31 &times; 13&nbsp;mm &middot; ~13&nbsp;g</span></div>
             <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="lid" hidden>Close the lid</button><button type="button" data-act="explode" hidden>Take apart</button></span></div>
           </div>
-          <figcaption>The charging case I designed around the sensor pod.</figcaption>
+          <figcaption><span>The charging case I designed around the pod, 54 &times; 31 &times; 13&nbsp;mm and about 13&nbsp;g.</span><span class="credit">Fusion 360 model by Albert Sein</span></figcaption>
         </figure>
         <div class="text reveal" style="--i:1">
           <p>Aperture is a brain-computer interface that rests behind the right ear and reads brain signal through three dry electrodes. A model in the phone app turns that signal into readings of sleep and alertness. I co-founded it and lead the product.</p>
@@ -130,11 +131,10 @@
   <section class="block" id="work" aria-labelledby="work-title">
     <div class="wrap">
       <div class="head reveal">
-        <p class="label">Selected work</p>
         <h2 id="work-title">Projects</h2>
         <p>Each hardware project page has the real CAD model, which you can turn and take apart.</p>
       </div>
-      <ul class="work">
+      <ul class="work ruled">
         <li class="big reveal"><a class="card" href="/aperture">
           <div class="pic"><img src="/media/renders/aperture-apart.webp?v=6cf41c144a" width="1600" height="900" alt="Aperture&rsquo;s sensor pod taken apart: cover, cell, flexible board, face plate, magnets and skin frame" loading="lazy"></div>
           <div class="body">
@@ -178,7 +178,6 @@
   <section class="block" id="experience" aria-labelledby="exp-title">
     <div class="wrap">
       <div class="head reveal">
-        <p class="label">Experience</p>
         <h2 id="exp-title">Professional experience</h2>
         <p>The same roles as on my <a href="/albert-sein-resume.pdf" target="_blank" rel="noopener">résumé</a>, with a little more room.</p>
       </div>
@@ -253,10 +252,9 @@
   <section class="block" id="skills" aria-labelledby="skills-title">
     <div class="wrap">
       <div class="head reveal">
-        <p class="label">Skills</p>
         <h2 id="skills-title">Skills and tools</h2>
       </div>
-      <ul class="skills">
+      <ul class="skills ruled">
         <li class="reveal"><h3>CAD and mechanical design</h3><p>Enclosures, mechanisms and packaging, from sketch to printed part.</p>
           <ul class="chips"><li>Fusion 360</li><li>SolidWorks</li><li>AutoCAD</li><li>Revit</li><li>Parametric modeling</li><li>Tolerances and fits</li><li>Topology optimization</li><li>3D printing</li></ul></li>
         <li class="reveal" style="--i:1"><h3>Electronics</h3><p>Boards and wiring that have to fit somewhere tight.</p>
@@ -276,10 +274,9 @@
   <section class="block" id="outside" aria-labelledby="outside-title">
     <div class="wrap">
       <div class="head reveal">
-        <p class="label">About me</p>
         <h2 id="outside-title">Outside of work</h2>
       </div>
-      <div class="outside">
+      <div class="outside ruled">
         <div class="reveal">
           <h3>From Yangon, Myanmar</h3>
           <p class="story">The best gift I got in middle school was my first 3D printer, a Creality. I printed little parts to fix things around the house, like our faucet and refrigerator. I've always been into cars, rockets and planes; the rocket I built in high school is <a href="/builds#skyfall">Project Skyfall</a>.</p>
@@ -333,8 +330,7 @@
 <section class="contact" id="contact" aria-labelledby="contact-title">
   <div class="wrap">
     <div class="reveal">
-      <p class="label">Contact</p>
-      <h2 id="contact-title" style="margin-top:10px">Get in touch</h2>
+      <h2 id="contact-title">Get in touch</h2>
       <p class="intro">Hiring for a team that builds things? I'd like to hear about it.</p>
     </div>
     <ul class="links reveal" style="--i:1">
@@ -348,13 +344,16 @@
 </section>
 <footer class="foot">
   <div class="wrap">
-    <dl class="titleblock">
-      <div><dt>Drawn by</dt><dd>Albert Sein, &copy; 2026</dd></div>
-      <div><dt>Contact</dt><dd><a href="mailto:kks7ys@virginia.edu">kks7ys@virginia.edu</a></dd></div>
-      <div><dt>Elsewhere</dt><dd><a href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener">LinkedIn</a> &middot; <a href="/albert-sein-resume.pdf" target="_blank" rel="noopener">R&eacute;sum&eacute;</a></dd></div>
-      <div><dt>Based in</dt><dd>Charlottesville, Virginia</dd></div>
-      <div class="sheet"><dt>Sheet</dt><dd>1 of 5</dd></div>
-    </dl>
+    <div>
+      <span class="sig">Albert Sein</span>
+      <nav aria-label="Elsewhere">
+        <a href="mailto:kks7ys@virginia.edu">Email</a>
+        <a href="https://linkedin.com/in/albert-sein03" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/asein-03" target="_blank" rel="noopener">GitHub</a>
+        <a href="/albert-sein-resume.pdf" target="_blank" rel="noopener">R&eacute;sum&eacute;</a>
+      </nav>
+      <p class="set">Charlottesville, Virginia &middot; &copy; 2026 &middot; Set in Archivo and JetBrains Mono</p>
+    </div>
   </div>
 </footer>
 </body>
