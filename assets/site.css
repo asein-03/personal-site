@@ -28,8 +28,9 @@ main { flex: 1 0 auto; }
 body { margin: 0; background: var(--bg); color: var(--ink-2); font: 400 1rem/1.6 var(--sans); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration-line: underline; text-decoration-color: currentColor; text-decoration-thickness: 1px; text-underline-offset: .2em; transition: background-color .12s, color .12s; }
-/* links in running text invert on hover, like a selected line on a terminal */
-:is(p, dd, li) > a:not(.btn):hover { background: var(--ink); color: var(--bg); text-decoration-color: transparent; }
+/* links in running text invert on hover, like a selected line on a terminal (project cards and the song and film
+   rows are links too, but block-sized, so they have hovers of their own) */
+:is(p, dd, li) > a:not(.btn, .card, .media-list a):hover { background: var(--ink); color: var(--bg); text-decoration-color: transparent; }
 ::selection { background: var(--red); color: #fff; }
 :focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
 h1, h2, h3, h4 { margin: 0; color: var(--ink); font-family: var(--sans); font-weight: 700; text-wrap: balance; }
