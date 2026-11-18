@@ -17,7 +17,8 @@ where that content lives now; see `vercel.json`.
 
 - `assets/site.css`: every page's styles. The look is industrial print: white stock, black ink and one hazard red,
   Archivo in heavy capitals for headlines and plain for text, JetBrains Mono for labels and captions, square corners,
-  and zones boxed by 1px black rules.
+  and zones boxed by 1px black rules. With the system set to dark it prints in negative (off-white on near-black,
+  a brighter red), keeping a mid-grey plate under the models so the black ones still show.
 - `assets/site.js`: the rule under the header, the header name once the front page's nameplate scrolls away, today's
   date in the masthead, and fade-in on scroll.
 - `assets/viewer.js`: the 3D CAD viewer. Any `<figure class="viewer" data-model="…">` gets a drag-to-turn model
