@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="/assets/site.css?v=5ce318b3ca">
-<link rel="preload" href="/models/aperture.bin?v=31ecc888c1" as="fetch" crossorigin>
+<link rel="preload" href="/models/aperture.bin?v=a38a6e3b53" as="fetch" crossorigin>
 <script>document.documentElement.classList.add('js')</script>
 <script defer src="/assets/site.js?v=ba826ca2f1"></script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -59,12 +59,12 @@
       
       <dl class="spec"><div><dt class="label">Role</dt><dd>Co-founder and product lead; mechanical design, electronics integration, charging case</dd></div><div><dt class="label">When</dt><dd>June 2026 to now</dd></div><div><dt class="label">Tools</dt><dd>PyTorch, Fusion 360, KiCad</dd></div><div><dt class="label">Site</dt><dd><a href="https://wearaperture.com" target="_blank" rel="noopener">wearaperture.com <span class="arrow out" aria-hidden="true"></span></a></dd></div></dl>
       <div class="p-figure">
-    <figure class="viewer" data-model="aperture" data-v="31ecc888c1" data-yaw="-42" data-pitch="12" data-zoom="1.12">
+    <figure class="viewer" data-model="aperture" data-v="a38a6e3b53" data-yaw="-42" data-pitch="12" data-zoom="1.12">
       <div class="stage">
         <img class="poster" src="/media/renders/aperture-169.webp?v=70f1be7234" width="2240" height="1260" alt="Aperture&rsquo;s sensor pod, a glossy black crescent, on its skin frame" fetchpriority="high">
-        <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="explode" hidden>Take apart</button></span></div>
+        <div class="ui"><span class="hint mono">Drag to turn</span></div>
       </div>
-      <figcaption>The sensor pod on its skin frame, from my Fusion 360 model. Drag to turn it, or take it apart to see inside.</figcaption>
+      <figcaption>The sensor pod on its skin frame, from my Fusion 360 model. Drag to turn it.</figcaption>
     </figure>
       </div>
       <div class="summary reveal"><p class="label">What I did</p><ul><li>Trained compact neural networks in PyTorch on 20 public EEG datasets (917 people, 5,232 hours) to learn what two behind-ear channels can predict.</li><li>Designed the learning architecture: a 14-channel EPOC+ headset teaches a smaller model that sees only the behind-ear sites, evaluated on people and days the model never saw.</li><li>Built Aperture Lab, a Mac app that records the behind-ear sites and the EPOC+ in sync, runs guided sessions with timed cues, and trains and scores models on the recordings.</li><li>Designed the wearable, a 4.45&nbsp;mm sealed pod on a weekly skin frame, and its charging case in Fusion 360, with both boards laid out and routed in KiCad.</li><li>Wrote the R&amp;D plan to design freeze in May 2027, the first study&rsquo;s protocol and consent form, and a research paper on near-ear sensing.</li></ul></div>
@@ -79,10 +79,10 @@
         <div class="notes reveal" style="--i:1"><h2>The models</h2><div><h3>What we asked</h3><p>Before our own device records anything, we used recordings other labs have published to learn which states two short channels behind one ear can predict, in people a network has never seen.</p></div><div><h3>What came through</h3><p>Sleep, drowsiness, eyes-closed rest and physical activity. A channel behind the ear scored sleep as well as a clinical one, and gating the electrodes by head movement cut false readings during exercise from 23&ndash;48% to 1&ndash;11%.</p></div><div><h3>What didn&rsquo;t</h3><p>Mind wandering, mental effort and stress were at chance once elapsed time and session were controlled for, even with a 14-sensor headset. So we don&rsquo;t build the product on them.</p></div><div><h3>Teacher and student</h3><p>For our own data, a 14-channel EPOC+ headset recorded at the same time teaches a smaller model that sees only the behind-ear sites. Aperture Lab, the Mac app I built for it, records both in sync and scores each model on people and days held out.</p></div><ul class="tags" style="margin-top:22px"><li class="tag">PyTorch</li><li class="tag">scikit-learn</li><li class="tag">BrainFlow</li></ul></div>
       </section>
       <section class="chapter flip">
-    <figure class="viewer" data-model="aperture" data-v="31ecc888c1" data-yaw="-128" data-pitch="16" data-zoom="1.2" data-explode="1">
+    <figure class="viewer" data-model="aperture" data-v="a38a6e3b53" data-yaw="200" data-pitch="-20" data-zoom="1.02">
       <div class="stage">
-        <img class="poster" src="/media/renders/aperture-electronics.webp?v=8de90fd206" width="1280" height="960" alt="Aperture&rsquo;s sensor pod taken apart: cover, cell, flexible board, face plate, magnets and skin frame" loading="lazy">
-        <div class="ui"><span class="hint mono">Drag to turn</span><span class="btns"><button type="button" data-act="explode" hidden>Take apart</button></span></div>
+        <img class="poster" src="/media/renders/aperture-skin.webp?v=f00048c37d" width="1280" height="960" alt="The skin side of Aperture&rsquo;s sensor pod on its frame, with three electrode caps and the optical sensor&rsquo;s window" loading="lazy">
+        <div class="ui"><span class="hint mono">Drag to turn</span></div>
       </div>
     </figure>
         <div class="notes reveal" style="--i:1"><h2>The wearable</h2><div><h3>A sealed pod on a weekly frame</h3><p>The electronics sit in a sealed pod, a crescent about 46 by 19&nbsp;mm, that snaps onto a thin skin frame behind the right ear. The pod is 4.45&nbsp;mm thick and weighs 3.77&nbsp;g, and it&rsquo;s kept and reused. The frame, a skin adhesive with two magnets of its own, is changed every week.</p></div><div><h3>What it senses</h3><p>One brain channel from two dry electrodes, with a third as reference: gold studs moulded into the face plate, under conductive-silicone caps the wearer snaps on and replaces. Behind a glass window, an optical sensor reads heart rate and blood oxygen. An accelerometer, a magnetic sensor that knows whether the pod is on its frame or in its case, and Bluetooth LE share the same board.</p></div><div><h3>One curved board, no screws</h3><p>A four-layer flexible circuit, 0.20&nbsp;mm thick and curved to the head, carries 77 parts, laid out and routed in KiCad with no design-rule errors. Nothing is screwed or taped: every joint is moulded, glued with a heat-cured adhesive, soldered or held by a spring, and every glue line is drawn in the CAD at its real thickness.</p></div><div><h3>Held on by design</h3><p>Two pairs of magnets hold it on the head with 3.3 to 7.8&nbsp;N, worst case to best. Their size and the face layout came from a search scored by a model of that hold: the layout before it missed four of the model&rsquo;s five marks, and this one passes all five. Scripts then build the pod in Fusion 360 from the layout the search picked.</p></div></div>

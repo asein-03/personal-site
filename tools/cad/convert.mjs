@@ -121,24 +121,18 @@ const PHONE_PARTS = [
 // Electronics are plain blocks at their KiCad positions, as in Fusion; no copper or part markings.
 const PROJECTS = [
   // The sensor pod on its skin frame, standing as it's worn behind the ear: the cover toward the camera, the crescent
-  // upright (CAD x across, y up, z toward the camera). Take apart lifts each layer off the one below along z, by just
-  // enough to clear it plus 5.5 mm (worked out from the meshes): cover, cell, board, face plate, the two pairs of
-  // magnets, the frame. Glue lines are left out.
+  // upright (CAD x across, y up, z toward the camera). Only the outside is written, and with no explode offsets: the
+  // cell, the flex board, its copper and its parts stay out of the public file so the pod's insides aren't published,
+  // and it can't be taken apart on the site. Glue lines are left out.
   { id: 'aperture', up: 'y', parts: [
-    { name: 'cover', stl: `${POD}/pod-cover.stl`, mat: 'gloss', explodeMM: [0, 0, 19.2] },
-    { name: 'cell', stl: `${POD}/pod-cell.stl`, mat: 'cell', explodeMM: [0, 0, 10.8] },
-    // the flex board itself and its five stiffeners are the first and last bodies; the rest is copper and vias
-    { name: 'board', step: `${POD}/pod-board.step`, bodies: bodies((b, i, n) => i === 0 || i >= n - 5), mat: 'polyimide', explodeMM: [0, 0, 5.24] },
-    { name: 'copper', step: `${POD}/pod-board.step`, bodies: bodies((b, i, n) => i > 0 && i < n - 5), mat: 'copper', explodeMM: [0, 0, 5.24], simplify: 8000 },
-    { name: 'parts', step: `${POD}/pod-parts.step`, bodies: bodies((b) => !thin(b)), mat: 'chip', explodeMM: [0, 0, 5.24], simplify: 10000 },
-    { name: 'pads', step: `${POD}/pod-parts.step`, bodies: bodies(thin), mat: 'gold', explodeMM: [0, 0, 5.24], simplify: 3000 },
-    { name: 'face', stl: `${POD}/pod-face.stl`, mat: 'matte', explodeMM: [0, 0, -0.83], simplify: 7000 },
-    { name: 'studs', stl: `${POD}/pod-studs.stl`, mat: 'gold', explodeMM: [0, 0, -0.83], simplify: 2500 },
-    { name: 'caps', stl: `${POD}/pod-caps.stl`, mat: 'silver', explodeMM: [0, 0, -0.83], simplify: 4000 },
-    { name: 'window', stl: `${POD}/pod-window.stl`, mat: 'glass', explodeMM: [0, 0, -0.83] },
-    { name: 'pod-magnets', stl: `${POD}/pod-magnets.stl`, mat: 'bright', explodeMM: [0, 0, -8.31] },
-    { name: 'frame-magnets', stl: `${POD}/frame-magnets.stl`, mat: 'bright', explodeMM: [0, 0, -13.65] },
-    { name: 'frame', stl: `${POD}/frame.stl`, mat: 'film', explodeMM: [0, 0, -19.2] },
+    { name: 'cover', stl: `${POD}/pod-cover.stl`, mat: 'gloss' },
+    { name: 'face', stl: `${POD}/pod-face.stl`, mat: 'matte', simplify: 7000 },
+    { name: 'studs', stl: `${POD}/pod-studs.stl`, mat: 'gold', simplify: 2500 },
+    { name: 'caps', stl: `${POD}/pod-caps.stl`, mat: 'silver', simplify: 4000 },
+    { name: 'window', stl: `${POD}/pod-window.stl`, mat: 'glass' },
+    { name: 'pod-magnets', stl: `${POD}/pod-magnets.stl`, mat: 'bright' },
+    { name: 'frame-magnets', stl: `${POD}/frame-magnets.stl`, mat: 'bright' },
+    { name: 'frame', stl: `${POD}/frame.stl`, mat: 'film' },
   ] },
   // The charging case lying flat with its lid open and the pod docked, in the same frame (so the pod sits in the
   // pocket exactly as it sits on the frame). Matte black outside, grey inside: the shell's faces that look into the

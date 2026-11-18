@@ -17,10 +17,10 @@ const CHROME = process.env.CHROME || '/Applications/Google Chrome.app/Contents/M
 // name: model, yaw, pitch, zoom, explode, size, and fit/axis for long models
 export const POSTERS = {
   // about twice the size each is shown at, for sharp stills on high-density screens
-  'aperture-hero': { model: 'aperture', yaw: -112, pitch: 24, zoom: 1.18, explode: 1, w: 1200, h: 1200 },
+  // the pod is only ever shown whole: its model holds just the outside parts (see tools/cad/convert.mjs)
+  'aperture-hero': { model: 'aperture', yaw: 25, pitch: 20, zoom: 1.15, w: 1200, h: 1200 },
   'aperture-169': { model: 'aperture', yaw: -42, pitch: 12, zoom: 1.12, w: 2240, h: 1260 },
-  'aperture-apart': { model: 'aperture', yaw: -128, pitch: 16, zoom: 1.2, explode: 1, w: 1600, h: 900 },
-  'aperture-electronics': { model: 'aperture', yaw: -128, pitch: 16, zoom: 1.2, explode: 1, w: 1280, h: 960 },
+  'aperture-skin': { model: 'aperture', yaw: 200, pitch: -20, zoom: 1.02, w: 1280, h: 960 },
   'aperture-case': { model: 'aperture-case', yaw: -128, pitch: 30, zoom: 1.3, ground: 1, w: 1280, h: 960 },
   'snack-169': { model: 'snack', yaw: -30, pitch: 12, zoom: 1.1, w: 2240, h: 1260 },
   'snack-apart': { model: 'snack', yaw: -64, pitch: 14, zoom: 1.1, explode: 1, w: 1280, h: 960 },
